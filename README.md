@@ -17,4 +17,7 @@ The application will allow for recording work done by the freelancer for clients
   * Identification of the issuer 
   * Date issued 
   * Due date 
-  * Specification of work done, including hourly rate and number of hours ○Total amount Application should have a standard user-friendly GUI that will show basic information about all issued invoices in the last year and the total income for the particular year. 
+  * Specification of work done, including hourly rate and number of hours 
+  * Total amount 
+
+Application should have a standard user-friendly GUI that will show basic information about all issued invoices in the last year and the total income for the particular year. 
