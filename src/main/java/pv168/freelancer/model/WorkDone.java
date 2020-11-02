@@ -1,31 +1,31 @@
 package pv168.freelancer.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class WorkDone {
-    private Date workStart;
-    private Date workEnd;
+    private LocalDateTime workStart;
+    private LocalDateTime workEnd;
     private WorkType workType;
 
-    public WorkDone(Date workStart, Date workEnd, WorkType workType) {
+    public WorkDone(LocalDateTime workStart, LocalDateTime workEnd, WorkType workType) {
         this.workStart = workStart;
         this.workEnd = workEnd;
         this.workType = workType;
     }
 
-    public Date getWorkStart() {
+    public LocalDateTime getWorkStart() {
         return workStart;
     }
 
-    public void setWorkStart(Date workStart) {
+    public void setWorkStart(LocalDateTime workStart) {
         this.workStart = workStart;
     }
 
-    public Date getWorkEnd() {
+    public LocalDateTime getWorkEnd() {
         return workEnd;
     }
 
-    public void setWorkEnd(Date workEnd) {
+    public void setWorkEnd(LocalDateTime workEnd) {
         this.workEnd = workEnd;
     }
 
