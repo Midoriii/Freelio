@@ -1,4 +1,5 @@
-Timesheet for Freelancer 
+# Timesheet for Freelancer
+
 The application will allow for recording work done by the freelancer for clients. The application should support:
 - Evidence of work done. Each time entry includes: 
   * Start time 
