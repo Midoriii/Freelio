@@ -13,11 +13,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainWindow {
-    private JFrame frame;
+    private final JFrame frame;
     private JPanel navBar;
     private JPanel quitPanel;
     private JPanel contentPanel;
-    private CardLayout cardLayout;
 
     // These are here because undecorated Frame cannot be moved or resized on its own
     private final ComponentMover cm = new ComponentMover();
@@ -52,7 +51,7 @@ public class MainWindow {
     }
 
     private void createContentPanel() {
-        cardLayout = new CardLayout();
+        CardLayout cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
         contentPanel.add(new WorkDoneCard(WORK_DONE), WORK_DONE);
         contentPanel.add(new InvoiceCard(INVOICES), INVOICES);
