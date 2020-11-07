@@ -9,7 +9,8 @@ public class Card extends JPanel {
 
     public Card(String name){
         this.name = name;
-        setPreferredSize(new Dimension(950, 680));
+        setPreferredSize(new Dimension(890, 635));
+        // This is for debugging purposes, to see clearly the size and location of the card
         setBackground(Color.RED);
     }
 }

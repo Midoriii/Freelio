@@ -27,14 +27,16 @@ public class NavBar extends JPanel implements ActionListener {
     }
 
     private void setUp() {
-        setPreferredSize(new Dimension(250, 740));
+        setMinimumSize(new Dimension(150, 490));
+        setPreferredSize(new Dimension(200, 675));
+        setMaximumSize(new Dimension(240, 860));
         setBackground(new Color(76, 175, 80));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 
     private void createBrandLogo() {
         brand = new Label("Freelio");
-        brand.setPreferredSize(new Dimension(250, 120));
+        brand.setPreferredSize(new Dimension(200, 120));
         brand.setAlignment(CENTER);
         brand.setForeground(Color.WHITE);
 
@@ -42,20 +44,20 @@ public class NavBar extends JPanel implements ActionListener {
     }
 
     private void createButtons(String invoiceName, String workDoneName, String profitCalcName) {
-        btnInvoices = new JButton(invoiceName);
-        btnInvoices.addActionListener(this);
-        btnInvoices.setAlignmentX(CENTER_ALIGNMENT);
-
         btnWorkDone = new JButton(workDoneName);
         btnWorkDone.addActionListener(this);
         btnWorkDone.setAlignmentX(CENTER_ALIGNMENT);
+
+        btnInvoices = new JButton(invoiceName);
+        btnInvoices.addActionListener(this);
+        btnInvoices.setAlignmentX(CENTER_ALIGNMENT);
 
         btnProfitCalc = new JButton(profitCalcName);
         btnProfitCalc.addActionListener(this);
         btnProfitCalc.setAlignmentX(CENTER_ALIGNMENT);
 
-        add(btnInvoices);
         add(btnWorkDone);
+        add(btnInvoices);
         add(btnProfitCalc);
     }
 
