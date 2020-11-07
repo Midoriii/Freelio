@@ -6,11 +6,15 @@ public class WorkDone {
     private LocalDateTime workStart;
     private LocalDateTime workEnd;
     private WorkType workType;
+    private String note;
 
-    public WorkDone(LocalDateTime workStart, LocalDateTime workEnd, WorkType workType) {
+    public WorkDone(){}
+
+    public WorkDone(LocalDateTime workStart, LocalDateTime workEnd, WorkType workType, String note) {
         this.workStart = workStart;
         this.workEnd = workEnd;
         this.workType = workType;
+        this.note = note;
     }
 
     public LocalDateTime getWorkStart() {
@@ -36,4 +40,8 @@ public class WorkDone {
     public void setWorkType(WorkType workType) {
         this.workType = workType;
     }
+
+    public String getNote() { return note; }
+
+    public void setNote(String note) { this.note = note; }
 }
