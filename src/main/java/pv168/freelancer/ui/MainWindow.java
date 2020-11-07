@@ -69,9 +69,15 @@ public class MainWindow {
         quitPanel.setPreferredSize(new Dimension(890, 40));
         quitPanel.setMaximumSize(new Dimension(1400, 40));
         // The Blue color is for debugging purposes only
-        quitPanel.setBackground(Color.BLUE);
+        // quitPanel.setBackground(Color.BLUE);
+
+        quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
+        // The Glue and Rigid Areas are a way of composing the components where on wants them
+        quitPanel.add(Box.createHorizontalGlue());
         quitPanel.add(new MinimizeButton(frame));
+        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
         quitPanel.add(new QuitButton());
+        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
     }
 
     public void show() {
