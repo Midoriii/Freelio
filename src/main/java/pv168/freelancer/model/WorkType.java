@@ -1,12 +1,16 @@
 package pv168.freelancer.model;
 
 public class WorkType {
-    private String description;
+    private String name;
     private double hourlyRate;
+    private String description;
 
-    public WorkType(String description, double hourlyRate) {
-        this.description = description;
+    public WorkType(){}
+
+    public WorkType(String name, double hourlyRate, String description) {
+        this.name = name;
         this.hourlyRate = hourlyRate;
+        this.description = description;
     }
 
 }
