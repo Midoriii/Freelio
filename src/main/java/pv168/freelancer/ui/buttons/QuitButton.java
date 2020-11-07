@@ -7,6 +7,5 @@ public class QuitButton extends JButton {
     public QuitButton(){
         super();
         setText("Quit");
-        addActionListener(e -> System.exit(0));
     }
 }
