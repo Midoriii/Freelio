@@ -40,7 +40,7 @@ public class MainWindow {
     }
 
     private JFrame createFrame() {
-        var frame = new JFrame("Work evidence");
+        JFrame frame = new JFrame("Work evidence");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1100, 675));
         frame.setSize(new Dimension(1100, 675));
@@ -53,8 +53,8 @@ public class MainWindow {
     private void createContentPanel() {
         CardLayout cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
-        contentPanel.add(new WorkDoneCard(WORK_DONE), WORK_DONE);
-        contentPanel.add(new InvoiceCard(INVOICES), INVOICES);
+        contentPanel.add(new WorkDoneCard(WORK_DONE, frame), WORK_DONE);
+        contentPanel.add(new InvoiceCard(INVOICES, frame), INVOICES);
         contentPanel.add(new ProfitCard(PROFIT_CALC), PROFIT_CALC);
     }
 
@@ -70,13 +70,21 @@ public class MainWindow {
         // The Blue color is for debugging purposes only
         // quitPanel.setBackground(Color.BLUE);
 
+        JButton btnQuit = createQuitButton();
+
         quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
         // The Glue and Rigid Areas are a way of composing the components where on wants them
         quitPanel.add(Box.createHorizontalGlue());
         quitPanel.add(new MinimizeButton(frame));
         quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
-        quitPanel.add(new QuitButton());
+        quitPanel.add(btnQuit);
         quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
+    }
+
+    private JButton createQuitButton() {
+        JButton btnQuit = new QuitButton();
+        btnQuit.addActionListener(e -> System.exit(0));
+        return btnQuit;
     }
 
     public void show() {
