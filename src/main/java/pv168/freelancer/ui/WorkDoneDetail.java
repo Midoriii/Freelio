@@ -44,8 +44,7 @@ public class WorkDoneDetail extends JDialog {
         quitPanel = new JPanel();
         quitPanel.setPreferredSize(new Dimension(350, 60));
 
-        JButton btnQuit = createQuitButton();
-        quitPanel.add(btnQuit);
+        quitPanel.add(new QuitButton(e -> dispose()));
     }
 
     private void setUpDialog() {
@@ -58,11 +57,5 @@ public class WorkDoneDetail extends JDialog {
     private void setUpMover() {
         cm.setDragInsets(new Insets(5, 5, 5, 5));
         cm.registerComponent(this);
-    }
-
-    private JButton createQuitButton() {
-        JButton btnQuit = new QuitButton();
-        btnQuit.addActionListener(e -> dispose());
-        return btnQuit;
     }
 }

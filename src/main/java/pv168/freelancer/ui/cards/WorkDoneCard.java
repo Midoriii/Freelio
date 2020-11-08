@@ -4,14 +4,18 @@ package pv168.freelancer.ui.cards;
 import pv168.freelancer.ui.WorkDoneDetail;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class WorkDoneCard extends Card {
 
     private final Frame owner;
 
-    private JLabel testText;
+    private JPanel contentPanel;
     private JPanel btnPanel;
+
+    private JTable workDoneTable;
 
     private JButton btnCreate;
     private JButton btnEdit;
@@ -19,17 +23,55 @@ public class WorkDoneCard extends Card {
 
     public WorkDoneCard(String name, Frame owner){
         super(name);
-        setLayout(new BorderLayout());
         this.owner = owner;
 
         // This will be replaced with setting up the actual Table
-        setUpTestText();
+        setUpTable();
+
+        createContentPanel();
+
         createButtonPanel();
+
+        setUpGroupLayout();
+    }
+
+    private void setUpTable() {
+        workDoneTable = new JTable(new DefaultTableModel(
+           new Object[][]{
+                   {"arrr", "oor", "jhj", "48"},
+                   {"aghh", "ssdf", "hdh", "42"}
+           }, new String[]{"Work Type", "From", "To", "Expected Pay"}
+        ));
+    }
+
+    private void createContentPanel() {
+        JScrollPane tablePane = new JScrollPane(workDoneTable);
+
+        contentPanel = new JPanel();
+        contentPanel.setMinimumSize(new Dimension(470, 450));
+        contentPanel.setPreferredSize(new Dimension(660, 600));
+        contentPanel.setMaximumSize(new Dimension(920, 820));
+
+        GroupLayout grpLayout = new GroupLayout(contentPanel);
+        contentPanel.setLayout(grpLayout);
+
+        grpLayout.setHorizontalGroup(
+                grpLayout.createSequentialGroup()
+                        .addComponent(tablePane)
+        );
+        grpLayout.setVerticalGroup(
+                grpLayout.createSequentialGroup()
+                        .addComponent(tablePane)
+        );
+
+        contentPanel.setBorder(new EmptyBorder(100,40,50,0));
     }
 
     private void createButtonPanel() {
         btnPanel = new JPanel();
-        btnPanel.setPreferredSize(new Dimension(180, 635));
+        btnPanel.setMinimumSize(new Dimension(180, 450));
+        btnPanel.setPreferredSize(new Dimension(240, 635));
+        btnPanel.setMaximumSize(new Dimension(240, 820));
         btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.PAGE_AXIS));
 
         createButtons();
@@ -40,7 +82,7 @@ public class WorkDoneCard extends Card {
         btnPanel.add(btnDelete);
         btnPanel.add(Box.createVerticalGlue());
 
-        add(btnPanel, BorderLayout.LINE_END);
+        add(btnPanel);
     }
 
     private void createButtons() {
@@ -56,10 +98,19 @@ public class WorkDoneCard extends Card {
         btnDelete.setAlignmentX(CENTER_ALIGNMENT);
     }
 
-    private void setUpTestText() {
-        testText = new JLabel("Here lies a Table");
-        testText.setVerticalAlignment(SwingConstants.CENTER);
-        testText.setHorizontalAlignment(SwingConstants.CENTER);
-        add(testText, BorderLayout.CENTER);
+    private void setUpGroupLayout() {
+        GroupLayout groupLayout = new GroupLayout(this);
+        setLayout(groupLayout);
+
+        groupLayout.setHorizontalGroup(
+                groupLayout.createSequentialGroup()
+                        .addComponent(contentPanel)
+                        .addComponent(btnPanel)
+        );
+        groupLayout.setVerticalGroup(
+                groupLayout.createParallelGroup()
+                        .addComponent(contentPanel)
+                        .addComponent(btnPanel)
+        );
     }
 }
