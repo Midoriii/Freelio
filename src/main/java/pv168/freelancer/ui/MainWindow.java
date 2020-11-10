@@ -71,7 +71,7 @@ public class MainWindow {
         // quitPanel.setBackground(Color.BLUE);
 
         quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
-        // The Glue and Rigid Areas are a way of composing the components where on wants them
+        // The Glue and Rigid Areas are a way of composing the components where one wants them
         quitPanel.add(Box.createHorizontalGlue());
         quitPanel.add(new MinimizeButton(frame));
         quitPanel.add(Box.createRigidArea(new Dimension(5,0)));

@@ -1,5 +1,6 @@
 package pv168.freelancer.ui;
 
+import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.utils.ComponentMover;
 
@@ -13,12 +14,12 @@ public class WorkDoneDetail extends JDialog {
 
     private final ComponentMover cm = new ComponentMover();
 
-    public WorkDoneDetail(Frame owner, Boolean modality){
+    public WorkDoneDetail(JFrame owner, Boolean modality){
         super(owner, modality);
         setUpDialog();
 
         // This will be refactored later on
-        setUpQuitPanel();
+        setUpQuitPanel(owner);
 
         setUpContentPanel(owner);
 
@@ -30,7 +31,7 @@ public class WorkDoneDetail extends JDialog {
         setVisible(true);
     }
 
-    private void setUpContentPanel(Frame owner) {
+    private void setUpContentPanel(JFrame owner) {
         contentPanel = new JPanel();
         contentPanel.setPreferredSize(new Dimension(350, 540));
 
@@ -40,10 +41,11 @@ public class WorkDoneDetail extends JDialog {
         contentPanel.add(btnAdd, BorderLayout.CENTER);
     }
 
-    private void setUpQuitPanel() {
+    private void setUpQuitPanel(JFrame owner) {
         quitPanel = new JPanel();
         quitPanel.setPreferredSize(new Dimension(350, 60));
 
+        quitPanel.add(new MinimizeButton(owner));
         quitPanel.add(new QuitButton(e -> dispose()));
     }
 

@@ -1,5 +1,6 @@
 package pv168.freelancer.ui;
 
+import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.utils.ComponentMover;
 
@@ -12,11 +13,11 @@ public class WorkTypeDetail extends JDialog {
 
     private final ComponentMover cm = new ComponentMover();
 
-    public WorkTypeDetail(Frame owner, Boolean modality){
+    public WorkTypeDetail(JFrame owner, Boolean modality){
         super(owner, modality);
         setUpDialog();
 
-        setUpQuitPanel();
+        setUpQuitPanel(owner);
 
         setUpContentPanel();
 
@@ -30,16 +31,16 @@ public class WorkTypeDetail extends JDialog {
 
     private void setUpContentPanel() {
         JLabel testText = new JLabel("Ha!");
+        contentPanel = new JPanel();
+        contentPanel.setPreferredSize(new Dimension(450, 540));
         contentPanel.add(testText);
     }
 
-    private void setUpQuitPanel() {
+    private void setUpQuitPanel(JFrame owner) {
         quitPanel = new JPanel();
         quitPanel.setPreferredSize(new Dimension(450, 60));
 
-        contentPanel = new JPanel();
-        contentPanel.setPreferredSize(new Dimension(450, 540));
-
+        quitPanel.add(new MinimizeButton(owner));
         quitPanel.add(new QuitButton(e -> dispose()));
     }
 
