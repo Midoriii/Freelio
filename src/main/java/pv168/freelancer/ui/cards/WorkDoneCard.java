@@ -1,12 +1,17 @@
 package pv168.freelancer.ui.cards;
 
 
+import pv168.freelancer.data.TestDataGenerator;
+import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.ui.WorkDoneDetail;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class WorkDoneCard extends Card {
 
@@ -35,12 +40,25 @@ public class WorkDoneCard extends Card {
         setUpGroupLayout();
     }
 
+    private Object[][] createWorkTable(List<WorkDone> worksDone) {
+        Object[][] result = new Object[10][];
+
+        for (int i = 0; i < 10; i++) {
+            ArrayList<String>tuple = new ArrayList<>();
+                tuple.add(worksDone.get(i).getWorkType().getName());
+                tuple.add(worksDone.get(i).getWorkStart().toString());
+                tuple.add(worksDone.get(i).getWorkEnd().toString());
+                tuple.add(Double.toString(Math.ceil(Math.random() * 1000000 + 100000)));
+            result[i] = (tuple.toArray());
+        }
+        return result;
+    }
+
     private void setUpTable() {
+        TestDataGenerator testDataGenerator = new TestDataGenerator();
         workDoneTable = new JTable(new DefaultTableModel(
-           new Object[][]{
-                   {"arrr", "oor", "jhj", "48"},
-                   {"aghh", "ssdf", "hdh", "42"}
-           }, new String[]{"Work Type", "From", "To", "Expected Pay"}
+                createWorkTable(testDataGenerator.createTestData(10)),
+                   new String[]{"Work Type", "From", "To", "Expected Pay"}
         ));
     }
 
