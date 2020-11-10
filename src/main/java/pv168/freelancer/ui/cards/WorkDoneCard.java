@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class WorkDoneCard extends Card {
 
-    private final Frame owner;
+    private final JFrame owner;
 
     private JPanel contentPanel;
     private JPanel btnPanel;
@@ -21,7 +21,7 @@ public class WorkDoneCard extends Card {
     private JButton btnEdit;
     private JButton btnDelete;
 
-    public WorkDoneCard(String name, Frame owner){
+    public WorkDoneCard(String name, JFrame owner){
         super(name);
         this.owner = owner;
 
@@ -52,15 +52,15 @@ public class WorkDoneCard extends Card {
         contentPanel.setPreferredSize(new Dimension(660, 600));
         contentPanel.setMaximumSize(new Dimension(920, 820));
 
-        GroupLayout grpLayout = new GroupLayout(contentPanel);
-        contentPanel.setLayout(grpLayout);
+        GroupLayout groupLayout = new GroupLayout(contentPanel);
+        contentPanel.setLayout(groupLayout);
 
-        grpLayout.setHorizontalGroup(
-                grpLayout.createSequentialGroup()
+        groupLayout.setHorizontalGroup(
+                groupLayout.createSequentialGroup()
                         .addComponent(tablePane)
         );
-        grpLayout.setVerticalGroup(
-                grpLayout.createSequentialGroup()
+        groupLayout.setVerticalGroup(
+                groupLayout.createSequentialGroup()
                         .addComponent(tablePane)
         );
 
