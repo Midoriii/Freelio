@@ -20,8 +20,10 @@ public class WorkDoneDetail extends JDialog {
 
     private JPanel quitPanel;
     private JPanel contentPanel;
-    private JSpinner timePicker;
-    private JDatePickerImpl datePicker;
+    private JSpinner timePickerStart;
+    private JSpinner timePickerEnd;
+    private JDatePickerImpl datePickerStart;
+    private JDatePickerImpl datePickerEnd;
 
     private final ComponentMover cm = new ComponentMover();
 
@@ -46,6 +48,13 @@ public class WorkDoneDetail extends JDialog {
         contentPanel = new JPanel();
         contentPanel.setPreferredSize(new Dimension(350, 540));
 
+        timePickerStart = createTimePicker();
+        timePickerEnd = createTimePicker();
+        datePickerStart = createDatePicker();
+        datePickerEnd = createDatePicker();
+
+        contentPanel.add(createTimeSelectPanel());
+
 
 
 
@@ -64,26 +73,50 @@ public class WorkDoneDetail extends JDialog {
         quitPanel.add(new QuitButton(e -> dispose()));
     }
 
-    private void createTimePicker() {
+    private JSpinner createTimePicker() {
         SpinnerDateModel timeModel = new SpinnerDateModel();
         timeModel.setValue(new Date());
-        timePicker = new JSpinner(timeModel);
+        JSpinner timePicker = new JSpinner(timeModel);
 
         JSpinner.DateEditor editor = new JSpinner.DateEditor(timePicker, "HH:mm");
         DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
         formatter.setAllowsInvalid(false);
         formatter.setOverwriteMode(true);
         timePicker.setEditor(editor);
+
+        return timePicker;
     }
 
-    private void createDatePicker() {
+    private JDatePickerImpl createDatePicker() {
         UtilDateModel dateModel = new UtilDateModel();
         dateModel.setValue(new Date());
         JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, new Properties());
-        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        return new JDatePickerImpl(datePanel, new DateLabelFormatter());
     }
 
+    private JPanel createTimeSelectPanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(350, 100));
 
+        JPanel startPanel = new JPanel();
+        startPanel.setPreferredSize(new Dimension(350, 50));
+        startPanel.setLayout(new FlowLayout());
+        startPanel.add(new JLabel("Start:"));
+        startPanel.add(timePickerStart);
+        startPanel.add(datePickerStart);
+
+        JPanel endPanel = new JPanel();
+        endPanel.setPreferredSize(new Dimension(350, 50));
+        endPanel.setLayout(new FlowLayout());
+        endPanel.add(new JLabel("End:"));
+        endPanel.add(timePickerEnd);
+        endPanel.add(datePickerEnd);
+
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        contentPanel.add(startPanel);
+        contentPanel.add(endPanel);
+        return panel;
+    }
 
     private void setUpDialog() {
         setUndecorated(true);
