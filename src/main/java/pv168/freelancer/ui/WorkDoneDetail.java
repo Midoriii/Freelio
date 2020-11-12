@@ -9,13 +9,18 @@ import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.DateLabelFormatter;
 
 import javax.swing.*;
+import javax.swing.text.DateFormatter;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 public class WorkDoneDetail extends JDialog {
 
     private JPanel quitPanel;
     private JPanel contentPanel;
+    private JSpinner timePicker;
     private JDatePickerImpl datePicker;
 
     private final ComponentMover cm = new ComponentMover();
@@ -41,12 +46,8 @@ public class WorkDoneDetail extends JDialog {
         contentPanel = new JPanel();
         contentPanel.setPreferredSize(new Dimension(350, 540));
 
-        JDatePanelImpl datePanel = new JDatePanelImpl(new UtilDateModel(), new Properties());
-        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.add(new JLabel("Start:"));
-        contentPanel.add(datePicker);
+
 
 
         JButton btnAdd = new JButton("Add");
@@ -62,6 +63,27 @@ public class WorkDoneDetail extends JDialog {
         quitPanel.add(new MinimizeButton(owner));
         quitPanel.add(new QuitButton(e -> dispose()));
     }
+
+    private void createTimePicker() {
+        SpinnerDateModel timeModel = new SpinnerDateModel();
+        timeModel.setValue(new Date());
+        timePicker = new JSpinner(timeModel);
+
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(timePicker, "HH:mm");
+        DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
+        formatter.setAllowsInvalid(false);
+        formatter.setOverwriteMode(true);
+        timePicker.setEditor(editor);
+    }
+
+    private void createDatePicker() {
+        UtilDateModel dateModel = new UtilDateModel();
+        dateModel.setValue(new Date());
+        JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, new Properties());
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+    }
+
+
 
     private void setUpDialog() {
         setUndecorated(true);
