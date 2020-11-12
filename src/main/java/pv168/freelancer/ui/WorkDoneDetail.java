@@ -3,11 +3,14 @@ package pv168.freelancer.ui;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import pv168.freelancer.data.TestDataGenerator;
+import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.DateLabelFormatter;
 
+import java.util.List;
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
 import java.awt.*;
@@ -20,10 +23,13 @@ public class WorkDoneDetail extends JDialog {
 
     private JPanel quitPanel;
     private JPanel contentPanel;
+
     private JSpinner timePickerStart;
     private JSpinner timePickerEnd;
     private JDatePickerImpl datePickerStart;
     private JDatePickerImpl datePickerEnd;
+
+    private JComboBox<WorkType> workComboBox;
 
     private final ComponentMover cm = new ComponentMover();
 
@@ -32,6 +38,8 @@ public class WorkDoneDetail extends JDialog {
         setUpDialog();
 
         // This will be refactored later on
+
+
         setUpQuitPanel(owner);
 
         setUpContentPanel(owner);
@@ -48,21 +56,17 @@ public class WorkDoneDetail extends JDialog {
         contentPanel = new JPanel();
         contentPanel.setPreferredSize(new Dimension(350, 540));
 
-        timePickerStart = createTimePicker();
-        timePickerEnd = createTimePicker();
-        datePickerStart = createDatePicker();
-        datePickerEnd = createDatePicker();
-
         contentPanel.add(createTimeSelectPanel());
+        contentPanel.add(createWorkSelectPanel(owner));
 
 
 
 
 
-        JButton btnAdd = new JButton("Add");
-        btnAdd.setAlignmentX(CENTER_ALIGNMENT);
-        btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
-        contentPanel.add(btnAdd, BorderLayout.CENTER);
+//        JButton btnAdd = new JButton("Add");
+//        btnAdd.setAlignmentX(CENTER_ALIGNMENT);
+//        btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
+//        contentPanel.add(btnAdd, BorderLayout.CENTER);
     }
 
     private void setUpQuitPanel(JFrame owner) {
@@ -95,6 +99,11 @@ public class WorkDoneDetail extends JDialog {
     }
 
     private JPanel createTimeSelectPanel() {
+        timePickerStart = createTimePicker();
+        timePickerEnd = createTimePicker();
+        datePickerStart = createDatePicker();
+        datePickerEnd = createDatePicker();
+
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(350, 100));
 
@@ -115,6 +124,31 @@ public class WorkDoneDetail extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         contentPanel.add(startPanel);
         contentPanel.add(endPanel);
+        return panel;
+    }
+
+    private JPanel createWorkSelectPanel(JFrame owner) {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(350, 100));
+        panel.setLayout(new FlowLayout());
+
+        panel.add(new JLabel("Work:"));
+
+        WorkType[] testData = new TestDataGenerator().createWorkTypeTestData(5);
+        workComboBox = new JComboBox<>(testData);
+        panel.add(workComboBox);
+
+        JButton btnAdd = new JButton("Add");
+        btnAdd.setAlignmentX(CENTER_ALIGNMENT);
+        btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
+        panel.add(btnAdd);
+
+        JButton btnEdit = new JButton("Edit");
+        panel.add(btnEdit);
+
+        JButton btnDelete = new JButton("Delete");
+        panel.add(btnDelete);
+
         return panel;
     }
 
