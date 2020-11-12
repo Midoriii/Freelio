@@ -62,15 +62,10 @@ public class WorkDoneDetail extends JDialog {
         contentPanel.add(createWorkSelectPanel(owner));
         contentPanel.add(createNotePanel());
 
-
-
-
-
-
-//        JButton btnAdd = new JButton("Add");
-//        btnAdd.setAlignmentX(CENTER_ALIGNMENT);
-//        btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
-//        contentPanel.add(btnAdd, BorderLayout.CENTER);
+        JButton btnOK = new JButton("OK");
+        btnOK.setAlignmentX(CENTER_ALIGNMENT);
+        btnOK.addActionListener(e -> dispose());
+        contentPanel.add(btnOK, BorderLayout.CENTER);
     }
 
     private void setUpQuitPanel(JFrame owner) {
