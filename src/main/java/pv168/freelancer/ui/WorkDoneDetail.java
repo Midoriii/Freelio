@@ -10,6 +10,7 @@ import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.DateLabelFormatter;
 
+import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
@@ -30,6 +31,7 @@ public class WorkDoneDetail extends JDialog {
     private JDatePickerImpl datePickerEnd;
 
     private JComboBox<WorkType> workComboBox;
+    private JTextArea note;
 
     private final ComponentMover cm = new ComponentMover();
 
@@ -58,6 +60,8 @@ public class WorkDoneDetail extends JDialog {
 
         contentPanel.add(createTimeSelectPanel());
         contentPanel.add(createWorkSelectPanel(owner));
+        contentPanel.add(createNotePanel());
+
 
 
 
@@ -106,6 +110,7 @@ public class WorkDoneDetail extends JDialog {
 
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(350, 100));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JPanel startPanel = new JPanel();
         startPanel.setPreferredSize(new Dimension(350, 50));
@@ -121,33 +126,61 @@ public class WorkDoneDetail extends JDialog {
         endPanel.add(timePickerEnd);
         endPanel.add(datePickerEnd);
 
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        contentPanel.add(startPanel);
-        contentPanel.add(endPanel);
+        panel.add(startPanel);
+        panel.add(endPanel);
         return panel;
     }
 
     private JPanel createWorkSelectPanel(JFrame owner) {
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(350, 100));
-        panel.setLayout(new FlowLayout());
+        panel.setPreferredSize(new Dimension(350, 80));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        panel.add(new JLabel("Work:"));
+        JPanel workPanel = new JPanel();
+        workPanel.setPreferredSize(new Dimension(350, 50));
+        workPanel.setLayout(new FlowLayout());
+        workPanel.add(new JLabel("Work:"));
 
         WorkType[] testData = new TestDataGenerator().createWorkTypeTestData(5);
         workComboBox = new JComboBox<>(testData);
-        panel.add(workComboBox);
+        workPanel.add(workComboBox);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setPreferredSize(new Dimension(350, 50));
+        buttonPanel.setLayout(new FlowLayout());
 
         JButton btnAdd = new JButton("Add");
         btnAdd.setAlignmentX(CENTER_ALIGNMENT);
         btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
-        panel.add(btnAdd);
+        buttonPanel.add(btnAdd);
 
         JButton btnEdit = new JButton("Edit");
-        panel.add(btnEdit);
+        buttonPanel.add(btnEdit);
 
         JButton btnDelete = new JButton("Delete");
-        panel.add(btnDelete);
+        buttonPanel.add(btnDelete);
+
+        panel.add(workPanel);
+        panel.add(buttonPanel);
+
+        return panel;
+    }
+
+    private JPanel createNotePanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(350, 150));
+        panel.setLayout(new FlowLayout());
+
+        panel.add(new JLabel("Note:"));
+
+        note = new JTextArea();
+        note.setLineWrap(true);
+        note.setWrapStyleWord(true);
+
+        JScrollPane scroll = new JScrollPane(note);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setPreferredSize(new Dimension(250, 100));
+        panel.add(scroll);
 
         return panel;
     }
