@@ -37,7 +37,6 @@ public class WorkTypeDetail extends JDialog {
     private void setUpQuitPanel(JFrame owner) {
         quitPanel = new JPanel();
         quitPanel.setPreferredSize(new Dimension(450, 60));
-        quitPanel.setBackground(Color.WHITE);
 
         quitPanel.add(new MinimizeButton(owner));
         quitPanel.add(new QuitButton(e -> dispose()));
@@ -46,7 +45,6 @@ public class WorkTypeDetail extends JDialog {
     private void setUpContentPanel() {
         contentPanel = new JPanel();
         contentPanel.setLayout(new GridBagLayout());
-        contentPanel.setBackground(Color.WHITE);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 10, 20, 10);

@@ -69,7 +69,6 @@ public class WorkDoneCard extends Card {
         contentPanel.setMinimumSize(new Dimension(470, 450));
         contentPanel.setPreferredSize(new Dimension(660, 600));
         contentPanel.setMaximumSize(new Dimension(920, 820));
-        contentPanel.setBackground(Color.WHITE);
 
         GroupLayout groupLayout = new GroupLayout(contentPanel);
         contentPanel.setLayout(groupLayout);
@@ -91,7 +90,6 @@ public class WorkDoneCard extends Card {
         btnPanel.setMinimumSize(new Dimension(180, 450));
         btnPanel.setPreferredSize(new Dimension(240, 635));
         btnPanel.setMaximumSize(new Dimension(240, 820));
-        btnPanel.setBackground(Color.WHITE);
         btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.PAGE_AXIS));
 
         createButtons();
