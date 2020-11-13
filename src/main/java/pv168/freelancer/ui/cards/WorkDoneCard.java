@@ -39,6 +39,14 @@ public class WorkDoneCard extends Card {
         setUpGroupLayout();
     }
 
+    private void setUpTable() {
+        TestDataGenerator testDataGenerator = new TestDataGenerator();
+        workDoneTable = new JTable(new DefaultTableModel(
+                createWorkTable(testDataGenerator.createTestData(100), 100),
+                new String[]{"Work Type", "From", "To", "Expected Pay"}
+        ));
+    }
+
     private Object[][] createWorkTable(List<WorkDone> worksDone, int count) {
         Object[][] result = new Object[count][];
 
@@ -47,27 +55,21 @@ public class WorkDoneCard extends Card {
                 tuple.add(worksDone.get(i).getWorkType().getName());
                 tuple.add(worksDone.get(i).getWorkStart().toString());
                 tuple.add(worksDone.get(i).getWorkEnd().toString());
-                tuple.add(Double.toString(Math.ceil(Math.random() * 1000000 + 100000)));
+                tuple.add(Double.toString(Math.ceil(Math.random() * 1000 + 100)));
             result[i] = (tuple.toArray());
         }
         return result;
     }
 
-    private void setUpTable() {
-        TestDataGenerator testDataGenerator = new TestDataGenerator();
-        workDoneTable = new JTable(new DefaultTableModel(
-                createWorkTable(testDataGenerator.createTestData(100), 100),
-                   new String[]{"Work Type", "From", "To", "Expected Pay"}
-        ));
-    }
-
     private void createContentPanel() {
         JScrollPane tablePane = new JScrollPane(workDoneTable);
+        tablePane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         contentPanel = new JPanel();
         contentPanel.setMinimumSize(new Dimension(470, 450));
         contentPanel.setPreferredSize(new Dimension(660, 600));
         contentPanel.setMaximumSize(new Dimension(920, 820));
+        contentPanel.setBackground(Color.WHITE);
 
         GroupLayout groupLayout = new GroupLayout(contentPanel);
         contentPanel.setLayout(groupLayout);
@@ -89,6 +91,7 @@ public class WorkDoneCard extends Card {
         btnPanel.setMinimumSize(new Dimension(180, 450));
         btnPanel.setPreferredSize(new Dimension(240, 635));
         btnPanel.setMaximumSize(new Dimension(240, 820));
+        btnPanel.setBackground(Color.WHITE);
         btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.PAGE_AXIS));
 
         createButtons();

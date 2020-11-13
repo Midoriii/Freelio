@@ -34,12 +34,38 @@ public class WorkTypeDetail extends JDialog {
         setVisible(true);
     }
 
+    private void setUpQuitPanel(JFrame owner) {
+        quitPanel = new JPanel();
+        quitPanel.setPreferredSize(new Dimension(450, 60));
+        quitPanel.setBackground(Color.WHITE);
+
+        quitPanel.add(new MinimizeButton(owner));
+        quitPanel.add(new QuitButton(e -> dispose()));
+    }
+
+    private void setUpContentPanel() {
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new GridBagLayout());
+        contentPanel.setBackground(Color.WHITE);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(20, 10, 20, 10);
+        gbc.anchor = GridBagConstraints.PAGE_START;
+
+        contentPanel.setPreferredSize(new Dimension(450, 540));
+        addNameField(gbc);
+        addHourlyRateField(gbc);
+        addDescriptionArea(gbc);
+        addConfirmButton(gbc);
+    }
+
     private void addNameField(GridBagConstraints gbc) {
         JLabel name = new JLabel("Name:");
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         contentPanel.add(name, gbc);
+
         nameField = new JTextField(20);
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -53,6 +79,7 @@ public class WorkTypeDetail extends JDialog {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         contentPanel.add(hourlyRate, gbc);
+
         hourlyRateField = new JTextField(8);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
@@ -66,11 +93,19 @@ public class WorkTypeDetail extends JDialog {
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         contentPanel.add(description, gbc);
-        descriptionArea = new JTextArea(5, 20);
+
+        descriptionArea = new JTextArea();
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+
+        JScrollPane scroll = new JScrollPane(descriptionArea);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setPreferredSize(new Dimension(250, 100));
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
         gbc.gridy = 2;
-        contentPanel.add(descriptionArea, gbc);
+        contentPanel.add(scroll, gbc);
     }
 
     private void addConfirmButton(GridBagConstraints gbc) {
@@ -78,32 +113,9 @@ public class WorkTypeDetail extends JDialog {
         okBtn.addActionListener(e -> dispose());
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.insets = new Insets(20, 150, 20, 150);
+        gbc.insets = new Insets(100, 150, 20, 150);
         gbc.gridwidth = 2;
         contentPanel.add(okBtn, gbc);
-    }
-
-    private void setUpContentPanel() {
-        contentPanel = new JPanel();
-        contentPanel.setLayout(new GridBagLayout());
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(20, 10, 20, 10);
-        gbc.anchor = GridBagConstraints.PAGE_START;
-
-        contentPanel.setPreferredSize(new Dimension(450, 540));
-        addNameField(gbc);
-        addHourlyRateField(gbc);
-        addDescriptionArea(gbc);
-        addConfirmButton(gbc);
-    }
-
-    private void setUpQuitPanel(JFrame owner) {
-        quitPanel = new JPanel();
-        quitPanel.setPreferredSize(new Dimension(450, 60));
-
-        quitPanel.add(new MinimizeButton(owner));
-        quitPanel.add(new QuitButton(e -> dispose()));
     }
 
     private void setUpDialog() {

@@ -38,9 +38,7 @@ public class WorkDoneDetail extends JDialog {
     public WorkDoneDetail(JFrame owner, Boolean modality){
         super(owner, modality);
         setUpDialog();
-
-        // This will be refactored later on
-
+        setBackground(Color.WHITE);
 
         setUpQuitPanel(owner);
 
@@ -54,9 +52,19 @@ public class WorkDoneDetail extends JDialog {
         setVisible(true);
     }
 
+    private void setUpQuitPanel(JFrame owner) {
+        quitPanel = new JPanel();
+        quitPanel.setPreferredSize(new Dimension(450, 60));
+        quitPanel.setBackground(Color.WHITE);
+
+        quitPanel.add(new MinimizeButton(owner));
+        quitPanel.add(new QuitButton(e -> dispose()));
+    }
+
     private void setUpContentPanel(JFrame owner) {
         contentPanel = new JPanel();
-        contentPanel.setPreferredSize(new Dimension(350, 540));
+        contentPanel.setPreferredSize(new Dimension(450, 540));
+        contentPanel.setBackground(Color.WHITE);
 
         contentPanel.add(createTimeSelectPanel());
         contentPanel.add(createWorkSelectPanel(owner));
@@ -68,12 +76,36 @@ public class WorkDoneDetail extends JDialog {
         contentPanel.add(btnOK, BorderLayout.CENTER);
     }
 
-    private void setUpQuitPanel(JFrame owner) {
-        quitPanel = new JPanel();
-        quitPanel.setPreferredSize(new Dimension(350, 60));
+    private JPanel createTimeSelectPanel() {
+        timePickerStart = createTimePicker();
+        timePickerEnd = createTimePicker();
+        datePickerStart = createDatePicker();
+        datePickerEnd = createDatePicker();
 
-        quitPanel.add(new MinimizeButton(owner));
-        quitPanel.add(new QuitButton(e -> dispose()));
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(450, 100));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+
+        JPanel startPanel = new JPanel();
+        startPanel.setPreferredSize(new Dimension(450, 50));
+        startPanel.setLayout(new FlowLayout());
+        startPanel.setBackground(Color.WHITE);
+        startPanel.add(new JLabel("Start:"));
+        startPanel.add(timePickerStart);
+        startPanel.add(datePickerStart);
+
+        JPanel endPanel = new JPanel();
+        endPanel.setPreferredSize(new Dimension(450, 50));
+        endPanel.setLayout(new FlowLayout());
+        endPanel.setBackground(Color.WHITE);
+        endPanel.add(new JLabel("End:"));
+        endPanel.add(timePickerEnd);
+        endPanel.add(datePickerEnd);
+
+        panel.add(startPanel);
+        panel.add(endPanel);
+        return panel;
     }
 
     private JSpinner createTimePicker() {
@@ -94,46 +126,20 @@ public class WorkDoneDetail extends JDialog {
         UtilDateModel dateModel = new UtilDateModel();
         dateModel.setValue(new Date());
         JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, new Properties());
+        datePanel.setBackground(Color.WHITE);
         return new JDatePickerImpl(datePanel, new DateLabelFormatter());
-    }
-
-    private JPanel createTimeSelectPanel() {
-        timePickerStart = createTimePicker();
-        timePickerEnd = createTimePicker();
-        datePickerStart = createDatePicker();
-        datePickerEnd = createDatePicker();
-
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(350, 100));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        JPanel startPanel = new JPanel();
-        startPanel.setPreferredSize(new Dimension(350, 50));
-        startPanel.setLayout(new FlowLayout());
-        startPanel.add(new JLabel("Start:"));
-        startPanel.add(timePickerStart);
-        startPanel.add(datePickerStart);
-
-        JPanel endPanel = new JPanel();
-        endPanel.setPreferredSize(new Dimension(350, 50));
-        endPanel.setLayout(new FlowLayout());
-        endPanel.add(new JLabel("End:"));
-        endPanel.add(timePickerEnd);
-        endPanel.add(datePickerEnd);
-
-        panel.add(startPanel);
-        panel.add(endPanel);
-        return panel;
     }
 
     private JPanel createWorkSelectPanel(JFrame owner) {
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(350, 80));
+        panel.setPreferredSize(new Dimension(450, 80));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
 
         JPanel workPanel = new JPanel();
-        workPanel.setPreferredSize(new Dimension(350, 50));
+        workPanel.setPreferredSize(new Dimension(450, 50));
         workPanel.setLayout(new FlowLayout());
+        workPanel.setBackground(Color.WHITE);
         workPanel.add(new JLabel("Work:"));
 
         WorkType[] testData = new TestDataGenerator().createWorkTypeTestData(5);
@@ -141,8 +147,9 @@ public class WorkDoneDetail extends JDialog {
         workPanel.add(workComboBox);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setPreferredSize(new Dimension(350, 50));
+        buttonPanel.setPreferredSize(new Dimension(450, 50));
         buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.setBackground(Color.WHITE);
 
         JButton btnAdd = new JButton("Add");
         btnAdd.setAlignmentX(CENTER_ALIGNMENT);
@@ -150,6 +157,7 @@ public class WorkDoneDetail extends JDialog {
         buttonPanel.add(btnAdd);
 
         JButton btnEdit = new JButton("Edit");
+        btnEdit.addActionListener(e -> new WorkTypeDetail(owner, true));
         buttonPanel.add(btnEdit);
 
         JButton btnDelete = new JButton("Delete");
@@ -163,8 +171,9 @@ public class WorkDoneDetail extends JDialog {
 
     private JPanel createNotePanel() {
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(350, 150));
+        panel.setPreferredSize(new Dimension(450, 150));
         panel.setLayout(new FlowLayout());
+        panel.setBackground(Color.WHITE);
 
         panel.add(new JLabel("Note:"));
 
@@ -174,7 +183,7 @@ public class WorkDoneDetail extends JDialog {
 
         JScrollPane scroll = new JScrollPane(note);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scroll.setPreferredSize(new Dimension(250, 100));
+        scroll.setPreferredSize(new Dimension(300, 100));
         panel.add(scroll);
 
         return panel;
@@ -182,7 +191,7 @@ public class WorkDoneDetail extends JDialog {
 
     private void setUpDialog() {
         setUndecorated(true);
-        setSize(new Dimension(350,600));
+        setSize(new Dimension(450,600));
         setLocationRelativeTo(null);
         getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }

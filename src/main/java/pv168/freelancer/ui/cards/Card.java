@@ -12,5 +12,6 @@ public class Card extends JPanel {
         setPreferredSize(new Dimension(890, 635));
         // This is for debugging purposes, to see clearly the size and location of the card
         // setBackground(Color.RED);
+        setBackground(Color.WHITE);
     }
 }

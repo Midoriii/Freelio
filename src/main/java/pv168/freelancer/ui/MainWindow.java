@@ -53,6 +53,7 @@ public class MainWindow {
     private void createContentPanel() {
         CardLayout cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
+
         contentPanel.add(new WorkDoneCard(WORK_DONE, frame), WORK_DONE);
         contentPanel.add(new InvoiceCard(INVOICES, frame), INVOICES);
         contentPanel.add(new ProfitCard(PROFIT_CALC), PROFIT_CALC);
@@ -69,6 +70,7 @@ public class MainWindow {
         quitPanel.setMaximumSize(new Dimension(1400, 40));
         // The Blue color is for debugging purposes only
         // quitPanel.setBackground(Color.BLUE);
+        quitPanel.setBackground(Color.WHITE);
 
         quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
         // The Glue and Rigid Areas are a way of composing the components where one wants them
