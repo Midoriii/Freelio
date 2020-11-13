@@ -28,12 +28,7 @@ public class MainWindow {
     private final String PROFIT_CALC = "Profit Calculator";
 
     public MainWindow() {
-        UIManager.put("Panel.background", new ColorUIResource(Color.WHITE));
-        UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
-        UIManager.put("ComboBox.foreground", new ColorUIResource(new Color(51, 51, 51)));
-        UIManager.put("Label.foreground", new ColorUIResource(new Color(51, 51, 51)));
-        // This is actually hover color, might come handy still
-        //UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.WHITE));
+        setUpUIManager();
 
         frame = createFrame();
 
@@ -78,7 +73,6 @@ public class MainWindow {
         quitPanel.setMaximumSize(new Dimension(1400, 40));
         // The Blue color is for debugging purposes only
         // quitPanel.setBackground(Color.BLUE);
-        quitPanel.setBackground(Color.WHITE);
 
         quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
         // The Glue and Rigid Areas are a way of composing the components where one wants them
@@ -124,5 +118,14 @@ public class MainWindow {
         cr.setMinimumSize(new Dimension(800, 490));
         cr.setMaximumSize(new Dimension(1400, 860));
         cr.registerComponent(frame);
+    }
+
+    private void setUpUIManager() {
+        UIManager.put("Panel.background", new ColorUIResource(Color.WHITE));
+        UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
+        UIManager.put("ComboBox.foreground", new ColorUIResource(new Color(51, 51, 51)));
+        UIManager.put("Label.foreground", new ColorUIResource(new Color(51, 51, 51)));
+        // This is actually hover color, might come handy still
+        //UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.WHITE));
     }
 }
