@@ -1,16 +1,37 @@
 package pv168.freelancer.ui;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+import pv168.freelancer.data.TestDataGenerator;
+import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.utils.ComponentMover;
+import pv168.freelancer.ui.utils.DateLabelFormatter;
 
+import java.awt.event.ActionEvent;
+import java.util.List;
 import javax.swing.*;
+import javax.swing.text.DateFormatter;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
 
 public class WorkDoneDetail extends JDialog {
 
     private JPanel quitPanel;
     private JPanel contentPanel;
+
+    private JSpinner timePickerStart;
+    private JSpinner timePickerEnd;
+    private JDatePickerImpl datePickerStart;
+    private JDatePickerImpl datePickerEnd;
+
+    private JComboBox<WorkType> workComboBox;
+    private JTextArea note;
 
     private final ComponentMover cm = new ComponentMover();
 
@@ -19,6 +40,8 @@ public class WorkDoneDetail extends JDialog {
         setUpDialog();
 
         // This will be refactored later on
+
+
         setUpQuitPanel(owner);
 
         setUpContentPanel(owner);
@@ -35,10 +58,14 @@ public class WorkDoneDetail extends JDialog {
         contentPanel = new JPanel();
         contentPanel.setPreferredSize(new Dimension(350, 540));
 
-        JButton btnAdd = new JButton("Add");
-        btnAdd.setAlignmentX(CENTER_ALIGNMENT);
-        btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
-        contentPanel.add(btnAdd, BorderLayout.CENTER);
+        contentPanel.add(createTimeSelectPanel());
+        contentPanel.add(createWorkSelectPanel(owner));
+        contentPanel.add(createNotePanel());
+
+        JButton btnOK = new JButton("OK");
+        btnOK.setAlignmentX(CENTER_ALIGNMENT);
+        btnOK.addActionListener(e -> dispose());
+        contentPanel.add(btnOK, BorderLayout.CENTER);
     }
 
     private void setUpQuitPanel(JFrame owner) {
@@ -47,6 +74,110 @@ public class WorkDoneDetail extends JDialog {
 
         quitPanel.add(new MinimizeButton(owner));
         quitPanel.add(new QuitButton(e -> dispose()));
+    }
+
+    private JSpinner createTimePicker() {
+        SpinnerDateModel timeModel = new SpinnerDateModel();
+        timeModel.setValue(new Date());
+        JSpinner timePicker = new JSpinner(timeModel);
+
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(timePicker, "HH:mm");
+        DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
+        formatter.setAllowsInvalid(false);
+        formatter.setOverwriteMode(true);
+        timePicker.setEditor(editor);
+
+        return timePicker;
+    }
+
+    private JDatePickerImpl createDatePicker() {
+        UtilDateModel dateModel = new UtilDateModel();
+        dateModel.setValue(new Date());
+        JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, new Properties());
+        return new JDatePickerImpl(datePanel, new DateLabelFormatter());
+    }
+
+    private JPanel createTimeSelectPanel() {
+        timePickerStart = createTimePicker();
+        timePickerEnd = createTimePicker();
+        datePickerStart = createDatePicker();
+        datePickerEnd = createDatePicker();
+
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(350, 100));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JPanel startPanel = new JPanel();
+        startPanel.setPreferredSize(new Dimension(350, 50));
+        startPanel.setLayout(new FlowLayout());
+        startPanel.add(new JLabel("Start:"));
+        startPanel.add(timePickerStart);
+        startPanel.add(datePickerStart);
+
+        JPanel endPanel = new JPanel();
+        endPanel.setPreferredSize(new Dimension(350, 50));
+        endPanel.setLayout(new FlowLayout());
+        endPanel.add(new JLabel("End:"));
+        endPanel.add(timePickerEnd);
+        endPanel.add(datePickerEnd);
+
+        panel.add(startPanel);
+        panel.add(endPanel);
+        return panel;
+    }
+
+    private JPanel createWorkSelectPanel(JFrame owner) {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(350, 80));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JPanel workPanel = new JPanel();
+        workPanel.setPreferredSize(new Dimension(350, 50));
+        workPanel.setLayout(new FlowLayout());
+        workPanel.add(new JLabel("Work:"));
+
+        WorkType[] testData = new TestDataGenerator().createWorkTypeTestData(5);
+        workComboBox = new JComboBox<>(testData);
+        workPanel.add(workComboBox);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setPreferredSize(new Dimension(350, 50));
+        buttonPanel.setLayout(new FlowLayout());
+
+        JButton btnAdd = new JButton("Add");
+        btnAdd.setAlignmentX(CENTER_ALIGNMENT);
+        btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
+        buttonPanel.add(btnAdd);
+
+        JButton btnEdit = new JButton("Edit");
+        buttonPanel.add(btnEdit);
+
+        JButton btnDelete = new JButton("Delete");
+        buttonPanel.add(btnDelete);
+
+        panel.add(workPanel);
+        panel.add(buttonPanel);
+
+        return panel;
+    }
+
+    private JPanel createNotePanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(350, 150));
+        panel.setLayout(new FlowLayout());
+
+        panel.add(new JLabel("Note:"));
+
+        note = new JTextArea();
+        note.setLineWrap(true);
+        note.setWrapStyleWord(true);
+
+        JScrollPane scroll = new JScrollPane(note);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setPreferredSize(new Dimension(250, 100));
+        panel.add(scroll);
+
+        return panel;
     }
 
     private void setUpDialog() {
