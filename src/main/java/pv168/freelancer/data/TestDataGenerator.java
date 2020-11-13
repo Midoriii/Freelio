@@ -91,6 +91,14 @@ public class TestDataGenerator {
                 .collect(Collectors.toList());
     }
 
+    public WorkType[] createWorkTypeTestData(int count) {
+        WorkType[] arr = new WorkType[count];
+        for (int i = 0; i <count; i++) {
+            arr[i] = createTestWorkType();
+        }
+        return arr;
+    }
+
     private <T> T selectRandom(List<T> data) {
         int index = random.nextInt(data.size());
         return data.get(index);
