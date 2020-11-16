@@ -10,6 +10,7 @@ import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.ComponentResizer;
 
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 
 public class MainWindow {
@@ -27,6 +28,8 @@ public class MainWindow {
     private final String PROFIT_CALC = "Profit Calculator";
 
     public MainWindow() {
+        setUpUIManager();
+
         frame = createFrame();
 
         createContentPanel();
@@ -53,6 +56,7 @@ public class MainWindow {
     private void createContentPanel() {
         CardLayout cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
+
         contentPanel.add(new WorkDoneCard(WORK_DONE, frame), WORK_DONE);
         contentPanel.add(new InvoiceCard(INVOICES, frame), INVOICES);
         contentPanel.add(new ProfitCard(PROFIT_CALC), PROFIT_CALC);
@@ -114,5 +118,14 @@ public class MainWindow {
         cr.setMinimumSize(new Dimension(800, 490));
         cr.setMaximumSize(new Dimension(1400, 860));
         cr.registerComponent(frame);
+    }
+
+    private void setUpUIManager() {
+        UIManager.put("Panel.background", new ColorUIResource(Color.WHITE));
+        UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
+        UIManager.put("ComboBox.foreground", new ColorUIResource(new Color(51, 51, 51)));
+        UIManager.put("Label.foreground", new ColorUIResource(new Color(51, 51, 51)));
+        // This is actually hover color, might come handy still
+        //UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.WHITE));
     }
 }
