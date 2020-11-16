@@ -9,13 +9,16 @@ public class CustomIcon implements Icon {
 
     private final Image image;
 
-    private final int WIDTH = 24;
-    private final int HEIGHT = 24;
+    private final int width;
+    private final int height;
 
 
-    public CustomIcon(String url){
+    public CustomIcon(String url, int width, int height){
+        this.width = width;
+        this.height = height;
+
         ImageIcon icon = new ImageIcon(MainWindow.class.getResource(url));
-        image = icon.getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+        image = icon.getImage().getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
     }
 
     @Override
@@ -30,18 +33,18 @@ public class CustomIcon implements Icon {
                 RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-        g2.drawImage(image, 0, 0, WIDTH, HEIGHT, null);
+        g2.drawImage(image, 0, 0, width, height, null);
 
         c.repaint();
     }
 
     @Override
     public int getIconWidth() {
-        return WIDTH;
+        return width;
     }
 
     @Override
     public int getIconHeight() {
-        return HEIGHT;
+        return height;
     }
 }
