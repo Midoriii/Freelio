@@ -36,10 +36,15 @@ public class WorkTypeDetail extends JDialog {
 
     private void setUpQuitPanel(JFrame owner) {
         quitPanel = new JPanel();
-        quitPanel.setPreferredSize(new Dimension(450, 60));
+        quitPanel.setPreferredSize(new Dimension(450, 40));
 
+        quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
+        // The Glue and Rigid Areas are a way of composing the components where one wants them
+        quitPanel.add(Box.createHorizontalGlue());
         quitPanel.add(new MinimizeButton(owner));
+        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
         quitPanel.add(new QuitButton(e -> dispose()));
+        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
     }
 
     private void setUpContentPanel() {
