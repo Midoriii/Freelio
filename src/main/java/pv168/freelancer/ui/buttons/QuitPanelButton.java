@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class QuitPanelButton extends JButton implements MouseListener, MouseMotionListener {
+public class QuitPanelButton extends JButton implements MouseMotionListener {
 
     public QuitPanelButton(){
         super();
@@ -18,7 +18,6 @@ public class QuitPanelButton extends JButton implements MouseListener, MouseMoti
         setContentAreaFilled(false);
         setFocusPainted(false);
 
-        addMouseListener(this);
         addMouseMotionListener(this);
     }
 
@@ -45,26 +44,6 @@ public class QuitPanelButton extends JButton implements MouseListener, MouseMoti
                 l.actionPerformed(e);
             }
         });
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 
     @Override
