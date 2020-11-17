@@ -3,6 +3,7 @@ package pv168.freelancer.ui.cards;
 import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.ui.WorkDoneDetail;
+import pv168.freelancer.ui.buttons.RoundedButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -96,7 +97,9 @@ public class WorkDoneCard extends Card {
 
         btnPanel.add(Box.createVerticalGlue());
         btnPanel.add(btnCreate);
+        btnPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         btnPanel.add(btnEdit);
+        btnPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         btnPanel.add(btnDelete);
         btnPanel.add(Box.createVerticalGlue());
 
@@ -105,15 +108,15 @@ public class WorkDoneCard extends Card {
 
     private void createButtons() {
         btnCreate = new JButton("Create");
-        btnCreate.setAlignmentX(CENTER_ALIGNMENT);
+        btnCreate.setUI(new RoundedButton(new Color(76, 175, 80)));
         btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true));
 
         btnEdit = new JButton("Edit");
-        btnEdit.setAlignmentX(CENTER_ALIGNMENT);
+        btnEdit.setUI(new RoundedButton(new Color(76, 175, 80)));
         btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true));
 
         btnDelete = new JButton("Delete");
-        btnDelete.setAlignmentX(CENTER_ALIGNMENT);
+        btnDelete.setUI(new RoundedButton(new Color(246, 105, 94)));
     }
 
     private void setUpGroupLayout() {
