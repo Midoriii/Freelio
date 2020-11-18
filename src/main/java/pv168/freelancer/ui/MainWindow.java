@@ -50,6 +50,7 @@ public class MainWindow {
 
         frame.setUndecorated(true);
         frame.setLocationRelativeTo(null);
+        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
         return frame;
     }
 
