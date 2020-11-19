@@ -95,12 +95,16 @@ public class WorkDoneCard extends Card {
 
         createButtons();
 
+        // Fillers are empty resizable 'containers' that allow some sort of positioning.
+        // Parameters are: MinSize, PrefSize, MaxSize
         btnPanel.add(new Box.Filler(new Dimension(180, 100), new Dimension(240, 180),
                      new Dimension(240, 250)));
         btnPanel.add(btnCreate);
-        btnPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        btnPanel.add(new Box.Filler(new Dimension(0, 8), new Dimension(0, 20),
+                new Dimension(0, 35)));
         btnPanel.add(btnEdit);
-        btnPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        btnPanel.add(new Box.Filler(new Dimension(0, 8), new Dimension(0, 20),
+                new Dimension(0, 35)));
         btnPanel.add(btnDelete);
         btnPanel.add(new Box.Filler(new Dimension(180, 130), new Dimension(240, 235),
                      new Dimension(240, 350)));
