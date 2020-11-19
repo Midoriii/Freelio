@@ -41,6 +41,7 @@ public class RoundedButton extends BasicButtonUI {
 
         initShape(b);
     }
+
     @Override
     protected void installListeners(AbstractButton b) {
         BasicButtonListener listener = new BasicButtonListener(b) {
@@ -75,6 +76,7 @@ public class RoundedButton extends BasicButtonUI {
             b.addChangeListener(listener);
         }
     }
+
     @Override
     public void paint(Graphics g, JComponent c) {
         Graphics2D g2 = (Graphics2D)g;
@@ -104,7 +106,8 @@ public class RoundedButton extends BasicButtonUI {
                 RenderingHints.VALUE_ANTIALIAS_OFF);
         super.paint(g2, c);
     }
-    private void initShape(JComponent c) {
+
+    protected void initShape(JComponent c) {
         if(!c.getBounds().equals(base)) {
             base = c.getBounds();
             shape = new RoundRectangle2D.Float(0, 0, c.getWidth()-1, c.getHeight()-1,
@@ -115,6 +118,7 @@ public class RoundedButton extends BasicButtonUI {
                     arcwidth, archeight);
         }
     }
+
     private void paintFocusAndRollover(Graphics2D g2, JComponent c, Color color) {
         g2.setPaint(new GradientPaint(0, 0, color, c.getWidth()-1, c.getHeight()-1,
                 color.brighter(), true));
