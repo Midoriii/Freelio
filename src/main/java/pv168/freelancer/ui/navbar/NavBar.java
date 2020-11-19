@@ -1,18 +1,20 @@
 package pv168.freelancer.ui.navbar;
 
+import pv168.freelancer.ui.buttons.NavBarButton;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static java.awt.Label.CENTER;
-
 public class NavBar extends JPanel implements ActionListener {
 
     private Label brand;
+    private JPanel brandPanel;
     private JButton btnInvoices;
     private JButton btnWorkDone;
     private JButton btnProfitCalc;
+    private JPanel btnPanel;
     private JPanel contentPanel;
 
     public NavBar(String invoiceName, String workDoneName, String profitCalcName, JPanel panel){
@@ -22,6 +24,8 @@ public class NavBar extends JPanel implements ActionListener {
         this.contentPanel = panel;
 
         createBrandLogo();
+        add(new Box.Filler(new Dimension(0, 40), new Dimension(0, 40),
+                new Dimension(0, 150)));
         createButtons(invoiceName, workDoneName, profitCalcName);
         add(Box.createVerticalGlue());
     }
@@ -32,33 +36,66 @@ public class NavBar extends JPanel implements ActionListener {
         setMaximumSize(new Dimension(240, 860));
         setBackground(new Color(76, 175, 80));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setAlignmentX(LEFT_ALIGNMENT);
     }
 
     private void createBrandLogo() {
         brand = new Label("Freelio");
-        brand.setPreferredSize(new Dimension(200, 120));
-        brand.setAlignment(CENTER);
         brand.setForeground(Color.WHITE);
 
-        add(brand);
+        brandPanel = new JPanel();
+
+        brandPanel.setMinimumSize(new Dimension(250, 80));
+        brandPanel.setPreferredSize(new Dimension(250, 80));
+        brandPanel.setMaximumSize(new Dimension(250, 80));
+        brandPanel.setBackground(new Color(76, 175, 80));
+        brandPanel.setLayout(new BoxLayout(brandPanel, BoxLayout.X_AXIS));
+
+        brandPanel.add(Box.createRigidArea(new Dimension(30, 0)));
+        brandPanel.add(brand);
+        brandPanel.add(Box.createHorizontalGlue());
+
+        add(brandPanel);
     }
 
     private void createButtons(String invoiceName, String workDoneName, String profitCalcName) {
-        btnWorkDone = new JButton(workDoneName);
+        btnPanel = new JPanel();
+
+        btnPanel.setMinimumSize(new Dimension(100, 210));
+        btnPanel.setPreferredSize(new Dimension(150, 395));
+        btnPanel.setMaximumSize(new Dimension(150, 580));
+        btnPanel.setBackground(new Color(76, 175, 80));
+        btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.X_AXIS));
+
+        JPanel gluePanel = new JPanel();
+        gluePanel.setAlignmentY(TOP_ALIGNMENT);
+        gluePanel.setBackground(new Color(76, 175, 80));
+        gluePanel.setLayout(new BoxLayout(gluePanel, BoxLayout.Y_AXIS));
+
+        btnWorkDone = new NavBarButton(workDoneName);
         btnWorkDone.addActionListener(this);
-        btnWorkDone.setAlignmentX(CENTER_ALIGNMENT);
 
-        btnInvoices = new JButton(invoiceName);
+        btnInvoices = new NavBarButton(invoiceName);
         btnInvoices.addActionListener(this);
-        btnInvoices.setAlignmentX(CENTER_ALIGNMENT);
 
-        btnProfitCalc = new JButton(profitCalcName);
+        btnProfitCalc = new NavBarButton(profitCalcName);
         btnProfitCalc.addActionListener(this);
-        btnProfitCalc.setAlignmentX(CENTER_ALIGNMENT);
 
-        add(btnWorkDone);
-        add(btnInvoices);
-        add(btnProfitCalc);
+        // Fillers between buttons
+        gluePanel.add(btnWorkDone);
+        gluePanel.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 8),
+                new Dimension(0, 8)));
+        gluePanel.add(btnInvoices);
+        gluePanel.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 8),
+                new Dimension(0, 8)));
+        gluePanel.add(btnProfitCalc);
+
+        // Kind of a fake filler to move the buttons a bit to the middle
+        btnPanel.add(new Box.Filler(new Dimension(10, 0), new Dimension(25, 0),
+                     new Dimension(35, 0)));
+        btnPanel.add(gluePanel);
+
+        add(btnPanel);
     }
 
     @Override
