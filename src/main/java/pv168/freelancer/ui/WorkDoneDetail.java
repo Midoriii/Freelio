@@ -7,6 +7,8 @@ import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
+import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.buttons.RoundedButtonSmall;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.DateLabelFormatter;
 
@@ -69,7 +71,8 @@ public class WorkDoneDetail extends JDialog {
         contentPanel.add(createWorkSelectPanel(owner));
         contentPanel.add(createNotePanel());
 
-        JButton btnOK = new JButton("OK");
+        JButton btnOK = new JButton("Confirm");
+        btnOK.setUI(new RoundedButton(new Color(76, 175, 80)));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
         btnOK.addActionListener(e -> dispose());
         contentPanel.add(btnOK, BorderLayout.CENTER);
@@ -153,15 +156,17 @@ public class WorkDoneDetail extends JDialog {
         buttonPanel.setLayout(new FlowLayout());
 
         JButton btnAdd = new JButton("Add");
-        btnAdd.setAlignmentX(CENTER_ALIGNMENT);
+        btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80)));
         btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
         buttonPanel.add(btnAdd);
 
         JButton btnEdit = new JButton("Edit");
+        btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80)));
         btnEdit.addActionListener(e -> new WorkTypeDetail(owner, true));
         buttonPanel.add(btnEdit);
 
         JButton btnDelete = new JButton("Delete");
+        btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94)));
         buttonPanel.add(btnDelete);
 
         panel.add(workPanel);
