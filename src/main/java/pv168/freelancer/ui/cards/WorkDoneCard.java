@@ -95,13 +95,15 @@ public class WorkDoneCard extends Card {
 
         createButtons();
 
-        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(new Box.Filler(new Dimension(180, 100), new Dimension(240, 180),
+                     new Dimension(240, 250)));
         btnPanel.add(btnCreate);
         btnPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         btnPanel.add(btnEdit);
         btnPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         btnPanel.add(btnDelete);
-        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(new Box.Filler(new Dimension(180, 130), new Dimension(240, 235),
+                     new Dimension(240, 350)));
 
         add(btnPanel);
     }
