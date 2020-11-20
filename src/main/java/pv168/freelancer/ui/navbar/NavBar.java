@@ -1,6 +1,7 @@
 package pv168.freelancer.ui.navbar;
 
 import pv168.freelancer.ui.buttons.NavBarButton;
+import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,13 +73,13 @@ public class NavBar extends JPanel implements ActionListener {
         gluePanel.setBackground(new Color(76, 175, 80));
         gluePanel.setLayout(new BoxLayout(gluePanel, BoxLayout.Y_AXIS));
 
-        btnWorkDone = new NavBarButton(workDoneName);
+        btnWorkDone = new NavBarButton(workDoneName, Icons.WORK_ICON);
         btnWorkDone.addActionListener(this);
 
-        btnInvoices = new NavBarButton(invoiceName);
+        btnInvoices = new NavBarButton(invoiceName, Icons.INVOICE_ICON);
         btnInvoices.addActionListener(this);
 
-        btnProfitCalc = new NavBarButton(profitCalcName);
+        btnProfitCalc = new NavBarButton(profitCalcName, Icons.PROFIT_ICON);
         btnProfitCalc.addActionListener(this);
 
         // Fillers between buttons

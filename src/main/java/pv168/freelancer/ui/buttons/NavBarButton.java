@@ -1,8 +1,6 @@
 package pv168.freelancer.ui.buttons;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,7 +9,7 @@ import java.util.Map;
 
 public class NavBarButton extends JButton implements MouseListener {
 
-    public NavBarButton(String label){
+    public NavBarButton(String label, Icon icon){
         super(label);
 
         setBorderPainted(false);
@@ -20,10 +18,17 @@ public class NavBarButton extends JButton implements MouseListener {
         setContentAreaFilled(false);
         setFocusPainted(false);
 
+        setMinimumSize(new Dimension(100, 32));
+        setPreferredSize(new Dimension(150, 32));
+        setMaximumSize(new Dimension(150, 32));
+
+        setIconTextGap(10);
+
         setHorizontalAlignment(SwingConstants.LEFT);
 
         setForeground(Color.WHITE);
         setBackground(new Color(76, 175, 80));
+        setIcon(icon);
 
         addMouseListener(this);
     }

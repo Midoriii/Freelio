@@ -11,6 +11,7 @@ import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.buttons.RoundedButtonSmall;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.DateLabelFormatter;
+import pv168.freelancer.ui.utils.Icons;
 
 
 import javax.swing.*;
@@ -72,7 +73,7 @@ public class WorkDoneDetail extends JDialog {
         contentPanel.add(createNotePanel());
 
         JButton btnOK = new JButton("Confirm");
-        btnOK.setUI(new RoundedButton(new Color(76, 175, 80)));
+        btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
         btnOK.addActionListener(e -> dispose());
         contentPanel.add(btnOK, BorderLayout.CENTER);
@@ -156,17 +157,17 @@ public class WorkDoneDetail extends JDialog {
         buttonPanel.setLayout(new FlowLayout());
 
         JButton btnAdd = new JButton("Add");
-        btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80)));
+        btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.ADD_ICON_S));
         btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
         buttonPanel.add(btnAdd);
 
         JButton btnEdit = new JButton("Edit");
-        btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80)));
+        btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.EDIT_ICON_S));
         btnEdit.addActionListener(e -> new WorkTypeDetail(owner, true));
         buttonPanel.add(btnEdit);
 
         JButton btnDelete = new JButton("Delete");
-        btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94)));
+        btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94), Icons.DELETE_ICON_S));
         buttonPanel.add(btnDelete);
 
         panel.add(workPanel);

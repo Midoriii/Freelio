@@ -18,10 +18,12 @@ public class RoundedButton extends BasicButtonUI {
     protected Shape shape;
     protected Shape border;
     protected Shape base;
+    protected Icon icon;
 
-    public RoundedButton(Color color){
+    public RoundedButton(Color color, Icon icon){
         this.color = color;
         hovercolor = color.darker();
+        this.icon = icon;
     }
 
     @Override
@@ -38,6 +40,10 @@ public class RoundedButton extends BasicButtonUI {
         b.setBackground(color);
         b.setForeground(new Color(239, 245, 239));
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
+        b.setHorizontalAlignment(SwingConstants.LEFT);
+
+        b.setIconTextGap(35);
+        b.setIcon(icon);
 
         initShape(b);
     }
@@ -86,6 +92,8 @@ public class RoundedButton extends BasicButtonUI {
         //ContentArea
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         if(model.isArmed()) {
             g2.setColor(hovercolor);
             g2.fill(shape);

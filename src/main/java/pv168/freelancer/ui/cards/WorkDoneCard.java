@@ -4,6 +4,7 @@ import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.ui.WorkDoneDetail;
 import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -113,15 +114,15 @@ public class WorkDoneCard extends Card {
 
     private void createButtons() {
         btnCreate = new JButton("Create");
-        btnCreate.setUI(new RoundedButton(new Color(76, 175, 80)));
+        btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
         btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true));
 
         btnEdit = new JButton("Edit");
-        btnEdit.setUI(new RoundedButton(new Color(76, 175, 80)));
+        btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
         btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true));
 
         btnDelete = new JButton("Delete");
-        btnDelete.setUI(new RoundedButton(new Color(246, 105, 94)));
+        btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
     }
 
     private void setUpGroupLayout() {
