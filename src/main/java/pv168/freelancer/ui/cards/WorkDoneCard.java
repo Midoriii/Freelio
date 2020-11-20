@@ -4,6 +4,8 @@ import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.ui.WorkDoneDetail;
 import pv168.freelancer.ui.WorkDoneTableModel;
+import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +14,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class WorkDoneCard extends Card {
 
@@ -98,26 +99,34 @@ public class WorkDoneCard extends Card {
 
         createButtons();
 
-        btnPanel.add(Box.createVerticalGlue());
+        // Fillers are empty resizable 'containers' that allow some sort of positioning.
+        // Parameters are: MinSize, PrefSize, MaxSize
+        btnPanel.add(new Box.Filler(new Dimension(180, 100), new Dimension(240, 180),
+                     new Dimension(240, 250)));
         btnPanel.add(btnCreate);
+        btnPanel.add(new Box.Filler(new Dimension(0, 8), new Dimension(0, 20),
+                new Dimension(0, 35)));
         btnPanel.add(btnEdit);
+        btnPanel.add(new Box.Filler(new Dimension(0, 8), new Dimension(0, 20),
+                new Dimension(0, 35)));
         btnPanel.add(btnDelete);
-        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(new Box.Filler(new Dimension(180, 130), new Dimension(240, 235),
+                     new Dimension(240, 350)));
 
         add(btnPanel);
     }
 
     private void createButtons() {
         btnCreate = new JButton("Create");
-        btnCreate.setAlignmentX(CENTER_ALIGNMENT);
+        btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
         btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true));
 
         btnEdit = new JButton("Edit");
-        btnEdit.setAlignmentX(CENTER_ALIGNMENT);
+        btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
         btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true));
 
         btnDelete = new JButton("Delete");
-        btnDelete.setAlignmentX(CENTER_ALIGNMENT);
+        btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
     }
 
     private void setUpGroupLayout() {
