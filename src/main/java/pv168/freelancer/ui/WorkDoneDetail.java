@@ -7,8 +7,11 @@ import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
+import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.buttons.RoundedButtonSmall;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.DateLabelFormatter;
+import pv168.freelancer.ui.utils.Icons;
 
 
 import javax.swing.*;
@@ -50,10 +53,15 @@ public class WorkDoneDetail extends JDialog {
 
     private void setUpQuitPanel(JFrame owner) {
         quitPanel = new JPanel();
-        quitPanel.setPreferredSize(new Dimension(450, 60));
+        quitPanel.setPreferredSize(new Dimension(450, 40));
 
+        quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
+        // The Glue and Rigid Areas are a way of composing the components where one wants them
+        quitPanel.add(Box.createHorizontalGlue());
         quitPanel.add(new MinimizeButton(owner));
+        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
         quitPanel.add(new QuitButton(e -> dispose()));
+        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
     }
 
     private void setUpContentPanel(JFrame owner) {
@@ -64,7 +72,8 @@ public class WorkDoneDetail extends JDialog {
         contentPanel.add(createWorkSelectPanel(owner));
         contentPanel.add(createNotePanel());
 
-        JButton btnOK = new JButton("OK");
+        JButton btnOK = new JButton("Confirm");
+        btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
         btnOK.addActionListener(e -> dispose());
         contentPanel.add(btnOK, BorderLayout.CENTER);
@@ -148,15 +157,17 @@ public class WorkDoneDetail extends JDialog {
         buttonPanel.setLayout(new FlowLayout());
 
         JButton btnAdd = new JButton("Add");
-        btnAdd.setAlignmentX(CENTER_ALIGNMENT);
+        btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.ADD_ICON_S));
         btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
         buttonPanel.add(btnAdd);
 
         JButton btnEdit = new JButton("Edit");
+        btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.EDIT_ICON_S));
         btnEdit.addActionListener(e -> new WorkTypeDetail(owner, true));
         buttonPanel.add(btnEdit);
 
         JButton btnDelete = new JButton("Delete");
+        btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94), Icons.DELETE_ICON_S));
         buttonPanel.add(btnDelete);
 
         panel.add(workPanel);

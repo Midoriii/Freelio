@@ -5,16 +5,14 @@ import pv168.freelancer.ui.utils.Icons;
 import javax.swing.*;
 import java.awt.*;
 
-public class MinimizeButton extends JButton {
+public class MinimizeButton extends QuitPanelButton {
 
     public MinimizeButton(JFrame frame){
         super();
-        setBorderPainted(false);
-        setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
-        setMargin(new Insets(0, 0, 0, 0));
-        setContentAreaFilled(false);
-        setIcon(Icons.MINIMIZE_ICON);
 
-        addActionListener(e -> frame.setState(Frame.ICONIFIED));
+        setIcon(Icons.MINIMIZE_ICON);
+        setRolloverIcon(Icons.QUIT_ICON);
+
+        super.addActionListener(e -> frame.setState(Frame.ICONIFIED));
     }
 }
