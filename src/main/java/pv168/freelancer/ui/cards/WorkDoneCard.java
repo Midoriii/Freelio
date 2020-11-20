@@ -3,9 +3,11 @@ package pv168.freelancer.ui.cards;
 import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.ui.WorkDoneDetail;
+import pv168.freelancer.ui.WorkDoneTableModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
@@ -41,24 +43,26 @@ public class WorkDoneCard extends Card {
 
     private void setUpTable() {
         TestDataGenerator testDataGenerator = new TestDataGenerator();
-        workDoneTable = new JTable(new DefaultTableModel(
-                createWorkTable(testDataGenerator.createTestData(100), 100),
-                new String[]{"Work Type", "From", "To", "Expected Pay"}
-        ));
+        workDoneTable = createWorkDoneTable(testDataGenerator.createTestData(100));
     }
 
-    private Object[][] createWorkTable(List<WorkDone> worksDone, int count) {
-        Object[][] result = new Object[count][];
+    private void updateActions(int selectedRowsCount) {
+        btnEdit.setEnabled(selectedRowsCount == 1);
+        btnDelete.setEnabled(selectedRowsCount >= 1);
+    }
 
-        for (int i = 0; i < count; i++) {
-            ArrayList<String>tuple = new ArrayList<>();
-                tuple.add(worksDone.get(i).getWorkType().getName());
-                tuple.add(worksDone.get(i).getWorkStart().toString());
-                tuple.add(worksDone.get(i).getWorkEnd().toString());
-                tuple.add(Double.toString(Math.ceil(Math.random() * 1000 + 100)));
-            result[i] = (tuple.toArray());
-        }
-        return result;
+    private void rowSelectionChanged(ListSelectionEvent listSelectionEvent) {
+        var selectionModel = (ListSelectionModel) listSelectionEvent.getSource();
+        updateActions(selectionModel.getSelectedItemsCount());
+    }
+
+    private JTable createWorkDoneTable(List<WorkDone> worksDone) {
+        var model = new WorkDoneTableModel(worksDone);
+        var table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
+        table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
+        table.setRowHeight(20);
+        return table;
     }
 
     private void createContentPanel() {
