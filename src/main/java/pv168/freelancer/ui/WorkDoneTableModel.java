@@ -6,7 +6,6 @@ import pv168.freelancer.ui.utils.AbstractEntityTableModel;
 import pv168.freelancer.ui.utils.Column;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
@@ -15,8 +14,12 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
             Column.build("Work Type", WorkType.class, WorkDone::getWorkType),
             Column.build("From", LocalDateTime.class, WorkDone::getWorkStart),
             Column.build("To", LocalDateTime.class, WorkDone::getWorkEnd),
-            Column.build("Description", String.class, WorkDone::getNote)
+            Column.build("Hours", Long.class, WorkDone::calculateHours),
+            Column.build("Income", Double.class, WorkDone::calculatePay),
+            Column.build("Description", String.class, WorkDone::getDescription)
             );
+
+    //Column.build("Expected Pay", Long.class, WorkDone::calculatePay),
 
     private final List<WorkDone> worksDone;
     //private final WorkDoneDao workDoneDaoDao;
