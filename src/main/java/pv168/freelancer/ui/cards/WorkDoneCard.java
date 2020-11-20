@@ -2,6 +2,8 @@ package pv168.freelancer.ui.cards;
 
 import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.model.WorkDone;
+import pv168.freelancer.ui.DeleteAction;
+import pv168.freelancer.ui.EditAction;
 import pv168.freelancer.ui.WorkDoneDetail;
 import pv168.freelancer.ui.WorkDoneTableModel;
 import pv168.freelancer.ui.buttons.RoundedButton;
@@ -23,6 +25,8 @@ public class WorkDoneCard extends Card {
     private JPanel btnPanel;
 
     private JTable workDoneTable;
+    private Action editAction;
+    private Action deleteAction;
 
     private JButton btnCreate;
     private JButton btnEdit;
@@ -40,21 +44,14 @@ public class WorkDoneCard extends Card {
         createButtonPanel();
 
         setUpGroupLayout();
+
+        updateActions(workDoneTable.getSelectedRowCount());
     }
 
     private void setUpTable() {
         TestDataGenerator testDataGenerator = new TestDataGenerator();
         workDoneTable = createWorkDoneTable(testDataGenerator.createTestData(100));
-    }
-
-    private void updateActions(int selectedRowsCount) {
-        btnEdit.setEnabled(selectedRowsCount == 1);
-        btnDelete.setEnabled(selectedRowsCount >= 1);
-    }
-
-    private void rowSelectionChanged(ListSelectionEvent listSelectionEvent) {
-        var selectionModel = (ListSelectionModel) listSelectionEvent.getSource();
-        updateActions(selectionModel.getSelectedItemsCount());
+        workDoneTable.setComponentPopupMenu(createWorkDoneTablePopupMenu());
     }
 
     private JTable createWorkDoneTable(List<WorkDone> worksDone) {
@@ -64,6 +61,15 @@ public class WorkDoneCard extends Card {
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
         table.setRowHeight(20);
         return table;
+    }
+
+    private JPopupMenu createWorkDoneTablePopupMenu() {
+        editAction = new EditAction(workDoneTable);
+        deleteAction = new DeleteAction(workDoneTable);
+        var menu = new JPopupMenu();
+        menu.add(editAction);
+        menu.add(deleteAction);
+        return menu;
     }
 
     private void createContentPanel() {
@@ -143,5 +149,15 @@ public class WorkDoneCard extends Card {
                         .addComponent(contentPanel)
                         .addComponent(btnPanel)
         );
+    }
+
+    private void updateActions(int selectedRowsCount) {
+        btnEdit.setEnabled(selectedRowsCount == 1);
+        btnDelete.setEnabled(selectedRowsCount >= 1);
+    }
+
+    private void rowSelectionChanged(ListSelectionEvent listSelectionEvent) {
+        var selectionModel = (ListSelectionModel) listSelectionEvent.getSource();
+        updateActions(selectionModel.getSelectedItemsCount());
     }
 }
