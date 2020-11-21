@@ -21,8 +21,14 @@ public final class DeleteAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(itemTable,
-                "This operation is not implemented yet",
-                "Warning", JOptionPane.WARNING_MESSAGE);
+        var wdtm = (WorkDoneTableModel) itemTable.getModel();
+        Arrays.stream(itemTable.getSelectedRows())
+                // view row index must be converted to model row index
+                .map(itemTable::convertRowIndexToModel)
+                .boxed()
+                // We need to delete rows in descending order to not change index of rows
+                // which are not deleted yet
+                .sorted(Comparator.reverseOrder())
+                .forEach(wdtm::deleteRow);
     }
 }

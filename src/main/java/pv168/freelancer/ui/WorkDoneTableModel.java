@@ -22,7 +22,6 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
     //Column.build("Expected Pay", Long.class, WorkDone::calculatePay),
 
     private final List<WorkDone> worksDone;
-    //private final WorkDoneDao workDoneDaoDao;
 
     public WorkDoneTableModel(List<WorkDone> workDoneList) {
         super(COLUMNS);
