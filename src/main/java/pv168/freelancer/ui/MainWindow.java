@@ -1,5 +1,6 @@
 package pv168.freelancer.ui;
 
+import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.cards.InvoiceCard;
@@ -27,7 +28,7 @@ public class MainWindow {
     private final String INVOICES = "Invoices";
     private final String PROFIT_CALC = "Profit Calculator";
 
-    public MainWindow() {
+    public MainWindow(WorkDao workDao) {
         setUpUIManager();
 
         frame = createFrame();
