@@ -1,12 +1,13 @@
 package pv168.freelancer.model;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class WorkDone {
     private LocalDateTime workStart;
     private LocalDateTime workEnd;
     private WorkType workType;
-    private String note;
+    private String description;
 
     public WorkDone(){}
 
@@ -14,7 +15,7 @@ public class WorkDone {
         this.workStart = workStart;
         this.workEnd = workEnd;
         this.workType = workType;
-        this.note = note;
+        this.description = note;
     }
 
     public LocalDateTime getWorkStart() {
@@ -41,7 +42,15 @@ public class WorkDone {
         this.workType = workType;
     }
 
-    public String getNote() { return note; }
+    public String getDescription() { return description; }
 
-    public void setNote(String note) { this.note = note; }
+    public void setDescription(String description) { this.description = description; }
+
+    public long calculateHours() {
+        return LocalDateTime.from(workStart).until(workEnd, ChronoUnit.HOURS);
+    }
+
+    public double calculatePay() {
+        return calculateHours() * workType.getHourlyRate();
+    }
 }

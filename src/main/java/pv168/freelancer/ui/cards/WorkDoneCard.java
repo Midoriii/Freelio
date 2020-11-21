@@ -2,15 +2,20 @@ package pv168.freelancer.ui.cards;
 
 import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.model.WorkDone;
+import pv168.freelancer.ui.DeleteAction;
+import pv168.freelancer.ui.EditAction;
 import pv168.freelancer.ui.WorkDoneDetail;
+import pv168.freelancer.ui.WorkDoneTableModel;
+import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class WorkDoneCard extends Card {
 
@@ -20,6 +25,8 @@ public class WorkDoneCard extends Card {
     private JPanel btnPanel;
 
     private JTable workDoneTable;
+    private Action editAction;
+    private Action deleteAction;
 
     private JButton btnCreate;
     private JButton btnEdit;
@@ -37,28 +44,32 @@ public class WorkDoneCard extends Card {
         createButtonPanel();
 
         setUpGroupLayout();
+
+        updateActions(workDoneTable.getSelectedRowCount());
     }
 
     private void setUpTable() {
         TestDataGenerator testDataGenerator = new TestDataGenerator();
-        workDoneTable = new JTable(new DefaultTableModel(
-                createWorkTable(testDataGenerator.createTestData(100), 100),
-                new String[]{"Work Type", "From", "To", "Expected Pay"}
-        ));
+        workDoneTable = createWorkDoneTable(testDataGenerator.createTestData(100));
+        workDoneTable.setComponentPopupMenu(createWorkDoneTablePopupMenu());
     }
 
-    private Object[][] createWorkTable(List<WorkDone> worksDone, int count) {
-        Object[][] result = new Object[count][];
+    private JTable createWorkDoneTable(List<WorkDone> worksDone) {
+        var model = new WorkDoneTableModel(worksDone);
+        var table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
+        table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
+        table.setRowHeight(20);
+        return table;
+    }
 
-        for (int i = 0; i < count; i++) {
-            ArrayList<String>tuple = new ArrayList<>();
-                tuple.add(worksDone.get(i).getWorkType().getName());
-                tuple.add(worksDone.get(i).getWorkStart().toString());
-                tuple.add(worksDone.get(i).getWorkEnd().toString());
-                tuple.add(Double.toString(Math.ceil(Math.random() * 1000 + 100)));
-            result[i] = (tuple.toArray());
-        }
-        return result;
+    private JPopupMenu createWorkDoneTablePopupMenu() {
+        editAction = new EditAction(workDoneTable);
+        deleteAction = new DeleteAction(workDoneTable);
+        var menu = new JPopupMenu();
+        menu.add(editAction);
+        menu.add(deleteAction);
+        return menu;
     }
 
     private void createContentPanel() {
@@ -94,26 +105,34 @@ public class WorkDoneCard extends Card {
 
         createButtons();
 
-        btnPanel.add(Box.createVerticalGlue());
+        // Fillers are empty resizable 'containers' that allow some sort of positioning.
+        // Parameters are: MinSize, PrefSize, MaxSize
+        btnPanel.add(new Box.Filler(new Dimension(180, 100), new Dimension(240, 180),
+                     new Dimension(240, 250)));
         btnPanel.add(btnCreate);
+        btnPanel.add(new Box.Filler(new Dimension(0, 8), new Dimension(0, 20),
+                new Dimension(0, 35)));
         btnPanel.add(btnEdit);
+        btnPanel.add(new Box.Filler(new Dimension(0, 8), new Dimension(0, 20),
+                new Dimension(0, 35)));
         btnPanel.add(btnDelete);
-        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(new Box.Filler(new Dimension(180, 130), new Dimension(240, 235),
+                     new Dimension(240, 350)));
 
         add(btnPanel);
     }
 
     private void createButtons() {
         btnCreate = new JButton("Create");
-        btnCreate.setAlignmentX(CENTER_ALIGNMENT);
+        btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
         btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true));
 
         btnEdit = new JButton("Edit");
-        btnEdit.setAlignmentX(CENTER_ALIGNMENT);
+        btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
         btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true));
 
         btnDelete = new JButton("Delete");
-        btnDelete.setAlignmentX(CENTER_ALIGNMENT);
+        btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
     }
 
     private void setUpGroupLayout() {
@@ -130,5 +149,15 @@ public class WorkDoneCard extends Card {
                         .addComponent(contentPanel)
                         .addComponent(btnPanel)
         );
+    }
+
+    private void updateActions(int selectedRowsCount) {
+        btnEdit.setEnabled(selectedRowsCount == 1);
+        btnDelete.setEnabled(selectedRowsCount >= 1);
+    }
+
+    private void rowSelectionChanged(ListSelectionEvent listSelectionEvent) {
+        var selectionModel = (ListSelectionModel) listSelectionEvent.getSource();
+        updateActions(selectionModel.getSelectedItemsCount());
     }
 }

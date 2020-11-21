@@ -2,7 +2,9 @@ package pv168.freelancer.ui;
 
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
+import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.utils.ComponentMover;
+import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,10 +38,15 @@ public class WorkTypeDetail extends JDialog {
 
     private void setUpQuitPanel(JFrame owner) {
         quitPanel = new JPanel();
-        quitPanel.setPreferredSize(new Dimension(450, 60));
+        quitPanel.setPreferredSize(new Dimension(450, 40));
 
+        quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
+        // The Glue and Rigid Areas are a way of composing the components where one wants them
+        quitPanel.add(Box.createHorizontalGlue());
         quitPanel.add(new MinimizeButton(owner));
+        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
         quitPanel.add(new QuitButton(e -> dispose()));
+        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
     }
 
     private void setUpContentPanel() {
@@ -107,7 +114,8 @@ public class WorkTypeDetail extends JDialog {
     }
 
     private void addConfirmButton(GridBagConstraints gbc) {
-        JButton okBtn = new JButton("OK");
+        JButton okBtn = new JButton("Confirm");
+        okBtn.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         okBtn.addActionListener(e -> dispose());
         gbc.gridx = 0;
         gbc.gridy = 3;
