@@ -67,16 +67,22 @@ public class WorkDoneDetail extends JDialog {
     private void setUpContentPanel(JFrame owner) {
         contentPanel = new JPanel();
         contentPanel.setPreferredSize(new Dimension(450, 540));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
+        contentPanel.add(Box.createVerticalStrut(50));
         contentPanel.add(createTimeSelectPanel());
+        contentPanel.add(Box.createVerticalStrut(30));
         contentPanel.add(createWorkSelectPanel(owner));
         contentPanel.add(createNotePanel());
+        contentPanel.add(Box.createVerticalGlue());
 
         JButton btnOK = new JButton("Confirm");
         btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
         btnOK.addActionListener(e -> dispose());
-        contentPanel.add(btnOK, BorderLayout.CENTER);
+
+        contentPanel.add(btnOK);
+        contentPanel.add(Box.createVerticalStrut(50));
     }
 
     private JPanel createTimeSelectPanel() {
@@ -86,7 +92,7 @@ public class WorkDoneDetail extends JDialog {
         datePickerEnd = createDatePicker();
 
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(450, 100));
+        panel.setPreferredSize(new Dimension(450, 50));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JPanel startPanel = new JPanel();
@@ -144,7 +150,7 @@ public class WorkDoneDetail extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JPanel workPanel = new JPanel();
-        workPanel.setPreferredSize(new Dimension(450, 50));
+        workPanel.setPreferredSize(new Dimension(450, 20));
         workPanel.setLayout(new FlowLayout());
         workPanel.add(new JLabel("Work:"));
 
@@ -153,7 +159,7 @@ public class WorkDoneDetail extends JDialog {
         workPanel.add(workComboBox);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setPreferredSize(new Dimension(450, 50));
+        buttonPanel.setPreferredSize(new Dimension(450, 40));
         buttonPanel.setLayout(new FlowLayout());
 
         JButton btnAdd = new JButton("Add");
