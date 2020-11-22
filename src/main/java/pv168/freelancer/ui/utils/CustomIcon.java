@@ -60,7 +60,8 @@ public class CustomIcon implements Icon {
                 g2.drawImage(image, 25,18, width, height, null);
             }
             else{
-                g2.drawImage(image, 0,0, width, height, null);
+                g2.drawImage(image, c.getWidth()/2 - width/2,c.getHeight()/2 - height/2,
+                             width, height, null);
             }
         }
         else{

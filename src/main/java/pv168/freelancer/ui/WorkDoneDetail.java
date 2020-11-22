@@ -15,6 +15,7 @@ import pv168.freelancer.ui.utils.Icons;
 
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.util.Date;
@@ -137,6 +138,15 @@ public class WorkDoneDetail extends JDialog {
 
         JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
         JDatePickerImpl dateImpl = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+
+        // What a fancy way to style the picker ...
+        ((JFormattedTextField)dateImpl.getComponents()[0]).setBorder(new LineBorder(Color.BLACK));
+        ((JButton)dateImpl.getComponents()[1]).setIcon(Icons.CALENDAR_ICON);
+        ((JButton)dateImpl.getComponents()[1]).setText("");
+        ((JButton)dateImpl.getComponents()[1]).setMargin(new Insets(0, 0, 0, 0));
+        ((JButton)dateImpl.getComponents()[1]).setContentAreaFilled(false);
+        ((JButton)dateImpl.getComponents()[1]).setFocusPainted(false);
+        ((JButton)dateImpl.getComponents()[1]).setBorder(new LineBorder(Color.BLACK));
 
         JFormattedTextField textField = dateImpl.getJFormattedTextField();
         textField.setBackground(Color.WHITE);

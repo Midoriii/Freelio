@@ -19,6 +19,8 @@ public final class Icons {
     public static final CustomIcon WORK_ICON = createIcon("/time.png",24, 24);
     public static final CustomIcon PROFIT_ICON = createIcon("/profit.png",24, 24);
 
+    public static final CustomIcon CALENDAR_ICON = createIcon("/calendar3.png", 18, 18);
+
     private Icons() {
         throw new AssertionError("This class is not instantiable");
     }
