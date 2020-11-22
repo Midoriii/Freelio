@@ -25,6 +25,8 @@ public class WorkDoneDetail extends JDialog {
     private JPanel quitPanel;
     private JPanel contentPanel;
 
+    private JTable workDoneTable;
+
     private JSpinner timePickerStart;
     private JSpinner timePickerEnd;
     private JDatePickerImpl datePickerStart;
@@ -35,9 +37,11 @@ public class WorkDoneDetail extends JDialog {
 
     private final ComponentMover cm = new ComponentMover();
 
-    public WorkDoneDetail(JFrame owner, Boolean modality){
+    public WorkDoneDetail(JFrame owner, Boolean modality, JTable workDoneTable) {
         super(owner, modality);
         setUpDialog();
+
+        this.workDoneTable = workDoneTable;
 
         setUpQuitPanel(owner);
 
@@ -75,6 +79,7 @@ public class WorkDoneDetail extends JDialog {
         JButton btnOK = new JButton("Confirm");
         btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
+        btnOK.addActionListener(new CreateAction(workDoneTable, new TestDataGenerator()));
         btnOK.addActionListener(e -> dispose());
         contentPanel.add(btnOK, BorderLayout.CENTER);
     }
@@ -158,12 +163,12 @@ public class WorkDoneDetail extends JDialog {
 
         JButton btnAdd = new JButton("Add");
         btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.ADD_ICON_S));
-        btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true));
+        btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true, workDoneTable));
         buttonPanel.add(btnAdd);
 
         JButton btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.EDIT_ICON_S));
-        btnEdit.addActionListener(e -> new WorkTypeDetail(owner, true));
+        btnEdit.addActionListener(e -> new WorkTypeDetail(owner, true, workDoneTable));
         buttonPanel.add(btnEdit);
 
         JButton btnDelete = new JButton("Delete");
