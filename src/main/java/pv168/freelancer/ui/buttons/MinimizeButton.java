@@ -11,7 +11,8 @@ public class MinimizeButton extends QuitPanelButton {
         super();
 
         setIcon(Icons.MINIMIZE_ICON);
-        setRolloverIcon(Icons.QUIT_ICON);
+        setRolloverIcon(Icons.MINIMIZE_ICON_HOVER);
+        setPressedIcon(Icons.MINIMIZE_ICON_CLICK);
 
         super.addActionListener(e -> frame.setState(Frame.ICONIFIED));
     }

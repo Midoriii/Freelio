@@ -5,7 +5,11 @@ package pv168.freelancer.ui.utils;
 public final class Icons {
 
     public static final CustomIcon MINIMIZE_ICON = createIcon("/minus.png", 24, 24);
+    public static final CustomIcon MINIMIZE_ICON_HOVER = createIcon("/minus_hover.png", 24, 24);
+    public static final CustomIcon MINIMIZE_ICON_CLICK = createIcon("/minus_click.png", 24, 24);
     public static final CustomIcon QUIT_ICON = createIcon("/quit.png",24, 24);
+    public static final CustomIcon QUIT_ICON_HOVER = createIcon("/quit_hover.png",24, 24);
+    public static final CustomIcon QUIT_ICON_CLICK = createIcon("/quit_click.png",24, 24);
 
     public static final CustomIcon ADD_ICON = createIcon("/add.png",24, 24);
     public static final CustomIcon EDIT_ICON = createIcon("/edit.png",24, 24);
