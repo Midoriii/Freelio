@@ -33,6 +33,7 @@ public class WorkDao {
                     "INSERT INTO WORK_DONE (WT_ID, WORK_START, WORK_END, DESCRIPTION) VALUES (?, ?, ?, ?)")) {
                 if (rs.next()) {
                     st2.setDouble(1, rs.getLong(1));
+                    workDone.setId(rs.getLong(1));
                 } else {
                     throw new RuntimeException("insert to WORK_TYPE returned no keys");
                 }
@@ -44,6 +45,18 @@ public class WorkDao {
             }
         } catch (SQLException ex) {
             throw new RuntimeException("Failed to store Work Done" + workDone, ex);
+        }
+    }
+
+    public void delete(WorkDone workDone) {
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "DELETE FROM WORK_DONE " +
+                             "WHERE ID = ?")) {
+            st.setLong(1, workDone.getId());
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to store employee " + workDone, ex);
         }
     }
 
