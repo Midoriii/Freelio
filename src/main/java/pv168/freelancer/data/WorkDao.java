@@ -2,11 +2,10 @@ package pv168.freelancer.data;
 
 
 import pv168.freelancer.model.WorkDone;
+import pv168.freelancer.model.WorkType;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,18 +62,44 @@ public class WorkDao {
         }
     }
 
+    private WorkType getWorkType(Connection connection, ResultSet rs) {
+        try (var st2 = connection.prepareStatement(
+                "SELECT ID, NAME, HOURLY_RATE, DESCRIPTION FROM WORK_TYPE WHERE ID = ?")) {
+            long wt_id = rs.getLong(1);
+            st2.setLong(1, wt_id);
+            try (var rs2 = st2.executeQuery()) {
+                if (rs2.next()) {
+                    return new WorkType(
+                            rs2.getString("NAME"),
+                            rs2.getDouble("HOURLY_RATE"),
+                            rs2.getString("DESCRIPTION")
+                    );
+                }
+            }
+        } catch (Exception e1) {
+            throw new RuntimeException();
+        }
+        return null;
+    }
+
     public List<WorkDone> findAll() {
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
-                     "SELECT ID, WORK_START, WORK_END, DESCRIPTION FROM WORK_DONE")) {
+                     "SELECT ID, WT_ID, WORK_START, WORK_END, DESCRIPTION FROM WORK_DONE")) {
 
             List<WorkDone> worksDone = new ArrayList<>();
             try (var rs = st.executeQuery()) {
                 while (rs.next()) {
+                    WorkType workType;
+                    try {
+                        workType = getWorkType(connection, rs);
+                    } catch (Exception e1) {
+                        throw new RuntimeException("failed to load work type id");
+                    }
                     WorkDone workDone = new WorkDone(
                             rs.getTimestamp("WORK_START").toLocalDateTime(),
                             rs.getTimestamp("WORK_END").toLocalDateTime(),
-                            new TestDataGenerator().createTestWorkType(),
+                            workType,
                             rs.getString("DESCRIPTION"));
                     workDone.setId(rs.getLong("ID"));
                     worksDone.add(workDone);
