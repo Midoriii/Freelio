@@ -27,8 +27,8 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
 
     public WorkDoneTableModel(List<WorkDone> workDoneList, WorkDao workDao) {
         super(COLUMNS);
-        this.worksDone = workDoneList;
         this.workDao = workDao;
+        this.worksDone = workDao.findAll();
     }
 
     @Override
@@ -42,15 +42,15 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
     }
 
     public void deleteRow(int rowIndex) {
-        worksDone.remove(rowIndex);
         workDao.delete(worksDone.get(rowIndex));
+        worksDone.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
     public void addRow(WorkDone workDone) {
         int newRowIndex = worksDone.size();
-        worksDone.add(workDone);
         workDao.create(workDone);
+        worksDone.add(workDone);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }
 }

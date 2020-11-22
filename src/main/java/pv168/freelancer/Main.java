@@ -1,5 +1,6 @@
 package pv168.freelancer;
 
+import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.ui.MainWindow;
 
@@ -11,7 +12,8 @@ import org.apache.derby.jdbc.EmbeddedDataSource;
 public class Main {
 
     public static void main(String[] args) {
-        WorkDao workDao = new WorkDao(createDataSource());
+        TestDataGenerator testDataGenerator = new TestDataGenerator();
+        WorkDao workDao = new WorkDao(createDataSource(), testDataGenerator);
         EventQueue.invokeLater(() -> new MainWindow(workDao).show());
     }
 

@@ -7,15 +7,17 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorkDao {
 
     private final DataSource dataSource;
 
-    public WorkDao(DataSource dataSource) {
+    public WorkDao(DataSource dataSource, TestDataGenerator testDataGenerator) {
         this.dataSource = dataSource;
         initWorkTypeTable();
-        initWorkDoneTable();
+        initWorkDoneTable(testDataGenerator);
     }
 
     public void create(WorkDone workDone) {
@@ -40,6 +42,7 @@ public class WorkDao {
                 st2.setTimestamp(2, Timestamp.valueOf(workDone.getWorkStart()));
                 st2.setTimestamp(3, Timestamp.valueOf(workDone.getWorkEnd()));
                 st2.setString(4, workDone.getDescription());
+                st2.executeUpdate();
             } catch (SQLException e) {
                 throw new RuntimeException("Failed to store Work Type" + workDone.getWorkType(), e);
             }
@@ -60,9 +63,34 @@ public class WorkDao {
         }
     }
 
-    private void initWorkDoneTable() {
+    public List<WorkDone> findAll() {
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "SELECT ID, WORK_START, WORK_END, DESCRIPTION FROM WORK_DONE")) {
+
+            List<WorkDone> worksDone = new ArrayList<>();
+            try (var rs = st.executeQuery()) {
+                while (rs.next()) {
+                    WorkDone workDone = new WorkDone(
+                            rs.getTimestamp("WORK_START").toLocalDateTime(),
+                            rs.getTimestamp("WORK_END").toLocalDateTime(),
+                            new TestDataGenerator().createTestWorkType(),
+                            rs.getString("DESCRIPTION"));
+                    workDone.setId(rs.getLong("ID"));
+                    worksDone.add(workDone);
+                }
+            }
+            return worksDone;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to load all works done", ex);
+        }
+    }
+
+
+    private void initWorkDoneTable(TestDataGenerator testDataGenerator) {
         if (!workDoneTableExists("APP", "WORK_DONE")) {
             createWorkDoneTable();
+            testDataGenerator.createTestData(10).forEach(this::create);
         }
     }
 
