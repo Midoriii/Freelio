@@ -28,7 +28,11 @@ public class MainWindow {
     private final String INVOICES = "Invoices";
     private final String PROFIT_CALC = "Profit Calculator";
 
+    private final WorkDao workDao;
+
     public MainWindow(WorkDao workDao) {
+        this.workDao = workDao;
+
         setUpUIManager();
 
         frame = createFrame();
@@ -59,7 +63,7 @@ public class MainWindow {
         CardLayout cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
 
-        contentPanel.add(new WorkDoneCard(WORK_DONE, frame), WORK_DONE);
+        contentPanel.add(new WorkDoneCard(WORK_DONE, frame, workDao), WORK_DONE);
         contentPanel.add(new InvoiceCard(INVOICES, frame), INVOICES);
         contentPanel.add(new ProfitCard(PROFIT_CALC), PROFIT_CALC);
     }

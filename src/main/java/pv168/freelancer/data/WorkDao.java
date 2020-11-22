@@ -31,7 +31,11 @@ public class WorkDao {
             try (var rs = st1.getGeneratedKeys();
                     var st2 = connection.prepareStatement(
                     "INSERT INTO WORK_DONE (WT_ID, WORK_START, WORK_END, DESCRIPTION) VALUES (?, ?, ?, ?)")) {
-                st2.setDouble(1, rs.getLong(1));
+                if (rs.next()) {
+                    st2.setDouble(1, rs.getLong(1));
+                } else {
+                    throw new RuntimeException("insert to WORK_TYPE returned no keys");
+                }
                 st2.setTimestamp(2, Timestamp.valueOf(workDone.getWorkStart()));
                 st2.setTimestamp(3, Timestamp.valueOf(workDone.getWorkEnd()));
                 st2.setString(4, workDone.getDescription());

@@ -1,5 +1,6 @@
 package pv168.freelancer.ui;
 
+import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.utils.AbstractEntityTableModel;
@@ -22,10 +23,12 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
     //Column.build("Expected Pay", Long.class, WorkDone::calculatePay),
 
     private final List<WorkDone> worksDone;
+    private final WorkDao workDao;
 
-    public WorkDoneTableModel(List<WorkDone> workDoneList) {
+    public WorkDoneTableModel(List<WorkDone> workDoneList, WorkDao workDao) {
         super(COLUMNS);
         this.worksDone = workDoneList;
+        this.workDao = workDao;
     }
 
     @Override
@@ -46,6 +49,7 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
     public void addRow(WorkDone workDone) {
         int newRowIndex = worksDone.size();
         worksDone.add(workDone);
+        workDao.create(workDone);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }
 }
