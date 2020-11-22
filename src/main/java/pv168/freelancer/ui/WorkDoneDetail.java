@@ -99,16 +99,20 @@ public class WorkDoneDetail extends JDialog {
         JPanel startPanel = new JPanel();
         startPanel.setPreferredSize(new Dimension(450, 50));
         startPanel.setLayout(new FlowLayout());
-        startPanel.add(new JLabel("Start:"));
+        startPanel.add(Box.createHorizontalGlue());
+        startPanel.add(new JLabel("Start:   "));
         startPanel.add(timePickerStart);
         startPanel.add(datePickerStart);
+        startPanel.add(Box.createHorizontalGlue());
 
         JPanel endPanel = new JPanel();
         endPanel.setPreferredSize(new Dimension(450, 50));
         endPanel.setLayout(new FlowLayout());
-        endPanel.add(new JLabel("End:"));
+        startPanel.add(Box.createHorizontalGlue());
+        endPanel.add(new JLabel("End:   "));
         endPanel.add(timePickerEnd);
         endPanel.add(datePickerEnd);
+        startPanel.add(Box.createHorizontalGlue());
 
         panel.add(startPanel);
         panel.add(endPanel);
