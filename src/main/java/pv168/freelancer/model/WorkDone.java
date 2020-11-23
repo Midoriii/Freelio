@@ -10,8 +10,6 @@ public class WorkDone {
     private WorkType workType;
     private String description;
 
-    public WorkDone(){}
-
     public WorkDone(LocalDateTime workStart, LocalDateTime workEnd, WorkType workType, String note) {
         this.workStart = workStart;
         this.workEnd = workEnd;
