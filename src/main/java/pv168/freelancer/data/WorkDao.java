@@ -34,22 +34,26 @@ public class WorkDao {
             long workTypeID = rs1.getLong(1);
             workDone.getWorkType().setId(workTypeID);
 
-            try (var st2 = connection.prepareStatement(
-                         "INSERT INTO WORK_DONE (WT_ID, WORK_START, WORK_END, DESCRIPTION) VALUES (?, ?, ?, ?)",
-                    Statement.RETURN_GENERATED_KEYS)) {
-                st2.setLong(1, workTypeID);
-                st2.setTimestamp(2, Timestamp.valueOf(workDone.getWorkStart()));
-                st2.setTimestamp(3, Timestamp.valueOf(workDone.getWorkEnd()));
-                st2.setString(4, workDone.getDescription());
-                st2.executeUpdate();
-                var rs2 = st2.getGeneratedKeys();
-                rs2.next();
-                workDone.setId(rs2.getLong(1));
-            } catch (SQLException e) {
-                throw new RuntimeException("Failed to store Work Type" + workDone.getWorkType(), e);
-            }
+            insertWorkDone(workDone, connection, workTypeID);
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to store Work Done" + workDone, ex);
+            throw new RuntimeException("Failed to insert to database", ex);
+        }
+    }
+
+    private void insertWorkDone(WorkDone workDone, Connection connection, long workTypeID) {
+        try (var st2 = connection.prepareStatement(
+                     "INSERT INTO WORK_DONE (WT_ID, WORK_START, WORK_END, DESCRIPTION) VALUES (?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+            st2.setLong(1, workTypeID);
+            st2.setTimestamp(2, Timestamp.valueOf(workDone.getWorkStart()));
+            st2.setTimestamp(3, Timestamp.valueOf(workDone.getWorkEnd()));
+            st2.setString(4, workDone.getDescription());
+            st2.executeUpdate();
+            var rs2 = st2.getGeneratedKeys();
+            rs2.next();
+            workDone.setId(rs2.getLong(1));
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to store Work Done" + workDone, e);
         }
     }
 
