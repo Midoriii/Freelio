@@ -21,27 +21,30 @@ public class WorkDao {
 
     public void create(WorkDone workDone) {
         try (var connection = dataSource.getConnection();
-
              var st1 = connection.prepareStatement(
                      "INSERT INTO WORK_TYPE (NAME, HOURLY_RATE, DESCRIPTION) VALUES (?, ?, ?)",
                      Statement.RETURN_GENERATED_KEYS)) {
+
             st1.setString(1, workDone.getWorkType().getName());
             st1.setDouble(2, workDone.getWorkType().getHourlyRate());
             st1.setString(3, workDone.getWorkType().getDescription());
             st1.executeUpdate();
-            try (var rs = st1.getGeneratedKeys();
-                    var st2 = connection.prepareStatement(
-                    "INSERT INTO WORK_DONE (WT_ID, WORK_START, WORK_END, DESCRIPTION) VALUES (?, ?, ?, ?)")) {
-                if (rs.next()) {
-                    st2.setDouble(1, rs.getLong(1));
-                    workDone.setId(rs.getLong(1));
-                } else {
-                    throw new RuntimeException("insert to WORK_TYPE returned no keys");
-                }
+            var rs1 = st1.getGeneratedKeys();
+            rs1.next();
+            long workTypeID = rs1.getLong(1);
+            workDone.getWorkType().setId(workTypeID);
+
+            try (var st2 = connection.prepareStatement(
+                         "INSERT INTO WORK_DONE (WT_ID, WORK_START, WORK_END, DESCRIPTION) VALUES (?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS)) {
+                st2.setLong(1, workTypeID);
                 st2.setTimestamp(2, Timestamp.valueOf(workDone.getWorkStart()));
                 st2.setTimestamp(3, Timestamp.valueOf(workDone.getWorkEnd()));
                 st2.setString(4, workDone.getDescription());
                 st2.executeUpdate();
+                var rs2 = st2.getGeneratedKeys();
+                rs2.next();
+                workDone.setId(rs2.getLong(1));
             } catch (SQLException e) {
                 throw new RuntimeException("Failed to store Work Type" + workDone.getWorkType(), e);
             }
@@ -62,25 +65,24 @@ public class WorkDao {
         }
     }
 
-    private WorkType getWorkType(Connection connection, ResultSet rs) {
+    private WorkType getWorkType(Connection connection, long workTypeID) {
         try (var st2 = connection.prepareStatement(
                 "SELECT ID, NAME, HOURLY_RATE, DESCRIPTION FROM WORK_TYPE WHERE ID = ?")) {
-            long wt_id = rs.getLong(1);
-            st2.setLong(1, wt_id);
+            st2.setLong(1, workTypeID);
             try (var rs2 = st2.executeQuery()) {
-                if (rs2.next()) {
-                    return new WorkType(
-                            rs2.getString("NAME"),
-                            rs2.getDouble("HOURLY_RATE"),
-                            rs2.getString("DESCRIPTION")
-                    );
-                }
+                rs2.next();
+                return new WorkType(
+                        workTypeID,
+                        rs2.getString("NAME"),
+                        rs2.getDouble("HOURLY_RATE"),
+                        rs2.getString("DESCRIPTION")
+                );
             }
         } catch (Exception e1) {
             throw new RuntimeException();
         }
-        return null;
     }
+
 
     public List<WorkDone> findAll() {
         try (var connection = dataSource.getConnection();
@@ -88,20 +90,17 @@ public class WorkDao {
                      "SELECT ID, WT_ID, WORK_START, WORK_END, DESCRIPTION FROM WORK_DONE")) {
 
             List<WorkDone> worksDone = new ArrayList<>();
+
             try (var rs = st.executeQuery()) {
                 while (rs.next()) {
-                    WorkType workType;
-                    try {
-                        workType = getWorkType(connection, rs);
-                    } catch (Exception e1) {
-                        throw new RuntimeException("failed to load work type id");
-                    }
+                    WorkType workType = getWorkType(connection, rs.getLong("WT_ID"));
                     WorkDone workDone = new WorkDone(
                             rs.getTimestamp("WORK_START").toLocalDateTime(),
                             rs.getTimestamp("WORK_END").toLocalDateTime(),
                             workType,
                             rs.getString("DESCRIPTION"));
                     workDone.setId(rs.getLong("ID"));
+
                     worksDone.add(workDone);
                 }
             }

@@ -12,6 +12,13 @@ public class WorkType {
         this.description = description;
     }
 
+    public WorkType(long id, String name, double hourlyRate, String description) {
+        this.id = id;
+        this.name = name;
+        this.hourlyRate = hourlyRate;
+        this.description = description;
+    }
+
     public long getId() {
         return id;
     }
