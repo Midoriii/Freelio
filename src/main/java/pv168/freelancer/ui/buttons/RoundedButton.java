@@ -110,9 +110,6 @@ public class RoundedButton extends BasicButtonUI {
             g2.setColor(c.getBackground());
             g2.fill(shape);
         }
-        //Border
-        //g2.setPaint(c.getForeground());
-        //g2.draw(shape);
 
         g2.setColor(c.getBackground());
 

@@ -5,8 +5,6 @@ import pv168.freelancer.ui.utils.Icons;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
-import java.util.Comparator;
 
 public final class DeleteAction extends AbstractAction {
 

@@ -14,7 +14,7 @@ import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 
 public class MainWindow {
-    private final JFrame frame;
+    private JFrame frame;
     private JPanel navBar;
     private JPanel quitPanel;
     private JPanel contentPanel;
@@ -23,9 +23,9 @@ public class MainWindow {
     private final ComponentMover cm = new ComponentMover();
     private final ComponentResizer cr = new ComponentResizer();
 
-    private final String WORK_DONE = "Work Done";
-    private final String INVOICES = "Invoices";
-    private final String PROFIT_CALC = "Profit Calculator";
+    private final static String WORK_DONE = "Work Done";
+    private final static String INVOICES = "Invoices";
+    private final static String PROFIT_CALC = "Profit Calculator";
 
     public MainWindow() {
         setUpUIManager();
@@ -43,7 +43,7 @@ public class MainWindow {
     }
 
     private JFrame createFrame() {
-        JFrame frame = new JFrame("Work evidence");
+        frame = new JFrame("Work evidence");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1100, 675));
         frame.setSize(new Dimension(1100, 675));
@@ -72,8 +72,6 @@ public class MainWindow {
         quitPanel.setMinimumSize(new Dimension(550, 40));
         quitPanel.setPreferredSize(new Dimension(890, 40));
         quitPanel.setMaximumSize(new Dimension(1400, 40));
-        // The Blue color is for debugging purposes only
-        // quitPanel.setBackground(Color.BLUE);
 
         quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
         // The Glue and Rigid Areas are a way of composing the components where one wants them

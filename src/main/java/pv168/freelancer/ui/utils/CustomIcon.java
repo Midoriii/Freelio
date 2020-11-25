@@ -2,7 +2,6 @@ package pv168.freelancer.ui.utils;
 
 import pv168.freelancer.ui.MainWindow;
 import pv168.freelancer.ui.buttons.NavBarButton;
-import pv168.freelancer.ui.buttons.QuitPanelButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.buttons.RoundedButtonSmall;
 

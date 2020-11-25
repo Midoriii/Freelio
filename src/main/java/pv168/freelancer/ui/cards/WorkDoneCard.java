@@ -12,9 +12,7 @@ import pv168.freelancer.ui.utils.Icons;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WorkDoneCard extends Card {

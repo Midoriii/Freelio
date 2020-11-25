@@ -100,6 +100,7 @@ public class WorkDoneDetail extends JDialog {
         startPanel.setPreferredSize(new Dimension(450, 50));
         startPanel.setLayout(new FlowLayout());
         startPanel.add(Box.createHorizontalGlue());
+        // The white spaces in label have to be there, otherwise Swing causes misalignment bug
         startPanel.add(new JLabel("Start:   "));
         startPanel.add(timePickerStart);
         startPanel.add(datePickerStart);
