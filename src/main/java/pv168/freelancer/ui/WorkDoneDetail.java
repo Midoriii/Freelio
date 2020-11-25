@@ -125,7 +125,7 @@ public class WorkDoneDetail extends JDialog {
         timeModel.setValue(new Date());
         JSpinner timePicker = new JSpinner(timeModel);
 
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(timePicker, "HH:mm");
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(timePicker, "H:mm");
         DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
         formatter.setAllowsInvalid(false);
         formatter.setOverwriteMode(true);
