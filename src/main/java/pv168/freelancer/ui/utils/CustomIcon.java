@@ -63,6 +63,10 @@ public class CustomIcon implements Icon {
                              width, height, null);
             }
         }
+        else if(c instanceof JMenuItem) {
+            g2.drawImage(image, 5,c.getHeight()/2 - height/2,
+                    width, height, null);
+        }
         else{
             g2.drawImage(image, 0,0, width, height, null);
         }
