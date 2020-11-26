@@ -10,7 +10,9 @@ import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.ComponentResizer;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 
 public class MainWindow {
@@ -125,6 +127,10 @@ public class MainWindow {
         UIManager.put("ComboBox.foreground", new ColorUIResource(new Color(51, 51, 51)));
         UIManager.put("ToolBar.background", new ColorUIResource(Color.WHITE));
         UIManager.put("Label.foreground", new ColorUIResource(new Color(51, 51, 51)));
+        UIManager.put("TableHeader.font", new FontUIResource("Sans-Serif",Font.BOLD,12));
+        UIManager.put("TableHeader.cellBorder", new EmptyBorder(0,0,0,0));
+        UIManager.put("TableHeader.foreground", new ColorUIResource(Color.WHITE));
+        UIManager.put("TableHeader.background", new ColorUIResource(new Color(76, 175, 80)));
         // This is actually hover color, might come handy still
         //UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.WHITE));
     }
