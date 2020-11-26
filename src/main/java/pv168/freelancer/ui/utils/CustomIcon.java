@@ -38,6 +38,10 @@ public class CustomIcon implements Icon {
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         g2.setRenderingHint(
+                RenderingHints.KEY_ALPHA_INTERPOLATION,
+                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+
+        g2.setRenderingHint(
                 RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
 

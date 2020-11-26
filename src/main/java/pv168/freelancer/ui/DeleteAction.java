@@ -11,7 +11,7 @@ public final class DeleteAction extends AbstractAction {
     private final JTable itemTable;
 
     public DeleteAction(JTable itemTable) {
-        super("Delete", Icons.DELETE_ICON);
+        super("Delete", Icons.TOOLBAR_DELETE_ICON);
         this.itemTable = itemTable;
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));

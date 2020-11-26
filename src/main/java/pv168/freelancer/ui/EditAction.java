@@ -11,7 +11,7 @@ public final class EditAction extends AbstractAction {
     private final JTable itemTable;
 
     public EditAction(JTable itemTable) {
-        super("Edit", Icons.EDIT_ICON);
+        super("Edit", Icons.TOOLBAR_EDIT_ICON);
         this.itemTable = itemTable;
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));

@@ -19,6 +19,10 @@ public final class Icons {
     public static final CustomIcon DELETE_ICON_S = createIcon("/minus_invert.png",16, 16);
     public static final CustomIcon CONFIRM_ICON = createIcon("/confirm.png",24, 24);
 
+    public static final CustomIcon TOOLBAR_ADD_ICON = createIcon("/toolbar_plus.png",16, 16);
+    public static final CustomIcon TOOLBAR_EDIT_ICON = createIcon("/toolbar_edit.png",16, 16);
+    public static final CustomIcon TOOLBAR_DELETE_ICON = createIcon("/toolbar_delete.png",16, 16);
+
     public static final CustomIcon INVOICE_ICON = createIcon("/invoice.png",24, 24);
     public static final CustomIcon WORK_ICON = createIcon("/time.png",24, 24);
     public static final CustomIcon PROFIT_ICON = createIcon("/profit.png",24, 24);
