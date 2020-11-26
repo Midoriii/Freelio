@@ -5,8 +5,6 @@ public class WorkType {
     private double hourlyRate;
     private String description;
 
-    public WorkType(){}
-
     public WorkType(String name, double hourlyRate, String description) {
         this.name = name;
         this.hourlyRate = hourlyRate;

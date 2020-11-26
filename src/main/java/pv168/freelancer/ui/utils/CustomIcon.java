@@ -2,7 +2,6 @@ package pv168.freelancer.ui.utils;
 
 import pv168.freelancer.ui.MainWindow;
 import pv168.freelancer.ui.buttons.NavBarButton;
-import pv168.freelancer.ui.buttons.QuitPanelButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.buttons.RoundedButtonSmall;
 
@@ -39,6 +38,10 @@ public class CustomIcon implements Icon {
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         g2.setRenderingHint(
+                RenderingHints.KEY_ALPHA_INTERPOLATION,
+                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+
+        g2.setRenderingHint(
                 RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
 
@@ -60,8 +63,13 @@ public class CustomIcon implements Icon {
                 g2.drawImage(image, 25,18, width, height, null);
             }
             else{
-                g2.drawImage(image, 0,0, width, height, null);
+                g2.drawImage(image, c.getWidth()/2 - width/2,c.getHeight()/2 - height/2,
+                             width, height, null);
             }
+        }
+        else if(c instanceof JMenuItem) {
+            g2.drawImage(image, 5,c.getHeight()/2 - height/2,
+                    width, height, null);
         }
         else{
             g2.drawImage(image, 0,0, width, height, null);

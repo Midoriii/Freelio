@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonListener;
 import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.basic.BasicGraphicsUtils;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
@@ -15,6 +16,7 @@ public class RoundedButton extends BasicButtonUI {
     protected static final int focusstroke = 0;
     protected final Color color;
     protected final Color hovercolor;
+    protected final Color disabled = Color.gray;
     protected Shape shape;
     protected Shape border;
     protected Shape base;
@@ -101,18 +103,30 @@ public class RoundedButton extends BasicButtonUI {
             paintFocusAndRollover(g2, c, hovercolor);
         }else if(b.hasFocus()) {
             paintFocusAndRollover(g2, c, hovercolor);
-        }else{
+        }else if(!b.isEnabled()){
+            g2.setColor(disabled);
+            g2.fill(shape);
+        } else{
             g2.setColor(c.getBackground());
             g2.fill(shape);
         }
-        //Border
-        //g2.setPaint(c.getForeground());
-        //g2.draw(shape);
 
         g2.setColor(c.getBackground());
+
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_OFF);
+
         super.paint(g2, c);
+    }
+
+    @Override
+    protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text)
+    {
+        ButtonModel model = b.getModel();
+        FontMetrics fm = g.getFontMetrics();
+
+        g.setColor(b.getForeground());
+        BasicGraphicsUtils.drawString(g,text, model.getMnemonic(), textRect.x,textRect.y + fm.getAscent());
     }
 
     protected void initShape(JComponent c) {

@@ -11,7 +11,7 @@ public final class EditAction extends AbstractAction {
     private final JTable itemTable;
 
     public EditAction(JTable itemTable) {
-        super("Edit", Icons.EDIT_ICON);
+        super("Edit", Icons.TOOLBAR_EDIT_ICON);
         this.itemTable = itemTable;
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
@@ -23,7 +23,7 @@ public final class EditAction extends AbstractAction {
         if (selectedRows.length != 1) {
             throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
         }
-        JOptionPane.showMessageDialog(itemTable,
+        JOptionPane.showMessageDialog(null,
                 "This operation is not implemented yet",
                 "Warning", JOptionPane.WARNING_MESSAGE);
     }

@@ -15,6 +15,7 @@ import pv168.freelancer.ui.utils.Icons;
 
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.util.Date;
@@ -67,16 +68,22 @@ public class WorkDoneDetail extends JDialog {
     private void setUpContentPanel(JFrame owner) {
         contentPanel = new JPanel();
         contentPanel.setPreferredSize(new Dimension(450, 540));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
+        contentPanel.add(Box.createVerticalStrut(50));
         contentPanel.add(createTimeSelectPanel());
+        contentPanel.add(Box.createVerticalStrut(30));
         contentPanel.add(createWorkSelectPanel(owner));
         contentPanel.add(createNotePanel());
+        contentPanel.add(Box.createVerticalGlue());
 
         JButton btnOK = new JButton("Confirm");
         btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
         btnOK.addActionListener(e -> dispose());
-        contentPanel.add(btnOK, BorderLayout.CENTER);
+
+        contentPanel.add(btnOK);
+        contentPanel.add(Box.createVerticalStrut(50));
     }
 
     private JPanel createTimeSelectPanel() {
@@ -86,22 +93,27 @@ public class WorkDoneDetail extends JDialog {
         datePickerEnd = createDatePicker();
 
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(450, 100));
+        panel.setPreferredSize(new Dimension(450, 50));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JPanel startPanel = new JPanel();
         startPanel.setPreferredSize(new Dimension(450, 50));
         startPanel.setLayout(new FlowLayout());
-        startPanel.add(new JLabel("Start:"));
+        startPanel.add(Box.createHorizontalGlue());
+        // The white spaces in label have to be there, otherwise Swing causes misalignment bug
+        startPanel.add(new JLabel("Start:   "));
         startPanel.add(timePickerStart);
         startPanel.add(datePickerStart);
+        startPanel.add(Box.createHorizontalGlue());
 
         JPanel endPanel = new JPanel();
         endPanel.setPreferredSize(new Dimension(450, 50));
         endPanel.setLayout(new FlowLayout());
-        endPanel.add(new JLabel("End:"));
+        startPanel.add(Box.createHorizontalGlue());
+        endPanel.add(new JLabel("End:   "));
         endPanel.add(timePickerEnd);
         endPanel.add(datePickerEnd);
+        startPanel.add(Box.createHorizontalGlue());
 
         panel.add(startPanel);
         panel.add(endPanel);
@@ -113,7 +125,7 @@ public class WorkDoneDetail extends JDialog {
         timeModel.setValue(new Date());
         JSpinner timePicker = new JSpinner(timeModel);
 
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(timePicker, "HH:mm");
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(timePicker, "H:mm");
         DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
         formatter.setAllowsInvalid(false);
         formatter.setOverwriteMode(true);
@@ -132,6 +144,15 @@ public class WorkDoneDetail extends JDialog {
         JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
         JDatePickerImpl dateImpl = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 
+        // What a fancy way to style the picker ...
+        ((JFormattedTextField)dateImpl.getComponents()[0]).setBorder(new LineBorder(Color.BLACK));
+        ((JButton)dateImpl.getComponents()[1]).setIcon(Icons.CALENDAR_ICON);
+        ((JButton)dateImpl.getComponents()[1]).setText("");
+        ((JButton)dateImpl.getComponents()[1]).setMargin(new Insets(0, 0, 0, 0));
+        ((JButton)dateImpl.getComponents()[1]).setContentAreaFilled(false);
+        ((JButton)dateImpl.getComponents()[1]).setFocusPainted(false);
+        ((JButton)dateImpl.getComponents()[1]).setBorder(new LineBorder(Color.BLACK));
+
         JFormattedTextField textField = dateImpl.getJFormattedTextField();
         textField.setBackground(Color.WHITE);
 
@@ -144,7 +165,7 @@ public class WorkDoneDetail extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JPanel workPanel = new JPanel();
-        workPanel.setPreferredSize(new Dimension(450, 50));
+        workPanel.setPreferredSize(new Dimension(450, 20));
         workPanel.setLayout(new FlowLayout());
         workPanel.add(new JLabel("Work:"));
 
@@ -153,7 +174,7 @@ public class WorkDoneDetail extends JDialog {
         workPanel.add(workComboBox);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setPreferredSize(new Dimension(450, 50));
+        buttonPanel.setPreferredSize(new Dimension(450, 40));
         buttonPanel.setLayout(new FlowLayout());
 
         JButton btnAdd = new JButton("Add");

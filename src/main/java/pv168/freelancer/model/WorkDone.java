@@ -1,6 +1,7 @@
 package pv168.freelancer.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class WorkDone {
@@ -9,7 +10,7 @@ public class WorkDone {
     private WorkType workType;
     private String description;
 
-    public WorkDone(){}
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm  dd.MM.yyyy");
 
     public WorkDone(LocalDateTime workStart, LocalDateTime workEnd, WorkType workType, String note) {
         this.workStart = workStart;
@@ -22,12 +23,20 @@ public class WorkDone {
         return workStart;
     }
 
+    public String getFormattedWorkStart(){
+        return workStart.format(formatter);
+    }
+
     public void setWorkStart(LocalDateTime workStart) {
         this.workStart = workStart;
     }
 
     public LocalDateTime getWorkEnd() {
         return workEnd;
+    }
+
+    public String getFormattedWorkEnd(){
+        return workEnd.format(formatter);
     }
 
     public void setWorkEnd(LocalDateTime workEnd) {
@@ -51,6 +60,6 @@ public class WorkDone {
     }
 
     public double calculatePay() {
-        return calculateHours() * workType.getHourlyRate();
+        return Math.round(calculateHours() * workType.getHourlyRate() * 100.0)/100.0;
     }
 }

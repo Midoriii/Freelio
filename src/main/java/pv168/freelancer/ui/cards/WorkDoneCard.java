@@ -11,10 +11,11 @@ import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WorkDoneCard extends Card {
@@ -59,7 +60,23 @@ public class WorkDoneCard extends Card {
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
-        table.setRowHeight(20);
+        table.setRowHeight(30);
+        table.setShowGrid(false);
+        // Could possibly be removed ?
+        table.setBorder(new MatteBorder(0,1,0,0, Color.BLACK));
+
+        // This will be built upon to style the table, so far only tests text centering
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+
+        JTableHeader header = table.getTableHeader();
+        header.setPreferredSize(new Dimension(680, 40));
+
         return table;
     }
 
@@ -75,10 +92,12 @@ public class WorkDoneCard extends Card {
     private void createContentPanel() {
         JScrollPane tablePane = new JScrollPane(workDoneTable);
         tablePane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        tablePane.setBackground(new Color(76, 175, 80));
+        tablePane.setBorder(new MatteBorder(0,0,1,0, Color.BLACK));
 
         contentPanel = new JPanel();
         contentPanel.setMinimumSize(new Dimension(470, 450));
-        contentPanel.setPreferredSize(new Dimension(660, 600));
+        contentPanel.setPreferredSize(new Dimension(680, 600));
         contentPanel.setMaximumSize(new Dimension(920, 820));
 
         GroupLayout groupLayout = new GroupLayout(contentPanel);
@@ -99,8 +118,8 @@ public class WorkDoneCard extends Card {
     private void createButtonPanel() {
         btnPanel = new JPanel();
         btnPanel.setMinimumSize(new Dimension(180, 450));
-        btnPanel.setPreferredSize(new Dimension(240, 635));
-        btnPanel.setMaximumSize(new Dimension(240, 820));
+        btnPanel.setPreferredSize(new Dimension(220, 635));
+        btnPanel.setMaximumSize(new Dimension(220, 820));
         btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.PAGE_AXIS));
 
         createButtons();
