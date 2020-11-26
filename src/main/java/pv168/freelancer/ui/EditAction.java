@@ -23,7 +23,7 @@ public final class EditAction extends AbstractAction {
         if (selectedRows.length != 1) {
             throw new IllegalStateException("Invalid selected rows count (must be 1): " + selectedRows.length);
         }
-        JOptionPane.showMessageDialog(itemTable,
+        JOptionPane.showMessageDialog(null,
                 "This operation is not implemented yet",
                 "Warning", JOptionPane.WARNING_MESSAGE);
     }

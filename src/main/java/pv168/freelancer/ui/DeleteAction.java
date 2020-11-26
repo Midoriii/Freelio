@@ -19,7 +19,7 @@ public final class DeleteAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(itemTable,
+        JOptionPane.showMessageDialog(null,
                 "This operation is not implemented yet",
                 "Warning", JOptionPane.WARNING_MESSAGE);
     }
