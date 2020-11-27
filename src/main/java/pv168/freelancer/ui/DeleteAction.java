@@ -5,6 +5,8 @@ import pv168.freelancer.ui.utils.Icons;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public final class DeleteAction extends AbstractAction {
 
@@ -19,14 +21,11 @@ public final class DeleteAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var wdtm = (WorkDoneTableModel) itemTable.getModel();
+        var workDoneTableModel = (WorkDoneTableModel) itemTable.getModel();
         Arrays.stream(itemTable.getSelectedRows())
-                // view row index must be converted to model row index
                 .map(itemTable::convertRowIndexToModel)
                 .boxed()
-                // We need to delete rows in descending order to not change index of rows
-                // which are not deleted yet
                 .sorted(Comparator.reverseOrder())
-                .forEach(wdtm::deleteRow);
+                .forEach(workDoneTableModel::deleteRow);
     }
 }
