@@ -13,8 +13,8 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
 
     private static final List<Column<?, WorkDone>> COLUMNS = List.of(
             Column.build("Work Type", WorkType.class, WorkDone::getWorkType),
-            Column.build("From", LocalDateTime.class, WorkDone::getWorkStart),
-            Column.build("To", LocalDateTime.class, WorkDone::getWorkEnd),
+            Column.build("From", String.class, WorkDone::getFormattedWorkStart),
+            Column.build("To", String.class, WorkDone::getFormattedWorkEnd),
             Column.build("Hours", Long.class, WorkDone::calculateHours),
             Column.build("Income", Double.class, WorkDone::calculatePay),
             Column.build("Description", String.class, WorkDone::getDescription)

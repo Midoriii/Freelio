@@ -1,14 +1,17 @@
 package pv168.freelancer.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class WorkDone {
-    private Long id;
+    private long id;
     private LocalDateTime workStart;
     private LocalDateTime workEnd;
     private WorkType workType;
     private String description;
+
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm  dd.MM.yyyy");
 
     public WorkDone(LocalDateTime workStart, LocalDateTime workEnd, WorkType workType, String note) {
         this.workStart = workStart;
@@ -17,16 +20,20 @@ public class WorkDone {
         this.description = note;
     }
 
-    public LocalDateTime getWorkStart() {
-        return workStart;
-    }
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
+    }
+    
+    public LocalDateTime getWorkStart() {
+        return workStart;
+    }
+    
+    public String getFormattedWorkStart(){
+        return workStart.format(formatter);
     }
 
     public void setWorkStart(LocalDateTime workStart) {
@@ -35,6 +42,10 @@ public class WorkDone {
 
     public LocalDateTime getWorkEnd() {
         return workEnd;
+    }
+
+    public String getFormattedWorkEnd(){
+        return workEnd.format(formatter);
     }
 
     public void setWorkEnd(LocalDateTime workEnd) {
@@ -58,6 +69,6 @@ public class WorkDone {
     }
 
     public double calculatePay() {
-        return calculateHours() * workType.getHourlyRate();
+        return Math.round(calculateHours() * workType.getHourlyRate() * 100.0)/100.0;
     }
 }
