@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class WorkDone {
-    private long id;
+    private Long id;
     private LocalDateTime workStart;
     private LocalDateTime workEnd;
     private WorkType workType;
@@ -20,18 +20,18 @@ public class WorkDone {
         this.description = note;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    
+
     public LocalDateTime getWorkStart() {
         return workStart;
     }
-    
+
     public String getFormattedWorkStart(){
         return workStart.format(formatter);
     }
