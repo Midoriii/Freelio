@@ -11,11 +11,13 @@ import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.ComponentResizer;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 
 public class MainWindow {
-    private final JFrame frame;
+    private JFrame frame;
     private JPanel navBar;
     private JPanel quitPanel;
     private JPanel contentPanel;
@@ -24,9 +26,9 @@ public class MainWindow {
     private final ComponentMover cm = new ComponentMover();
     private final ComponentResizer cr = new ComponentResizer();
 
-    private final String WORK_DONE = "Work Done";
-    private final String INVOICES = "Invoices";
-    private final String PROFIT_CALC = "Profit Calculator";
+    private final static String WORK_DONE = "Work Done";
+    private final static String INVOICES = "Invoices";
+    private final static String PROFIT_CALC = "Profit Calculator";
 
     private final WorkDao workDao;
 
@@ -48,7 +50,7 @@ public class MainWindow {
     }
 
     private JFrame createFrame() {
-        JFrame frame = new JFrame("Work evidence");
+        frame = new JFrame("Work evidence");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1100, 675));
         frame.setSize(new Dimension(1100, 675));
@@ -77,8 +79,6 @@ public class MainWindow {
         quitPanel.setMinimumSize(new Dimension(550, 40));
         quitPanel.setPreferredSize(new Dimension(890, 40));
         quitPanel.setMaximumSize(new Dimension(1400, 40));
-        // The Blue color is for debugging purposes only
-        // quitPanel.setBackground(Color.BLUE);
 
         quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
         // The Glue and Rigid Areas are a way of composing the components where one wants them
@@ -130,7 +130,12 @@ public class MainWindow {
         UIManager.put("Panel.background", new ColorUIResource(Color.WHITE));
         UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
         UIManager.put("ComboBox.foreground", new ColorUIResource(new Color(51, 51, 51)));
+        UIManager.put("ToolBar.background", new ColorUIResource(Color.WHITE));
         UIManager.put("Label.foreground", new ColorUIResource(new Color(51, 51, 51)));
+        UIManager.put("TableHeader.font", new FontUIResource("Sans-Serif",Font.BOLD,12));
+        UIManager.put("TableHeader.cellBorder", new EmptyBorder(0,0,0,0));
+        UIManager.put("TableHeader.foreground", new ColorUIResource(Color.WHITE));
+        UIManager.put("TableHeader.background", new ColorUIResource(new Color(76, 175, 80)));
         // This is actually hover color, might come handy still
         //UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.WHITE));
     }

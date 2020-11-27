@@ -10,7 +10,8 @@ public class QuitButton extends QuitPanelButton {
         super();
 
         setIcon(Icons.QUIT_ICON);
-        setPressedIcon(Icons.MINIMIZE_ICON);
+        setRolloverIcon(Icons.QUIT_ICON_HOVER);
+        setPressedIcon(Icons.QUIT_ICON_CLICK);
 
         super.addActionListener(listener);
     }
