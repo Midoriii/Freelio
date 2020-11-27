@@ -1,6 +1,7 @@
 package pv168.freelancer.ui.cards;
 
 import pv168.freelancer.data.TestDataGenerator;
+import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.ui.DeleteAction;
 import pv168.freelancer.ui.EditAction;
@@ -33,9 +34,12 @@ public class WorkDoneCard extends Card {
     private JButton btnEdit;
     private JButton btnDelete;
 
-    public WorkDoneCard(String name, JFrame owner){
+    private final WorkDao workDao;
+
+    public WorkDoneCard(String name, JFrame owner, WorkDao workDao){
         super(name);
         this.owner = owner;
+        this.workDao = workDao;
 
         // This will be replaced with setting up the actual Table
         setUpTable();
@@ -56,7 +60,7 @@ public class WorkDoneCard extends Card {
     }
 
     private JTable createWorkDoneTable(List<WorkDone> worksDone) {
-        var model = new WorkDoneTableModel(worksDone);
+        var model = new WorkDoneTableModel(worksDone, workDao);
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
@@ -144,14 +148,15 @@ public class WorkDoneCard extends Card {
     private void createButtons() {
         btnCreate = new JButton("Create");
         btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
-        btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true));
+        btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable));
 
         btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
-        btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true));
+        btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable));
 
         btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
+        btnDelete.addActionListener(deleteAction);
     }
 
     private void setUpGroupLayout() {

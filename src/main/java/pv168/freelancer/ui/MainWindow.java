@@ -1,5 +1,6 @@
 package pv168.freelancer.ui;
 
+import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.cards.InvoiceCard;
@@ -29,7 +30,11 @@ public class MainWindow {
     private final static String INVOICES = "Invoices";
     private final static String PROFIT_CALC = "Profit Calculator";
 
-    public MainWindow() {
+    private final WorkDao workDao;
+
+    public MainWindow(WorkDao workDao) {
+        this.workDao = workDao;
+
         setUpUIManager();
 
         frame = createFrame();
@@ -60,7 +65,7 @@ public class MainWindow {
         CardLayout cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
 
-        contentPanel.add(new WorkDoneCard(WORK_DONE, frame), WORK_DONE);
+        contentPanel.add(new WorkDoneCard(WORK_DONE, frame, workDao), WORK_DONE);
         contentPanel.add(new InvoiceCard(INVOICES, frame), INVOICES);
         contentPanel.add(new ProfitCard(PROFIT_CALC), PROFIT_CALC);
     }
