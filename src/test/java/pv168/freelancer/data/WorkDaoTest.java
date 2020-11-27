@@ -46,18 +46,8 @@ final class WorkDaoTest {
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, "String note");
 
-        System.out.println(workDone);
-        System.out.println(workType);
         workDao.create(workDone);
-        var ne = workDao.findAll().get(0);
-        System.out.println(workDone);
-        System.out.println(ne);
-        System.out.println(workType);
-//        System.out.printf("id:%d start:" + ne.getWorkStart() + " end:" + ne.getWorkEnd() + " desc:%s\n",
-//                ne.getId(), ne.getDescription());
-//        System.out.printf("id:%d name:%s rate:%f desc:%s\n",
-//                ne.getWorkType().getId(), ne.getWorkType().getName(),
-//                ne.getWorkType().getHourlyRate(), ne.getWorkType().getDescription());
+
         assertThat(workDone.getId())
                 .isNotNull();
         assertThat(workDao.findAll())
