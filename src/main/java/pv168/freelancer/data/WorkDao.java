@@ -1,6 +1,5 @@
 package pv168.freelancer.data;
 
-
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 
@@ -20,6 +19,12 @@ public class WorkDao {
     }
 
     public void create(WorkDone workDone) {
+        if (workDone.getId() != null) {
+            throw new IllegalArgumentException("work done id must not be initialized");
+        }
+        if (workDone.getWorkType() == null) {
+            throw new IllegalArgumentException("work type attribute must not be null");
+        }
         try (var connection = dataSource.getConnection();
              var st1 = connection.prepareStatement(
                      "INSERT INTO WORK_TYPE (NAME, HOURLY_RATE, DESCRIPTION) VALUES (?, ?, ?)",
@@ -58,6 +63,9 @@ public class WorkDao {
     }
 
     public void delete(WorkDone workDone) {
+        if (workDone.getId() == null) {
+            throw new IllegalArgumentException("Work done has null ID");
+        }
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
                      "DELETE FROM WORK_DONE " +
@@ -87,7 +95,6 @@ public class WorkDao {
         }
     }
 
-
     public List<WorkDone> findAll() {
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
@@ -113,7 +120,6 @@ public class WorkDao {
             throw new RuntimeException("Failed to load all works done", ex);
         }
     }
-
 
     private void initWorkDoneTable(TestDataGenerator testDataGenerator) {
         if (!workDoneTableExists("APP", "WORK_DONE")) {
@@ -172,6 +178,17 @@ public class WorkDao {
                     ")");
         } catch (SQLException ex) {
             throw new RuntimeException("Failed to create WORK_TYPE table", ex);
+        }
+    }
+
+    public void dropTable() {
+        try (Connection connection = dataSource.getConnection();
+             var st1 = connection.createStatement();
+             var st2 = connection.createStatement()) {
+            st1.executeUpdate("DROP TABLE APP.WORK_DONE");
+            st2.executeUpdate("DROP TABLE APP.WORK_TYPE");
+        } catch (SQLException e) {
+            throw new RuntimeException("failed to drop tables", e);
         }
     }
 }

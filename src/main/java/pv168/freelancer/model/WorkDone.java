@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class WorkDone {
-    private long id;
+    private Long id;
     private LocalDateTime workStart;
     private LocalDateTime workEnd;
     private WorkType workType;
@@ -21,11 +21,11 @@ public class WorkDone {
         return workStart;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
