@@ -77,6 +77,25 @@ public class WorkDao {
         }
     }
 
+    public void updateWorkDone(WorkDone workDone) {
+        if (workDone.getId() == null) throw new IllegalArgumentException("WorkDone has null ID");
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "UPDATE WORK_DONE SET WT_ID = ?, WORK_START = ?, WORK_END = ?, DESCRIPTION = ? WHERE ID = ?")) {
+            st.setLong(1, workDone.getWorkType().getId());
+            st.setTimestamp(2, Timestamp.valueOf(workDone.getWorkStart()));
+            st.setTimestamp(3, Timestamp.valueOf(workDone.getWorkEnd()));
+            st.setString(4, workDone.getDescription());
+            st.setLong(5, workDone.getId());
+            if (st.executeUpdate() == 0){
+                throw new RuntimeException("Failed to update non-existing WorkDone: " + workDone);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to update WorkDone " + workDone, ex);
+        }
+    }
+
+
     private WorkType getWorkType(Connection connection, Long workTypeID) {
         try (var st = connection.prepareStatement(
                 "SELECT ID, NAME, HOURLY_RATE, DESCRIPTION FROM WORK_TYPE WHERE ID = ?")) {

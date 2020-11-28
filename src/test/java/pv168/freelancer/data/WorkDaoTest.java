@@ -131,5 +131,31 @@ final class WorkDaoTest {
                 .isThrownBy(() -> workDao.deleteWorkDone(wd));
     }
 
+    @Test
+    void updateWorkDone() {
+        String originalDescription = "original description";
+        String newDescription = "new desription";
+
+        WorkType workType = new WorkType("Moderating Discord", 30, "Tough job");
+        WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
+                LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, originalDescription);
+
+        workDao.createWorkDone(workDone);
+
+        workDone.setDescription(newDescription);
+        workDao.updateWorkDone(workDone);
+
+        assertThat(findWorkDoneById(workDone.getId()).getDescription()).isEqualTo(newDescription);
+    }
+
+    private WorkDone findWorkDoneById(long id) {
+        return workDao.findAllWorksDone().stream()
+                .filter(w -> w.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No WorkDone with id " + id + " found"));
+    }
+
+
+
 
 }
