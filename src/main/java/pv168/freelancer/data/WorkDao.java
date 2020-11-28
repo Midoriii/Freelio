@@ -201,7 +201,6 @@ public class WorkDao {
 
     public void createWorkType(WorkType workType) {
         if (workType.getId() != null) throw new IllegalArgumentException("WorkType already has ID: " + workType);
-
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
                      "INSERT INTO WORK_TYPE (NAME, HOURLY_RATE, DESCRIPTION) VALUES (?, ?, ?)",
@@ -233,6 +232,23 @@ public class WorkDao {
             }
         } catch (SQLException ex) {
             throw new RuntimeException("Failed to delete employee " + workType, ex);
+        }
+    }
+
+    public void updateWorkType(WorkType workType) {
+        if (workType.getId() == null) throw new IllegalArgumentException("WorkType has null ID");
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "UPDATE WORK_TYPE SET NAME = ?, HOURLY_RATE = ?, DESCRIPTION = ? WHERE ID = ?")) {
+            st.setString(1, workType.getName());
+            st.setDouble(2, workType.getHourlyRate());
+            st.setString(3, workType.getDescription());
+            st.setLong(4, workType.getId());
+            if (st.executeUpdate() == 0){
+                throw new RuntimeException("Failed to update non-existing WorkType: " + workType);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to update WorkType " + workType, ex);
         }
     }
 

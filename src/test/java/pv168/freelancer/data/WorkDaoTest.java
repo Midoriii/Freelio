@@ -173,6 +173,20 @@ final class WorkDaoTest {
         assertThat(workDao.findAllWorkTypes().size()).isEqualTo(1);
     }
 
+    @Test
+    void updateWorkType() {
+        String originalDescription = "Tough job";
+        String newDescription = "Fresh air";
+
+        WorkType workType = new WorkType("Feeding pigeons", 0, originalDescription);
+
+        workDao.createWorkType(workType);
+        workType.setDescription(newDescription);
+        workDao.updateWorkType(workType);
+
+        assertThat(findWorkTypeById(workType.getId()).getDescription()).isEqualTo(newDescription);
+    }
+
     private WorkDone findWorkDoneById(long id) {
         return workDao.findAllWorksDone().stream()
                 .filter(w -> w.getId() == id)
