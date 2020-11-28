@@ -13,11 +13,11 @@ public class WorkDone {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm  dd.MM.yyyy");
 
-    public WorkDone(LocalDateTime workStart, LocalDateTime workEnd, WorkType workType, String note) {
+    public WorkDone(LocalDateTime workStart, LocalDateTime workEnd, WorkType workType, String description) {
         this.workStart = workStart;
         this.workEnd = workEnd;
         this.workType = workType;
-        this.description = note;
+        this.description = description;
     }
 
     public Long getId() {
