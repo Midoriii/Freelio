@@ -95,7 +95,6 @@ public class WorkDao {
         }
     }
 
-
     private WorkType getWorkType(Connection connection, Long workTypeID) {
         try (var st = connection.prepareStatement(
                 "SELECT ID, NAME, HOURLY_RATE, DESCRIPTION FROM WORK_TYPE WHERE ID = ?")) {
@@ -192,13 +191,41 @@ public class WorkDao {
             st.executeUpdate("CREATE TABLE APP.WORK_TYPE (" +
                     "ID BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY," +
                     "NAME varchar(100)," +
-                    "HOURLY_RATE FLOAT(30)," +
+                    "HOURLY_RATE DOUBLE," +
                     "DESCRIPTION varchar(200)" +
                     ")");
         } catch (SQLException ex) {
             throw new RuntimeException("Failed to create WORK_TYPE table", ex);
         }
     }
+
+    public void createWorkType(WorkType workType) {
+        if (workType.getId() != null) throw new IllegalArgumentException("WorkType already has ID: " + workType);
+
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "INSERT INTO WORK_TYPE (NAME, HOURLY_RATE, DESCRIPTION) VALUES (?, ?, ?)",
+                     Statement.RETURN_GENERATED_KEYS)) {
+            st.setString(1, workType.getName());
+            st.setDouble(2, workType.getHourlyRate());
+            st.setString(3, workType.getDescription());
+            st.executeUpdate();
+            try (var rs = st.getGeneratedKeys()) {
+                if (rs.next()) {
+                    workType.setId(rs.getLong(1));
+                } else {
+                    throw new RuntimeException("Failed to fetch generated key: no key returned for WorkType: " + workType);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to store WorkType " + workType, ex);
+        }
+    }
+
+
+
+
+
 
     public void dropTable() {
         try (Connection connection = dataSource.getConnection();

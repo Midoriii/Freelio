@@ -148,6 +148,16 @@ final class WorkDaoTest {
         assertThat(findWorkDoneById(workDone.getId()).getDescription()).isEqualTo(newDescription);
     }
 
+    @Test
+    void createWorkType() {
+        WorkType workType = new WorkType("Moderating Discord", 30, "Tough job");
+
+        workDao.createWorkType(workType);
+
+        assertThat(workType.getId())
+                .isNotNull();
+    }
+
     private WorkDone findWorkDoneById(long id) {
         return workDao.findAllWorksDone().stream()
                 .filter(w -> w.getId() == id)
