@@ -222,6 +222,45 @@ public class WorkDao {
         }
     }
 
+    public void deleteWorkType(WorkType workType) {
+        if (workType.getId() == null) throw new IllegalArgumentException("WorkType has null ID");
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "DELETE FROM WORK_TYPE WHERE ID = ?")) {
+            st.setLong(1, workType.getId());
+            if (st.executeUpdate() == 0){
+                throw new RuntimeException("Failed to delete non-existing WorkType: " + workType);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to delete employee " + workType, ex);
+        }
+    }
+
+    public List<WorkType> findAllWorkTypes() {
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "SELECT ID, NAME, HOURLY_RATE, DESCRIPTION FROM WORK_TYPE")) {
+
+            List<WorkType> workTypes = new ArrayList<>();
+            try (var rs = st.executeQuery()) {
+                while (rs.next()) {
+                    WorkType workType = new WorkType(
+                            rs.getLong("ID"),
+                            rs.getString("NAME"),
+                            rs.getDouble("HOURLY_RATE"),
+                            rs.getString("DESCRIPTION"));
+
+                    workTypes.add(workType);
+                }
+            }
+            return workTypes;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to load all workTypes", ex);
+        }
+    }
+
+
+
 
 
 

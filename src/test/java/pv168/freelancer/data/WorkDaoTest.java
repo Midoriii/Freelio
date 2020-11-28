@@ -158,11 +158,33 @@ final class WorkDaoTest {
                 .isNotNull();
     }
 
+    @Test
+    void deleteWorkType() {
+        WorkType type1 = new WorkType("Moderating Discord", 30, "Tough job");
+        WorkType type2 = new WorkType("Feeding pigeons", 0, "Fresh air");
+
+        workDao.createWorkType(type1);
+        workDao.createWorkType(type2);
+
+        assertThat(workDao.findAllWorkTypes().size()).isEqualTo(2);
+
+        workDao.deleteWorkType(type1);
+
+        assertThat(workDao.findAllWorkTypes().size()).isEqualTo(1);
+    }
+
     private WorkDone findWorkDoneById(long id) {
         return workDao.findAllWorksDone().stream()
                 .filter(w -> w.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("No WorkDone with id " + id + " found"));
+    }
+
+    private WorkType findWorkTypeById(long id) {
+        return workDao.findAllWorkTypes().stream()
+                .filter(w -> w.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("No WorkType with id " + id + " found"));
     }
 
 
