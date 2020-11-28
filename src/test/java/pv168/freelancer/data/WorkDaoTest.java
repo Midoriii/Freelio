@@ -46,11 +46,11 @@ final class WorkDaoTest {
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, "String note");
 
-        workDao.create(workDone);
+        workDao.createWorkDone(workDone);
 
         assertThat(workDone.getId())
                 .isNotNull();
-        assertThat(workDao.findAll())
+        assertThat(workDao.findAllWorksDone())
                 .usingElementComparatorIgnoringFields("workType")
                 .containsExactly(workDone);
     }
@@ -60,7 +60,7 @@ final class WorkDaoTest {
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), null, "String note");
         assertThatExceptionOfType(RuntimeException.class)
-                .isThrownBy(() -> workDao.create(workDone));
+                .isThrownBy(() -> workDao.createWorkDone(workDone));
     }
 
     @Test
@@ -71,12 +71,12 @@ final class WorkDaoTest {
         workDone.setId(123L);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> workDao.create(workDone));
+                .isThrownBy(() -> workDao.createWorkDone(workDone));
     }
 
     @Test
     void findAllEmpty() {
-        assertThat(workDao.findAll())
+        assertThat(workDao.findAllWorksDone())
                 .isEmpty();
     }
 
@@ -92,11 +92,11 @@ final class WorkDaoTest {
                 LocalDateTime.of(2019, 6, 5, 4, 3, 2), type2, "another note");
 
 
-        workDao.create(mod1);
-        workDao.create(mod2);
-        workDao.create(feeding);
+        workDao.createWorkDone(mod1);
+        workDao.createWorkDone(mod2);
+        workDao.createWorkDone(feeding);
 
-        assertThat(workDao.findAll())
+        assertThat(workDao.findAllWorksDone())
                 .usingElementComparatorIgnoringFields("workType")
                 .containsExactlyInAnyOrder(mod1, mod2, feeding);
     }
@@ -112,12 +112,12 @@ final class WorkDaoTest {
                 LocalDateTime.of(2019, 6, 5, 4, 3, 2), type2, "another note");
 
 
-        workDao.create(mod1);
-        workDao.create(feeding);
+        workDao.createWorkDone(mod1);
+        workDao.createWorkDone(feeding);
 
-        workDao.delete(mod1);
+        workDao.deleteWorkDone(mod1);
 
-        assertThat(workDao.findAll())
+        assertThat(workDao.findAllWorksDone())
                 .usingElementComparatorIgnoringFields("workType")
                 .containsExactly(feeding);
     }
@@ -128,7 +128,7 @@ final class WorkDaoTest {
         WorkDone wd = new WorkDone(LocalDateTime.of(2019, 5, 4, 3, 2, 1),
                 LocalDateTime.of(2019, 6, 5, 4, 3, 2), wt, "4 pizzas delivered");
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> workDao.delete(wd));
+                .isThrownBy(() -> workDao.deleteWorkDone(wd));
     }
 
 

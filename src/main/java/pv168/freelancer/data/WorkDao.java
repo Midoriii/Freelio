@@ -18,7 +18,7 @@ public class WorkDao {
         initWorkDoneTable(testDataGenerator);
     }
 
-    public void create(WorkDone workDone) {
+    public void createWorkDone(WorkDone workDone) {
         if (workDone.getId() != null) {
             throw new IllegalArgumentException("work done id must not be initialized");
         }
@@ -62,7 +62,7 @@ public class WorkDao {
         }
     }
 
-    public void delete(WorkDone workDone) {
+    public void deleteWorkDone(WorkDone workDone) {
         if (workDone.getId() == null) {
             throw new IllegalArgumentException("Work done has null ID");
         }
@@ -95,7 +95,7 @@ public class WorkDao {
         }
     }
 
-    public List<WorkDone> findAll() {
+    public List<WorkDone> findAllWorksDone() {
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
                      "SELECT ID, WT_ID, WORK_START, WORK_END, DESCRIPTION FROM WORK_DONE")) {
@@ -124,7 +124,7 @@ public class WorkDao {
     private void initWorkDoneTable(TestDataGenerator testDataGenerator) {
         if (!workDoneTableExists("APP", "WORK_DONE")) {
             createWorkDoneTable();
-            testDataGenerator.createTestData(10).forEach(this::create);
+            testDataGenerator.createTestData(10).forEach(this::createWorkDone);
         }
     }
 
