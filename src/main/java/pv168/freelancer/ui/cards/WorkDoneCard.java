@@ -148,11 +148,11 @@ public class WorkDoneCard extends Card {
     private void createButtons() {
         btnCreate = new JButton("Create");
         btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
-        btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable, workDao));
+        btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable, workDao, false));
 
         btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
-        btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable, workDao));
+        btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable, workDao, true));
 
         btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));

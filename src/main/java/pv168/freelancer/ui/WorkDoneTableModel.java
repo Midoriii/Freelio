@@ -52,4 +52,9 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
         worksDone.add(workDone);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }
+
+    public void editRow(int rowIndex, WorkDone workDone) {
+        workDao.updateWorkDone(workDone);
+        fireTableRowsUpdated(rowIndex, rowIndex);
+    }
 }

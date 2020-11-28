@@ -3,7 +3,6 @@ package pv168.freelancer.ui;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
@@ -32,6 +31,7 @@ import java.util.Date;
 import java.util.Properties;
 
 public class WorkDoneDetail extends JDialog {
+    private boolean editing;
 
     private JPanel quitPanel;
     private JPanel contentPanel;
@@ -50,10 +50,11 @@ public class WorkDoneDetail extends JDialog {
 
     private final ComponentMover cm = new ComponentMover();
 
-    public WorkDoneDetail(JFrame owner, Boolean modality, JTable workDoneTable, WorkDao workDao) {
+    public WorkDoneDetail(JFrame owner, Boolean modality, JTable workDoneTable, WorkDao workDao, boolean editing) {
         super(owner, modality);
         setUpDialog();
 
+        this.editing = editing;
         this.workDao = workDao;
         this.workDoneTable = workDoneTable;
 
@@ -65,6 +66,8 @@ public class WorkDoneDetail extends JDialog {
         add(contentPanel);
 
         setUpMover();
+
+        if (editing) loadWorkDone();
 
         setVisible(true);
     }
@@ -119,9 +122,15 @@ public class WorkDoneDetail extends JDialog {
 
         LocalDateTime workStart = startDate.atTime(startTime);
         LocalDateTime workEnd = endDate.atTime(endTime);
-        //throw new IllegalArgumentException(description.getText());
         return new WorkDone(workStart, workEnd, (WorkType) workComboBox.getSelectedItem(), description.getText());
     }
+
+    private void loadWorkDone() {
+        WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
+        description.setText(workDone.getDescription());
+
+    }
+
 
     private JPanel createTimeSelectPanel() {
         timePickerStart = createTimePicker();
@@ -268,7 +277,12 @@ public class WorkDoneDetail extends JDialog {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
-            workDoneTableModel.addRow(getWorkDone());
+            if (editing) {
+                workDoneTableModel.editRow(workDoneTable.getSelectedRow(), getWorkDone());
+            }
+            else {
+                workDoneTableModel.addRow(getWorkDone());
+            }
         }
     }
 }
