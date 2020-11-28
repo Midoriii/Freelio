@@ -177,7 +177,9 @@ public class WorkDoneCard extends Card {
 
     private void updateActions(int selectedRowsCount) {
         btnEdit.setEnabled(selectedRowsCount == 1);
+        editAction.setEnabled(selectedRowsCount == 1);
         btnDelete.setEnabled(selectedRowsCount >= 1);
+        deleteAction.setEnabled(selectedRowsCount >= 1);
     }
 
     private void rowSelectionChanged(ListSelectionEvent listSelectionEvent) {
