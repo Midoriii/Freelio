@@ -120,7 +120,7 @@ public class WorkTypeDetail extends JDialog {
     private void addConfirmButton(GridBagConstraints gbc) {
         JButton okBtn = new JButton("Confirm");
         okBtn.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
-        okBtn.addActionListener(new CreateAction(workDoneTable, new TestDataGenerator()));
+        //okBtn.addActionListener(new CreateWorkDoneAction(workDoneTable, new TestDataGenerator()));
         okBtn.addActionListener(e -> dispose());
         gbc.gridx = 0;
         gbc.gridy = 3;

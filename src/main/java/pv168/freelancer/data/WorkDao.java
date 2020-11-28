@@ -18,7 +18,7 @@ public class WorkDao {
         initWorkDoneTable(testDataGenerator);
     }
 
-    public void create(WorkDone workDone) {
+    public void createWorkDone(WorkDone workDone) {
         if (workDone.getId() != null) {
             throw new IllegalArgumentException("work done id must not be initialized");
         }
@@ -62,7 +62,7 @@ public class WorkDao {
         }
     }
 
-    public void delete(WorkDone workDone) {
+    public void deleteWorkDone(WorkDone workDone) {
         if (workDone.getId() == null) {
             throw new IllegalArgumentException("Work done has null ID");
         }
@@ -74,6 +74,24 @@ public class WorkDao {
             st.executeUpdate();
         } catch (SQLException ex) {
             throw new RuntimeException("Failed to delete work done " + workDone, ex);
+        }
+    }
+
+    public void updateWorkDone(WorkDone workDone) {
+        if (workDone.getId() == null) throw new IllegalArgumentException("WorkDone has null ID");
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "UPDATE WORK_DONE SET WT_ID = ?, WORK_START = ?, WORK_END = ?, DESCRIPTION = ? WHERE ID = ?")) {
+            st.setLong(1, workDone.getWorkType().getId());
+            st.setTimestamp(2, Timestamp.valueOf(workDone.getWorkStart()));
+            st.setTimestamp(3, Timestamp.valueOf(workDone.getWorkEnd()));
+            st.setString(4, workDone.getDescription());
+            st.setLong(5, workDone.getId());
+            if (st.executeUpdate() == 0){
+                throw new RuntimeException("Failed to update non-existing WorkDone: " + workDone);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to update WorkDone " + workDone, ex);
         }
     }
 
@@ -95,7 +113,7 @@ public class WorkDao {
         }
     }
 
-    public List<WorkDone> findAll() {
+    public List<WorkDone> findAllWorksDone() {
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
                      "SELECT ID, WT_ID, WORK_START, WORK_END, DESCRIPTION FROM WORK_DONE")) {
@@ -124,7 +142,7 @@ public class WorkDao {
     private void initWorkDoneTable(TestDataGenerator testDataGenerator) {
         if (!workDoneTableExists("APP", "WORK_DONE")) {
             createWorkDoneTable();
-            testDataGenerator.createTestData(10).forEach(this::create);
+            testDataGenerator.createTestData(10).forEach(this::createWorkDone);
         }
     }
 
@@ -173,13 +191,96 @@ public class WorkDao {
             st.executeUpdate("CREATE TABLE APP.WORK_TYPE (" +
                     "ID BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY," +
                     "NAME varchar(100)," +
-                    "HOURLY_RATE FLOAT(30)," +
+                    "HOURLY_RATE DOUBLE," +
                     "DESCRIPTION varchar(200)" +
                     ")");
         } catch (SQLException ex) {
             throw new RuntimeException("Failed to create WORK_TYPE table", ex);
         }
     }
+
+    public void createWorkType(WorkType workType) {
+        if (workType.getId() != null) throw new IllegalArgumentException("WorkType already has ID: " + workType);
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "INSERT INTO WORK_TYPE (NAME, HOURLY_RATE, DESCRIPTION) VALUES (?, ?, ?)",
+                     Statement.RETURN_GENERATED_KEYS)) {
+            st.setString(1, workType.getName());
+            st.setDouble(2, workType.getHourlyRate());
+            st.setString(3, workType.getDescription());
+            st.executeUpdate();
+            try (var rs = st.getGeneratedKeys()) {
+                if (rs.next()) {
+                    workType.setId(rs.getLong(1));
+                } else {
+                    throw new RuntimeException("Failed to fetch generated key: no key returned for WorkType: " + workType);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to store WorkType " + workType, ex);
+        }
+    }
+
+    public void deleteWorkType(WorkType workType) {
+        if (workType.getId() == null) throw new IllegalArgumentException("WorkType has null ID");
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "DELETE FROM WORK_TYPE WHERE ID = ?")) {
+            st.setLong(1, workType.getId());
+            if (st.executeUpdate() == 0){
+                throw new RuntimeException("Failed to delete non-existing WorkType: " + workType);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to delete employee " + workType, ex);
+        }
+    }
+
+    public void updateWorkType(WorkType workType) {
+        if (workType.getId() == null) throw new IllegalArgumentException("WorkType has null ID");
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "UPDATE WORK_TYPE SET NAME = ?, HOURLY_RATE = ?, DESCRIPTION = ? WHERE ID = ?")) {
+            st.setString(1, workType.getName());
+            st.setDouble(2, workType.getHourlyRate());
+            st.setString(3, workType.getDescription());
+            st.setLong(4, workType.getId());
+            if (st.executeUpdate() == 0){
+                throw new RuntimeException("Failed to update non-existing WorkType: " + workType);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to update WorkType " + workType, ex);
+        }
+    }
+
+    public List<WorkType> findAllWorkTypes() {
+        try (var connection = dataSource.getConnection();
+             var st = connection.prepareStatement(
+                     "SELECT ID, NAME, HOURLY_RATE, DESCRIPTION FROM WORK_TYPE")) {
+
+            List<WorkType> workTypes = new ArrayList<>();
+            try (var rs = st.executeQuery()) {
+                while (rs.next()) {
+                    WorkType workType = new WorkType(
+                            rs.getLong("ID"),
+                            rs.getString("NAME"),
+                            rs.getDouble("HOURLY_RATE"),
+                            rs.getString("DESCRIPTION"));
+
+                    workTypes.add(workType);
+                }
+            }
+            return workTypes;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Failed to load all workTypes", ex);
+        }
+    }
+
+
+
+
+
+
+
 
     public void dropTable() {
         try (Connection connection = dataSource.getConnection();

@@ -6,11 +6,11 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public final class EditAction extends AbstractAction {
+public final class PopUpEditAction extends AbstractAction {
 
     private final JTable itemTable;
 
-    public EditAction(JTable itemTable) {
+    public PopUpEditAction(JTable itemTable) {
         super("Edit", Icons.TOOLBAR_EDIT_ICON);
         this.itemTable = itemTable;
         putValue(MNEMONIC_KEY, KeyEvent.VK_E);
