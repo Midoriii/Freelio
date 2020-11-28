@@ -1,5 +1,6 @@
 package pv168.freelancer.ui;
 
+import pv168.freelancer.ui.WorkDoneTableModel;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
@@ -8,11 +9,11 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public final class DeleteAction extends AbstractAction {
+public final class PopUpDeleteAction extends AbstractAction {
 
     private final JTable itemTable;
 
-    public DeleteAction(JTable itemTable) {
+    public PopUpDeleteAction(JTable itemTable) {
         super("Delete", Icons.TOOLBAR_DELETE_ICON);
         this.itemTable = itemTable;
         putValue(MNEMONIC_KEY, KeyEvent.VK_D);

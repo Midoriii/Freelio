@@ -3,8 +3,8 @@ package pv168.freelancer.ui.cards;
 import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkDone;
-import pv168.freelancer.ui.DeleteAction;
-import pv168.freelancer.ui.EditAction;
+import pv168.freelancer.ui.PopUpDeleteAction;
+import pv168.freelancer.ui.PopUpEditAction;
 import pv168.freelancer.ui.WorkDoneDetail;
 import pv168.freelancer.ui.WorkDoneTableModel;
 import pv168.freelancer.ui.buttons.RoundedButton;
@@ -85,8 +85,8 @@ public class WorkDoneCard extends Card {
     }
 
     private JPopupMenu createWorkDoneTablePopupMenu() {
-        editAction = new EditAction(workDoneTable);
-        deleteAction = new DeleteAction(workDoneTable);
+        editAction = new PopUpEditAction(workDoneTable);
+        deleteAction = new PopUpDeleteAction(workDoneTable);
         var menu = new JPopupMenu();
         menu.add(editAction);
         menu.add(deleteAction);
@@ -148,11 +148,11 @@ public class WorkDoneCard extends Card {
     private void createButtons() {
         btnCreate = new JButton("Create");
         btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
-        btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable));
+        btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable, workDao));
 
         btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
-        btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable));
+        btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable, workDao));
 
         btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
