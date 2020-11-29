@@ -285,7 +285,9 @@ public class WorkDoneDetail extends JDialog {
             var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
             if (editing) {
                 WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
-                workDoneTableModel.editRow(workDoneTable.getSelectedRow(), workDone);
+                WorkDone currentWorkDone = getWorkDone();
+                currentWorkDone.setId(workDone.getId());
+                workDoneTableModel.editRow(workDoneTable.getSelectedRow(), currentWorkDone);
             } else {
                 workDoneTableModel.addRow(getWorkDone());
             }
