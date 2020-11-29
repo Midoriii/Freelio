@@ -20,13 +20,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Properties;
 
@@ -128,7 +126,15 @@ public class WorkDoneDetail extends JDialog {
     private void loadWorkDone() {
         WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
         description.setText(workDone.getDescription());
-
+        timePickerStart.getModel().setValue(Date.from(
+                workDone.getWorkStart().atZone(ZoneId.systemDefault()).toInstant()));
+        timePickerEnd.getModel().setValue(Date.from(
+                workDone.getWorkEnd().atZone(ZoneId.systemDefault()).toInstant()));
+        datePickerStart.getJFormattedTextField().setText(workDone.getWorkStart()
+                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        datePickerEnd.getJFormattedTextField().setText(workDone.getWorkEnd()
+                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        workComboBox.setSelectedItem(workDone.getWorkType());
     }
 
 
@@ -278,9 +284,11 @@ public class WorkDoneDetail extends JDialog {
         public void actionPerformed(ActionEvent actionEvent) {
             var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
             if (editing) {
-                workDoneTableModel.editRow(workDoneTable.getSelectedRow(), getWorkDone());
-            }
-            else {
+                WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
+                WorkDone currentWorkDone = getWorkDone();
+                currentWorkDone.setId(workDone.getId());
+                workDoneTableModel.editRow(workDoneTable.getSelectedRow(), currentWorkDone);
+            } else {
                 workDoneTableModel.addRow(getWorkDone());
             }
         }
