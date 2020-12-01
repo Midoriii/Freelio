@@ -22,6 +22,7 @@ import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -59,6 +60,7 @@ public class WorkDoneDetail extends JDialog {
         super(owner, modality);
         setUpDialog();
 
+        this.workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
         this.timePickerStart = createTimePicker();
         this.timePickerEnd = createTimePicker();
         this.datePickerStart = createDatePicker();
@@ -77,7 +79,7 @@ public class WorkDoneDetail extends JDialog {
 
         setUpMover();
 
-        if (editing) loadWorkDone();
+        if (editing) loadWorkDone(false);
 
         setVisible(true);
     }
@@ -135,7 +137,7 @@ public class WorkDoneDetail extends JDialog {
         return new WorkDone(workStart, workEnd, (WorkType) workComboBox.getSelectedItem(), description.getText());
     }
 
-    private void loadWorkDone() {
+    private void loadWorkDone(boolean updated) {
         WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
         description.setText(workDone.getDescription());
 
@@ -147,7 +149,8 @@ public class WorkDoneDetail extends JDialog {
                 .format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         datePickerEnd.getJFormattedTextField().setText(workDone.getWorkEnd()
                 .format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        workComboBox.setSelectedItem(workDone.getWorkType());
+        if (!updated) {
+            workComboBox.setSelectedItem(workDone.getWorkType());}
     }
 
 
@@ -230,7 +233,7 @@ public class WorkDoneDetail extends JDialog {
         workPanel.setLayout(new FlowLayout());
         workPanel.add(new JLabel("Work:"));
 
-        workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
+        //workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
         workPanel.add(workComboBox);
 
         JPanel buttonPanel = new JPanel();
@@ -309,7 +312,7 @@ public class WorkDoneDetail extends JDialog {
         remove(contentPanel);
         setUpContentPanel(owner);
         add(contentPanel);
-        if (editing) loadWorkDone();
+        if (editing) loadWorkDone(true);
         revalidate();
         repaint();
     }
