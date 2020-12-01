@@ -59,4 +59,14 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
         workDao.updateWorkDone(workDone);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
+
+    public int workTypeCount(long workTypeID) {
+        int count = 0;
+        for (WorkDone work : worksDone) {
+            if (work.getWorkType().getId() == workTypeID) {
+                count++;
+            }
+        }
+        return count;
+    }
 }
