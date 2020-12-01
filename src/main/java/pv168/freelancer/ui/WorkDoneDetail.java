@@ -45,6 +45,7 @@ public class WorkDoneDetail extends JDialog {
     private JComboBox<WorkType> workComboBox;
     private JTextArea description;
 
+    private WorkTypeTableModel workTypeTable;
     private final WorkDao workDao;
 
     private final ComponentMover cm = new ComponentMover();
@@ -56,6 +57,7 @@ public class WorkDoneDetail extends JDialog {
         this.editing = editing;
         this.workDao = workDao;
         this.workDoneTable = workDoneTable;
+        this.workTypeTable = new WorkTypeTableModel(workDao.findAllWorkTypes(), workDao);
 
         setUpQuitPanel(owner);
 
@@ -294,6 +296,24 @@ public class WorkDoneDetail extends JDialog {
             } else {
                 workDoneTableModel.addRow(getWorkDone());
             }
+        }
+    }
+    void updatePanel(JFrame owner) {
+        remove(contentPanel);
+        setUpContentPanel(owner);
+        add(contentPanel);
+        if (editing) loadWorkDone();
+        revalidate();
+        repaint();
+    }
+
+    public void deleteWorkType(ActionEvent actionEvent, JFrame owner) {
+        var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
+        if (workDoneTableModel.workTypeCount(((WorkType) workComboBox.getSelectedItem()).getId()) == 0) {
+            workTypeTable.deleteRow(workComboBox.getSelectedIndex());
+            updatePanel(owner);
+        } else {
+            JOptionPane.showMessageDialog(null, "This work type is in use.");
         }
     }
 }
