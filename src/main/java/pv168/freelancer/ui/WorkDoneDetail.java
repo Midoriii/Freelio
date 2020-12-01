@@ -21,6 +21,7 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,6 +35,10 @@ public class WorkDoneDetail extends JDialog {
 
     private JPanel quitPanel;
     private JPanel contentPanel;
+
+    private JButton btnAdd;
+    private JButton btnEdit;
+    private JButton btnDelete;
 
     private JTable workDoneTable;
 
@@ -225,23 +230,26 @@ public class WorkDoneDetail extends JDialog {
         workPanel.add(new JLabel("Work:"));
 
         workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
+        workComboBox.addItemListener(this::itemSelectionChanged);
         workPanel.add(workComboBox);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setPreferredSize(new Dimension(450, 40));
         buttonPanel.setLayout(new FlowLayout());
 
-        JButton btnAdd = new JButton("Add");
+        btnAdd = new JButton("Add");
         btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.ADD_ICON_S));
-        //btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true, workDoneTable));
+        btnAdd.addActionListener(e -> addWorkType(e, owner));
+        btnAdd.setEnabled(false);
         buttonPanel.add(btnAdd);
 
-        JButton btnEdit = new JButton("Edit");
+        btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.EDIT_ICON_S));
         btnEdit.addActionListener(e -> editWorkType(e, owner));
+        btnEdit.setEnabled(false);
         buttonPanel.add(btnEdit);
 
-        JButton btnDelete = new JButton("Delete");
+        btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94), Icons.DELETE_ICON_S));
         btnDelete.addActionListener(e -> deleteWorkType(e, owner));
         buttonPanel.add(btnDelete);
@@ -321,5 +329,17 @@ public class WorkDoneDetail extends JDialog {
     private void editWorkType(ActionEvent e, JFrame owner) {
         new WorkTypeDetail(owner, true, workComboBox, workTypeTable, true);
         updatePanel(owner);
+    }
+
+    private void addWorkType(ActionEvent e, JFrame owner) {
+        new WorkTypeDetail(owner, true, workComboBox, workTypeTable, false);
+        updatePanel(owner);
+    }
+
+    private void itemSelectionChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            btnEdit.setEnabled(true);
+            btnDelete.setEnabled(true);
+        }
     }
 }
