@@ -233,12 +233,12 @@ public class WorkDoneDetail extends JDialog {
 
         JButton btnAdd = new JButton("Add");
         btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.ADD_ICON_S));
-        btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true, workDoneTable));
+        //btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true, workDoneTable));
         buttonPanel.add(btnAdd);
 
         JButton btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.EDIT_ICON_S));
-        btnEdit.addActionListener(e -> new WorkTypeDetail(owner, true, workDoneTable));
+        btnEdit.addActionListener(e -> editWorkType(e, owner));
         buttonPanel.add(btnEdit);
 
         JButton btnDelete = new JButton("Delete");
@@ -316,5 +316,10 @@ public class WorkDoneDetail extends JDialog {
         } else {
             JOptionPane.showMessageDialog(null, "This work type is in use.");
         }
+    }
+
+    private void editWorkType(ActionEvent e, JFrame owner) {
+        new WorkTypeDetail(owner, true, workComboBox, workTypeTable, true);
+        updatePanel(owner);
     }
 }

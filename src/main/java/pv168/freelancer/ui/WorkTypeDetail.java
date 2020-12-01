@@ -1,6 +1,8 @@
 package pv168.freelancer.ui;
 
 import pv168.freelancer.data.TestDataGenerator;
+import pv168.freelancer.model.WorkDone;
+import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
@@ -8,14 +10,25 @@ import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
+import javax.swing.text.*;
+//import javax.swing.text.AbstractDocument;
 import java.awt.*;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WorkTypeDetail extends JDialog {
 
+    private boolean editingType;
     private JPanel quitPanel;
     private JPanel contentPanel;
 
@@ -24,11 +37,18 @@ public class WorkTypeDetail extends JDialog {
     private JTextField nameField;
     private JTextField hourlyRateField;
     private JTextArea descriptionArea;
+    JComboBox<WorkType> workComboBox;
 
+    private WorkTypeTableModel workTypeTable;
     private final ComponentMover cm = new ComponentMover();
 
-    public WorkTypeDetail(JFrame owner, Boolean modality, JTable workDoneTable) {
+    public WorkTypeDetail(JFrame owner, Boolean modality, JComboBox<WorkType> workComboBox, WorkTypeTableModel workTypeTable, boolean editingType){
         super(owner, modality);
+
+        this.workTypeTable = workTypeTable;
+        this.editingType = editingType;
+        this.workComboBox = workComboBox;
+
         setUpDialog();
 
         setUpQuitPanel(owner);
@@ -39,6 +59,8 @@ public class WorkTypeDetail extends JDialog {
         add(contentPanel);
 
         setUpMover();
+
+        if (editingType) loadWorkType();
 
         setVisible(true);
     }
@@ -136,6 +158,17 @@ public class WorkTypeDetail extends JDialog {
         contentPanel.add(okBtn, gbc);
     }
 
+    private WorkType getWorkType() {
+        return new WorkType(nameField.getText(), Double.parseDouble(hourlyRateField.getText()), descriptionArea.getText());
+    }
+
+    private void loadWorkType() {
+        WorkType workType = (WorkType) workComboBox.getSelectedItem();
+        nameField.setText(workType.getName());
+        hourlyRateField.setText(Double.toString(workType.getHourlyRate()));
+        descriptionArea.setText(workType.getDescription());
+    }
+
     private void setUpDialog() {
         setUndecorated(true);
         setSize(new Dimension(450, 600));
@@ -146,6 +179,20 @@ public class WorkTypeDetail extends JDialog {
     private void setUpMover() {
         cm.setDragInsets(new Insets(5, 5, 5, 5));
         cm.registerComponent(this);
+    }
+
+    private class CreateWorkTypeAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            if (editingType) {
+                WorkType workType = workTypeTable.getEntity(workComboBox.getSelectedIndex());
+                WorkType currentWorkType = getWorkType();
+                currentWorkType.setId(workType.getId());
+                workTypeTable.editRow(workComboBox.getSelectedIndex(), currentWorkType);
+            } else {
+                workTypeTable.addRow(getWorkType());
+            }
+        }
     }
 
 
