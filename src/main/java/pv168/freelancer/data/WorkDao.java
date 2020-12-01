@@ -34,10 +34,10 @@ public class WorkDao {
             st.setDouble(2, workDone.getWorkType().getHourlyRate());
             st.setString(3, workDone.getWorkType().getDescription());
             st.executeUpdate();
-            var rs = st.getGeneratedKeys();
-            rs.next();
-            Long workTypeID = rs.getLong(1);
-            workDone.getWorkType().setId(workTypeID);
+//            var rs = st.getGeneratedKeys();
+//            rs.next();
+//            Long workTypeID = rs.getLong(1);
+            Long workTypeID = workDone.getWorkType().getId();
 
             insertWorkDone(workDone, connection, workTypeID);
         } catch (SQLException ex) {
