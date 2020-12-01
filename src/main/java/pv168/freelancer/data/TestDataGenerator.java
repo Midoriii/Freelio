@@ -5,9 +5,7 @@ import pv168.freelancer.model.WorkType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,8 +16,15 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class TestDataGenerator {
 
-    private static final List<String> WORK_NAMES = List.of("UI Design", "Training Pokemon",
-    "UX Lecturing", "Recording Despacito 2", "Updating Windows", "Making coffee", "Repairing coffee machine");
+    private static final List<WorkType> WORK_TYPES = List.of(
+            new WorkType("UI Design", 5, "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed elit dui, pellentesque a, faucibus vel, interdum nec, diam."),
+            new WorkType("Training Pokemon", 100,  "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."),
+            new WorkType("UX Lecturing", 60, "Sed convallis magna eu sem."),
+            new WorkType("Recording Despacito 2", 42, "Nulla non lectus sed nisl molestie malesuada."),
+            new WorkType("Updating Windows", 666,  "In rutrum."),
+            new WorkType("Making coffee", 420, "Fusce dui leo, imperdiet in, aliquam sit amet, feugiat eu, orci."),
+            new WorkType("Repairing coffee machine", 99, "Morbi imperdiet, mauris ac auctor dictum, nisl ligula egestas nulla, et sollicitudin sem purus in lacus. Maecenas sollicitudin.")
+    );
 
     private static final List<String> DESCRIPTIONS = List.of(
             "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed elit dui, pellentesque a, faucibus vel, interdum nec, diam.",
@@ -50,12 +55,22 @@ public class TestDataGenerator {
 
     private final Random random = new Random(129867358486L);
 
-    public WorkType createTestWorkType() {
-        String name = selectRandom(WORK_NAMES);
-        String description = selectRandom(DESCRIPTIONS);
-        double hourlyRate = Math.random() * 96 + 5;
-        return new WorkType(name, hourlyRate, description);
+
+    public List<WorkType> getWorkTypes() {
+        return WORK_TYPES;
     }
+
+
+//    public List<WorkType> createTestWorkType(List<String> workNames) {
+//        List<WorkType> result = new ArrayList<>();
+//        while (workNames.size() > 0) {
+//            String name = selectUniqueRandom(workNames);
+//            String description = selectRandom(DESCRIPTIONS);
+//            double hourlyRate = Math.random() * 96 + 5;
+//            result.add(new WorkType(name, hourlyRate, description));
+//        }
+//        return result;
+//    }
 
     public LocalDateTime getRandomDateTime() {
         LocalDate date = selectRandomLocalDate(MIN_WORK, MAX_WORK);
@@ -79,7 +94,7 @@ public class TestDataGenerator {
     public WorkDone createTestWorkDone() {
         LocalDateTime workStart = getRandomDateTime();
         LocalDateTime workEnd = getRandomDateTime(workStart);
-        WorkType workType = createTestWorkType();
+        WorkType workType = selectRandom(WORK_TYPES);
         String note = selectRandom(NOTES);
         return new WorkDone( workStart, workEnd, workType, note);
     }
@@ -91,13 +106,13 @@ public class TestDataGenerator {
                 .collect(Collectors.toList());
     }
 
-    public WorkType[] createWorkTypeTestData(int count) {
-        WorkType[] arr = new WorkType[count];
-        for (int i = 0; i <count; i++) {
-            arr[i] = createTestWorkType();
-        }
-        return arr;
-    }
+//    public WorkType[] createWorkTypeTestData(int count) {
+//        WorkType[] arr = new WorkType[count];
+//        for (int i = 0; i <count; i++) {
+//            arr[i] = createTestWorkType();
+//        }
+//        return arr;
+//    }
 
     private <T> T selectRandom(List<T> data) {
         int index = random.nextInt(data.size());
