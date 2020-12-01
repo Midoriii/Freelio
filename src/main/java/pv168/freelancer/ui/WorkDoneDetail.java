@@ -59,6 +59,10 @@ public class WorkDoneDetail extends JDialog {
         super(owner, modality);
         setUpDialog();
 
+        this.timePickerStart = createTimePicker();
+        this.timePickerEnd = createTimePicker();
+        this.datePickerStart = createDatePicker();
+        this.datePickerEnd = createDatePicker();
         this.editing = editing;
         this.workDao = workDao;
         this.workDoneTable = workDoneTable;
@@ -134,6 +138,7 @@ public class WorkDoneDetail extends JDialog {
     private void loadWorkDone() {
         WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
         description.setText(workDone.getDescription());
+
         timePickerStart.getModel().setValue(Date.from(
                 workDone.getWorkStart().atZone(ZoneId.systemDefault()).toInstant()));
         timePickerEnd.getModel().setValue(Date.from(
@@ -147,10 +152,6 @@ public class WorkDoneDetail extends JDialog {
 
 
     private JPanel createTimeSelectPanel() {
-        timePickerStart = createTimePicker();
-        timePickerEnd = createTimePicker();
-        datePickerStart = createDatePicker();
-        datePickerEnd = createDatePicker();
 
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(450, 50));
