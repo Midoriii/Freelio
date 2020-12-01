@@ -1,5 +1,6 @@
 package pv168.freelancer.ui;
 
+import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -143,10 +144,8 @@ public class WorkDoneDetail extends JDialog {
                 workDone.getWorkStart().atZone(ZoneId.systemDefault()).toInstant()));
         timePickerEnd.getModel().setValue(Date.from(
                 workDone.getWorkEnd().atZone(ZoneId.systemDefault()).toInstant()));
-        datePickerStart.getJFormattedTextField().setText(workDone.getWorkStart()
-                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        datePickerEnd.getJFormattedTextField().setText(workDone.getWorkEnd()
-                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        datePickerStart.getModel().setDate(workDone.getWorkStart().getYear(), workDone.getWorkStart().getMonthValue() - 1, workDone.getWorkStart().getDayOfMonth());
+        datePickerEnd.getModel().setDate(workDone.getWorkEnd().getYear(), workDone.getWorkEnd().getMonthValue() - 1, workDone.getWorkEnd().getDayOfMonth());
         if (!updated) {
             workComboBox.setSelectedItem(workDone.getWorkType());}
     }
