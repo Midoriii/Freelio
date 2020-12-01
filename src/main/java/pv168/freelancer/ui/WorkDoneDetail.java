@@ -240,7 +240,6 @@ public class WorkDoneDetail extends JDialog {
         btnAdd = new JButton("Add");
         btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.ADD_ICON_S));
         btnAdd.addActionListener(e -> addWorkType(e, owner));
-        btnAdd.setEnabled(false);
         buttonPanel.add(btnAdd);
 
         btnEdit = new JButton("Edit");
@@ -252,6 +251,7 @@ public class WorkDoneDetail extends JDialog {
         btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94), Icons.DELETE_ICON_S));
         btnDelete.addActionListener(e -> deleteWorkType(e, owner));
+        btnDelete.setEnabled(false);
         buttonPanel.add(btnDelete);
 
         panel.add(workPanel);
