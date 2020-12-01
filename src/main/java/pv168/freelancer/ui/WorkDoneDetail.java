@@ -243,6 +243,7 @@ public class WorkDoneDetail extends JDialog {
 
         JButton btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94), Icons.DELETE_ICON_S));
+        btnDelete.addActionListener(e -> deleteWorkType(e, owner));
         buttonPanel.add(btnDelete);
 
         panel.add(workPanel);
