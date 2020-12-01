@@ -1,6 +1,5 @@
 package pv168.freelancer.ui;
 
-import pv168.freelancer.ui.WorkDoneTableModel;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;

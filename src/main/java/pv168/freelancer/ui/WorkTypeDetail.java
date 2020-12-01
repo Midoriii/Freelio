@@ -1,7 +1,5 @@
 package pv168.freelancer.ui;
 
-import pv168.freelancer.data.TestDataGenerator;
-import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
@@ -11,20 +9,9 @@ import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import javax.swing.text.*;
-//import javax.swing.text.AbstractDocument;
 import java.awt.*;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class WorkTypeDetail extends JDialog {
 
