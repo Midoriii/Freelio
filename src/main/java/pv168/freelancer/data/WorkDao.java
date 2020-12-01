@@ -276,13 +276,6 @@ public class WorkDao {
         }
     }
 
-
-
-
-
-
-
-
     public void dropTable() {
         try (Connection connection = dataSource.getConnection();
              var st1 = connection.createStatement();
