@@ -14,7 +14,7 @@ public class WorkDao {
 
     public WorkDao(DataSource dataSource, TestDataGenerator testDataGenerator) {
         this.dataSource = dataSource;
-        initWorkTypeTable();
+        initWorkTypeTable(testDataGenerator);
         initWorkDoneTable(testDataGenerator);
     }
 
@@ -170,9 +170,10 @@ public class WorkDao {
         }
     }
 
-    private void initWorkTypeTable() {
+    private void initWorkTypeTable(TestDataGenerator testDataGenerator) {
         if (!workTypeTableExists("APP", "WORK_TYPE")) {
             createWorkTypeTable();
+            testDataGenerator.getWorkTypes().forEach(this::createWorkType);
         }
     }
 
