@@ -17,6 +17,7 @@ import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -258,6 +259,8 @@ public class WorkDoneDetail extends JDialog {
         description = new JTextArea();
         description.setLineWrap(true);
         description.setWrapStyleWord(true);
+        AbstractDocument absDoc = (AbstractDocument) description.getDocument();
+        absDoc.setDocumentFilter(new CustomDocumentFilter(200));
 
         JScrollPane scroll = new JScrollPane(description);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

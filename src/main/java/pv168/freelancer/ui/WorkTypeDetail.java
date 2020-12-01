@@ -8,6 +8,10 @@ import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 
 public class WorkTypeDetail extends JDialog {
@@ -21,10 +25,9 @@ public class WorkTypeDetail extends JDialog {
     private JTextField hourlyRateField;
     private JTextArea descriptionArea;
 
-
     private final ComponentMover cm = new ComponentMover();
 
-    public WorkTypeDetail(JFrame owner, Boolean modality, JTable workDoneTable){
+    public WorkTypeDetail(JFrame owner, Boolean modality, JTable workDoneTable) {
         super(owner, modality);
         setUpDialog();
 
@@ -48,9 +51,9 @@ public class WorkTypeDetail extends JDialog {
         // The Glue and Rigid Areas are a way of composing the components where one wants them
         quitPanel.add(Box.createHorizontalGlue());
         quitPanel.add(new MinimizeButton(owner));
-        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
+        quitPanel.add(Box.createRigidArea(new Dimension(5, 0)));
         quitPanel.add(new QuitButton(e -> dispose()));
-        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
+        quitPanel.add(Box.createRigidArea(new Dimension(5, 0)));
     }
 
     private void setUpContentPanel() {
@@ -79,6 +82,8 @@ public class WorkTypeDetail extends JDialog {
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        AbstractDocument absDoc = (AbstractDocument) nameField.getDocument();
+        absDoc.setDocumentFilter(new CustomDocumentFilter(100));
         contentPanel.add(nameField, gbc);
     }
 
@@ -110,6 +115,8 @@ public class WorkTypeDetail extends JDialog {
         JScrollPane scroll = new JScrollPane(descriptionArea);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setPreferredSize(new Dimension(250, 100));
+        AbstractDocument absDoc = (AbstractDocument) descriptionArea.getDocument();
+        absDoc.setDocumentFilter(new CustomDocumentFilter(200));
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
@@ -131,7 +138,7 @@ public class WorkTypeDetail extends JDialog {
 
     private void setUpDialog() {
         setUndecorated(true);
-        setSize(new Dimension(450,600));
+        setSize(new Dimension(450, 600));
         setLocationRelativeTo(null);
         getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
@@ -140,4 +147,6 @@ public class WorkTypeDetail extends JDialog {
         cm.setDragInsets(new Insets(5, 5, 5, 5));
         cm.registerComponent(this);
     }
+
+
 }
