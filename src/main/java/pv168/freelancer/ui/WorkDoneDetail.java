@@ -230,7 +230,6 @@ public class WorkDoneDetail extends JDialog {
         workPanel.add(new JLabel("Work:"));
 
         workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
-        workComboBox.addItemListener(this::itemSelectionChanged);
         workPanel.add(workComboBox);
 
         JPanel buttonPanel = new JPanel();
@@ -245,13 +244,11 @@ public class WorkDoneDetail extends JDialog {
         btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.EDIT_ICON_S));
         btnEdit.addActionListener(e -> editWorkType(e, owner));
-        btnEdit.setEnabled(false);
         buttonPanel.add(btnEdit);
 
         btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94), Icons.DELETE_ICON_S));
         btnDelete.addActionListener(e -> deleteWorkType(e, owner));
-        btnDelete.setEnabled(false);
         buttonPanel.add(btnDelete);
 
         panel.add(workPanel);
@@ -334,12 +331,5 @@ public class WorkDoneDetail extends JDialog {
     private void addWorkType(ActionEvent e, JFrame owner) {
         new WorkTypeDetail(owner, true, workComboBox, workTypeTable, false);
         updatePanel(owner);
-    }
-
-    private void itemSelectionChanged(ItemEvent e) {
-        if (e.getStateChange() == ItemEvent.SELECTED) {
-            btnEdit.setEnabled(true);
-            btnDelete.setEnabled(true);
-        }
     }
 }

@@ -22,18 +22,4 @@ public class CustomDocumentFilter extends DocumentFilter {
         }
     }
 
-//    javax.swing.text.DocumentFilter docFilter(int len) {
-//        return new javax.swing.text.DocumentFilter() {
-//            final int maxCharLength = len;
-//
-//            @Override
-//            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-//                if ((fb.getDocument().getLength() + text.length()) <= maxCharLength) {
-//                    super.replace(fb, offset, length, text, attrs);
-//                } else {
-//                    Toolkit.getDefaultToolkit().beep();
-//                }
-//            }
-//        };
-//    }
 }
