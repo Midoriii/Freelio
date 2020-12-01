@@ -152,6 +152,7 @@ public class WorkDoneDetail extends JDialog {
     }
 
 
+
     private JPanel createTimeSelectPanel() {
 
         JPanel panel = new JPanel();
@@ -308,6 +309,7 @@ public class WorkDoneDetail extends JDialog {
     }
     void updatePanel(JFrame owner) {
         remove(contentPanel);
+        this.workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
         setUpContentPanel(owner);
         add(contentPanel);
         if (editing) loadWorkDone(true);
@@ -327,11 +329,14 @@ public class WorkDoneDetail extends JDialog {
 
     private void editWorkType(ActionEvent e, JFrame owner) {
         new WorkTypeDetail(owner, true, workComboBox, workTypeTable, true);
+        WorkType edited = (WorkType) workComboBox.getSelectedItem();
         updatePanel(owner);
+        workComboBox.setSelectedItem(edited);
     }
 
     private void addWorkType(ActionEvent e, JFrame owner) {
         new WorkTypeDetail(owner, true, workComboBox, workTypeTable, false);
         updatePanel(owner);
+        workComboBox.setSelectedIndex(workComboBox.getItemCount() - 1);
     }
 }
