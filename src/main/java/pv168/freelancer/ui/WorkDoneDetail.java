@@ -1,5 +1,6 @@
 package pv168.freelancer.ui;
 
+import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -17,6 +18,7 @@ import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,6 +36,10 @@ public class WorkDoneDetail extends JDialog {
     private JPanel quitPanel;
     private JPanel contentPanel;
 
+    private JButton btnAdd;
+    private JButton btnEdit;
+    private JButton btnDelete;
+
     private JTable workDoneTable;
 
     private JSpinner timePickerStart;
@@ -44,6 +50,7 @@ public class WorkDoneDetail extends JDialog {
     private JComboBox<WorkType> workComboBox;
     private JTextArea description;
 
+    private WorkTypeTableModel workTypeTable;
     private final WorkDao workDao;
 
     private final ComponentMover cm = new ComponentMover();
@@ -52,9 +59,15 @@ public class WorkDoneDetail extends JDialog {
         super(owner, modality);
         setUpDialog();
 
+        this.workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
+        this.timePickerStart = createTimePicker();
+        this.timePickerEnd = createTimePicker();
+        this.datePickerStart = createDatePicker();
+        this.datePickerEnd = createDatePicker();
         this.editing = editing;
         this.workDao = workDao;
         this.workDoneTable = workDoneTable;
+        this.workTypeTable = new WorkTypeTableModel(workDao.findAllWorkTypes(), workDao);
 
         setUpQuitPanel(owner);
 
@@ -65,7 +78,7 @@ public class WorkDoneDetail extends JDialog {
 
         setUpMover();
 
-        if (editing) loadWorkDone();
+        if (editing) loadWorkDone(false);
 
         setVisible(true);
     }
@@ -123,26 +136,23 @@ public class WorkDoneDetail extends JDialog {
         return new WorkDone(workStart, workEnd, (WorkType) workComboBox.getSelectedItem(), description.getText());
     }
 
-    private void loadWorkDone() {
+    private void loadWorkDone(boolean updated) {
         WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
         description.setText(workDone.getDescription());
+
         timePickerStart.getModel().setValue(Date.from(
                 workDone.getWorkStart().atZone(ZoneId.systemDefault()).toInstant()));
         timePickerEnd.getModel().setValue(Date.from(
                 workDone.getWorkEnd().atZone(ZoneId.systemDefault()).toInstant()));
-        datePickerStart.getJFormattedTextField().setText(workDone.getWorkStart()
-                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        datePickerEnd.getJFormattedTextField().setText(workDone.getWorkEnd()
-                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        workComboBox.setSelectedItem(workDone.getWorkType());
+        datePickerStart.getModel().setDate(workDone.getWorkStart().getYear(), workDone.getWorkStart().getMonthValue() - 1, workDone.getWorkStart().getDayOfMonth());
+        datePickerEnd.getModel().setDate(workDone.getWorkEnd().getYear(), workDone.getWorkEnd().getMonthValue() - 1, workDone.getWorkEnd().getDayOfMonth());
+        if (!updated) {
+            workComboBox.setSelectedItem(workDone.getWorkType());}
     }
 
 
+
     private JPanel createTimeSelectPanel() {
-        timePickerStart = createTimePicker();
-        timePickerEnd = createTimePicker();
-        datePickerStart = createDatePicker();
-        datePickerEnd = createDatePicker();
 
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(450, 50));
@@ -221,25 +231,26 @@ public class WorkDoneDetail extends JDialog {
         workPanel.setLayout(new FlowLayout());
         workPanel.add(new JLabel("Work:"));
 
-        workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
+        //workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
         workPanel.add(workComboBox);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setPreferredSize(new Dimension(450, 40));
         buttonPanel.setLayout(new FlowLayout());
 
-        JButton btnAdd = new JButton("Add");
+        btnAdd = new JButton("Add");
         btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.ADD_ICON_S));
-        btnAdd.addActionListener(e -> new WorkTypeDetail(owner, true, workDoneTable));
+        btnAdd.addActionListener(e -> addWorkType(e, owner));
         buttonPanel.add(btnAdd);
 
-        JButton btnEdit = new JButton("Edit");
+        btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.EDIT_ICON_S));
-        btnEdit.addActionListener(e -> new WorkTypeDetail(owner, true, workDoneTable));
+        btnEdit.addActionListener(e -> editWorkType(e, owner));
         buttonPanel.add(btnEdit);
 
-        JButton btnDelete = new JButton("Delete");
+        btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94), Icons.DELETE_ICON_S));
+        btnDelete.addActionListener(e -> deleteWorkType(e, owner));
         buttonPanel.add(btnDelete);
 
         panel.add(workPanel);
@@ -258,6 +269,8 @@ public class WorkDoneDetail extends JDialog {
         description = new JTextArea();
         description.setLineWrap(true);
         description.setWrapStyleWord(true);
+        AbstractDocument absDoc = (AbstractDocument) description.getDocument();
+        absDoc.setDocumentFilter(new CustomDocumentFilter(200));
 
         JScrollPane scroll = new JScrollPane(description);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -292,5 +305,37 @@ public class WorkDoneDetail extends JDialog {
                 workDoneTableModel.addRow(getWorkDone());
             }
         }
+    }
+    void updatePanel(JFrame owner) {
+        remove(contentPanel);
+        this.workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
+        setUpContentPanel(owner);
+        add(contentPanel);
+        if (editing) loadWorkDone(true);
+        revalidate();
+        repaint();
+    }
+
+    public void deleteWorkType(ActionEvent actionEvent, JFrame owner) {
+        var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
+        if (workDoneTableModel.workTypeCount(((WorkType) workComboBox.getSelectedItem()).getId()) == 0) {
+            workTypeTable.deleteRow(workComboBox.getSelectedIndex());
+            updatePanel(owner);
+        } else {
+            JOptionPane.showMessageDialog(null, "This work type is in use.");
+        }
+    }
+
+    private void editWorkType(ActionEvent e, JFrame owner) {
+        new WorkTypeDetail(owner, true, workComboBox, workTypeTable, true);
+        WorkType edited = (WorkType) workComboBox.getSelectedItem();
+        updatePanel(owner);
+        workComboBox.setSelectedItem(edited);
+    }
+
+    private void addWorkType(ActionEvent e, JFrame owner) {
+        new WorkTypeDetail(owner, true, workComboBox, workTypeTable, false);
+        updatePanel(owner);
+        workComboBox.setSelectedIndex(workComboBox.getItemCount() - 1);
     }
 }

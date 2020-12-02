@@ -1,6 +1,6 @@
 package pv168.freelancer.ui;
 
-import pv168.freelancer.data.TestDataGenerator;
+import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
@@ -8,10 +8,14 @@ import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+
 
 public class WorkTypeDetail extends JDialog {
 
+    private boolean editingType;
     private JPanel quitPanel;
     private JPanel contentPanel;
 
@@ -20,12 +24,18 @@ public class WorkTypeDetail extends JDialog {
     private JTextField nameField;
     private JTextField hourlyRateField;
     private JTextArea descriptionArea;
+    JComboBox<WorkType> workComboBox;
 
-
+    private WorkTypeTableModel workTypeTable;
     private final ComponentMover cm = new ComponentMover();
 
-    public WorkTypeDetail(JFrame owner, Boolean modality, JTable workDoneTable){
+    public WorkTypeDetail(JFrame owner, Boolean modality, JComboBox<WorkType> workComboBox, WorkTypeTableModel workTypeTable, boolean editingType){
         super(owner, modality);
+
+        this.workTypeTable = workTypeTable;
+        this.editingType = editingType;
+        this.workComboBox = workComboBox;
+
         setUpDialog();
 
         setUpQuitPanel(owner);
@@ -36,6 +46,8 @@ public class WorkTypeDetail extends JDialog {
         add(contentPanel);
 
         setUpMover();
+
+        if (editingType) loadWorkType();
 
         setVisible(true);
     }
@@ -48,9 +60,9 @@ public class WorkTypeDetail extends JDialog {
         // The Glue and Rigid Areas are a way of composing the components where one wants them
         quitPanel.add(Box.createHorizontalGlue());
         quitPanel.add(new MinimizeButton(owner));
-        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
+        quitPanel.add(Box.createRigidArea(new Dimension(5, 0)));
         quitPanel.add(new QuitButton(e -> dispose()));
-        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
+        quitPanel.add(Box.createRigidArea(new Dimension(5, 0)));
     }
 
     private void setUpContentPanel() {
@@ -79,6 +91,8 @@ public class WorkTypeDetail extends JDialog {
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        AbstractDocument absDoc = (AbstractDocument) nameField.getDocument();
+        absDoc.setDocumentFilter(new CustomDocumentFilter(100));
         contentPanel.add(nameField, gbc);
     }
 
@@ -110,6 +124,8 @@ public class WorkTypeDetail extends JDialog {
         JScrollPane scroll = new JScrollPane(descriptionArea);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setPreferredSize(new Dimension(250, 100));
+        AbstractDocument absDoc = (AbstractDocument) descriptionArea.getDocument();
+        absDoc.setDocumentFilter(new CustomDocumentFilter(200));
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
@@ -120,7 +136,7 @@ public class WorkTypeDetail extends JDialog {
     private void addConfirmButton(GridBagConstraints gbc) {
         JButton okBtn = new JButton("Confirm");
         okBtn.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
-        //okBtn.addActionListener(new CreateWorkDoneAction(workDoneTable, new TestDataGenerator()));
+        okBtn.addActionListener(new CreateWorkTypeAction());
         okBtn.addActionListener(e -> dispose());
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -129,9 +145,20 @@ public class WorkTypeDetail extends JDialog {
         contentPanel.add(okBtn, gbc);
     }
 
+    private WorkType getWorkType() {
+        return new WorkType(nameField.getText(), Double.parseDouble(hourlyRateField.getText()), descriptionArea.getText());
+    }
+
+    private void loadWorkType() {
+        WorkType workType = (WorkType) workComboBox.getSelectedItem();
+        nameField.setText(workType.getName());
+        hourlyRateField.setText(Double.toString(workType.getHourlyRate()));
+        descriptionArea.setText(workType.getDescription());
+    }
+
     private void setUpDialog() {
         setUndecorated(true);
-        setSize(new Dimension(450,600));
+        setSize(new Dimension(450, 600));
         setLocationRelativeTo(null);
         getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
@@ -140,4 +167,20 @@ public class WorkTypeDetail extends JDialog {
         cm.setDragInsets(new Insets(5, 5, 5, 5));
         cm.registerComponent(this);
     }
+
+    private class CreateWorkTypeAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            if (editingType) {
+                WorkType workType = workTypeTable.getEntity(workComboBox.getSelectedIndex());
+                WorkType currentWorkType = getWorkType();
+                currentWorkType.setId(workType.getId());
+                workTypeTable.editRow(workComboBox.getSelectedIndex(), currentWorkType);
+            } else {
+                workTypeTable.addRow(getWorkType());
+            }
+        }
+    }
+
+
 }

@@ -14,7 +14,7 @@ public class WorkDao {
 
     public WorkDao(DataSource dataSource, TestDataGenerator testDataGenerator) {
         this.dataSource = dataSource;
-        initWorkTypeTable();
+        initWorkTypeTable(testDataGenerator);
         initWorkDoneTable(testDataGenerator);
     }
 
@@ -25,29 +25,11 @@ public class WorkDao {
         if (workDone.getWorkType() == null) {
             throw new IllegalArgumentException("work type attribute must not be null");
         }
+
+        Long workTypeID = workDone.getWorkType().getId();
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
-                     "INSERT INTO WORK_TYPE (NAME, HOURLY_RATE, DESCRIPTION) VALUES (?, ?, ?)",
-                     Statement.RETURN_GENERATED_KEYS)) {
-
-            st.setString(1, workDone.getWorkType().getName());
-            st.setDouble(2, workDone.getWorkType().getHourlyRate());
-            st.setString(3, workDone.getWorkType().getDescription());
-            st.executeUpdate();
-            var rs = st.getGeneratedKeys();
-            rs.next();
-            Long workTypeID = rs.getLong(1);
-            workDone.getWorkType().setId(workTypeID);
-
-            insertWorkDone(workDone, connection, workTypeID);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Failed to insert to database", ex);
-        }
-    }
-
-    private void insertWorkDone(WorkDone workDone, Connection connection, Long workTypeID) {
-        try (var st = connection.prepareStatement(
-                     "INSERT INTO WORK_DONE (WT_ID, WORK_START, WORK_END, DESCRIPTION) VALUES (?, ?, ?, ?)",
+                "INSERT INTO WORK_DONE (WT_ID, WORK_START, WORK_END, DESCRIPTION) VALUES (?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS)) {
             st.setLong(1, workTypeID);
             st.setTimestamp(2, Timestamp.valueOf(workDone.getWorkStart()));
@@ -60,6 +42,10 @@ public class WorkDao {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to store Work Done" + workDone, e);
         }
+    }
+
+    private void insertWorkDone(WorkDone workDone, Connection connection, Long workTypeID) {
+
     }
 
     public void deleteWorkDone(WorkDone workDone) {
@@ -170,9 +156,10 @@ public class WorkDao {
         }
     }
 
-    private void initWorkTypeTable() {
+    private void initWorkTypeTable(TestDataGenerator testDataGenerator) {
         if (!workTypeTableExists("APP", "WORK_TYPE")) {
             createWorkTypeTable();
+            testDataGenerator.getWorkTypes().forEach(this::createWorkType);
         }
     }
 
@@ -274,13 +261,6 @@ public class WorkDao {
             throw new RuntimeException("Failed to load all workTypes", ex);
         }
     }
-
-
-
-
-
-
-
 
     public void dropTable() {
         try (Connection connection = dataSource.getConnection();
