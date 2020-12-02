@@ -3,10 +3,8 @@ package pv168.freelancer.ui.cards;
 import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkDone;
-import pv168.freelancer.ui.PopUpDeleteAction;
-import pv168.freelancer.ui.PopUpEditAction;
-import pv168.freelancer.ui.WorkDoneDetail;
-import pv168.freelancer.ui.WorkDoneTableModel;
+import pv168.freelancer.model.WorkType;
+import pv168.freelancer.ui.*;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.utils.Icons;
 
@@ -17,6 +15,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class WorkDoneCard extends Card {
@@ -148,11 +147,11 @@ public class WorkDoneCard extends Card {
     private void createButtons() {
         btnCreate = new JButton("Create");
         btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
-        btnCreate.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable, workDao, false));
+        btnCreate.addActionListener(this::editWorkDone);
 
         btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
-        btnEdit.addActionListener(e -> new WorkDoneDetail(owner, true, workDoneTable, workDao, true));
+        btnEdit.addActionListener(this::addWorkDone);
 
         btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
@@ -175,6 +174,16 @@ public class WorkDoneCard extends Card {
         );
     }
 
+    void updatePanel() {
+        remove(contentPanel);
+        setUpTable();
+        createContentPanel();
+        setUpGroupLayout();
+        add(contentPanel);
+        revalidate();
+        repaint();
+    }
+
     private void updateActions(int selectedRowsCount) {
         btnEdit.setEnabled(selectedRowsCount == 1);
         editAction.setEnabled(selectedRowsCount == 1);
@@ -185,5 +194,15 @@ public class WorkDoneCard extends Card {
     private void rowSelectionChanged(ListSelectionEvent listSelectionEvent) {
         var selectionModel = (ListSelectionModel) listSelectionEvent.getSource();
         updateActions(selectionModel.getSelectedItemsCount());
+    }
+
+    private void editWorkDone(ActionEvent e) {
+        new WorkDoneDetail(owner, true, workDoneTable, workDao, true);
+        updatePanel();
+    }
+
+    private void addWorkDone(ActionEvent e) {
+        new WorkDoneDetail(owner, true, workDoneTable, workDao, false);
+        updatePanel();
     }
 }
