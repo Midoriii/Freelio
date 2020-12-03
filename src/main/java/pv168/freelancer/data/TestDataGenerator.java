@@ -60,18 +60,6 @@ public class TestDataGenerator {
         return WORK_TYPES;
     }
 
-
-//    public List<WorkType> createTestWorkType(List<String> workNames) {
-//        List<WorkType> result = new ArrayList<>();
-//        while (workNames.size() > 0) {
-//            String name = selectUniqueRandom(workNames);
-//            String description = selectRandom(DESCRIPTIONS);
-//            double hourlyRate = Math.random() * 96 + 5;
-//            result.add(new WorkType(name, hourlyRate, description));
-//        }
-//        return result;
-//    }
-
     public LocalDateTime getRandomDateTime() {
         LocalDate date = selectRandomLocalDate(MIN_WORK, MAX_WORK);
         double hour = Math.random() * 23;
