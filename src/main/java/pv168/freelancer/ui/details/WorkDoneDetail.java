@@ -296,8 +296,7 @@ public class WorkDoneDetail extends JDialog {
         cm.registerComponent(this);
     }
 
-    private boolean checkWorkDoneValidity() {
-        WorkDone workDone = getWorkDone();
+    private boolean checkWorkDoneValidity(WorkDone workDone) {
         if (workDone.getWorkStart().isAfter(workDone.getWorkEnd())) {
             JOptionPane.showMessageDialog(null,
                     "The start time cannot be after end time.",
@@ -311,6 +310,7 @@ public class WorkDoneDetail extends JDialog {
                     "Warning", JOptionPane.WARNING_MESSAGE);
             return false;
         }
+
         return true;
     }
 
@@ -318,17 +318,18 @@ public class WorkDoneDetail extends JDialog {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
+            WorkDone currentWorkDone = getWorkDone();
+
             if (editing) {
                 WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
-                WorkDone currentWorkDone = getWorkDone();
                 currentWorkDone.setId(workDone.getId());
-                if (checkWorkDoneValidity()) {
+                if (checkWorkDoneValidity(currentWorkDone)) {
                     workDoneTableModel.editRow(workDoneTable.getSelectedRow(), currentWorkDone);
                     dispose();
                 }
             } else {
-                if (checkWorkDoneValidity()) {
-                    workDoneTableModel.addRow(getWorkDone());
+                if (checkWorkDoneValidity(currentWorkDone)) {
+                    workDoneTableModel.addRow(currentWorkDone);
                     dispose();
                 }
             }
