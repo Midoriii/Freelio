@@ -12,9 +12,13 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -72,6 +76,29 @@ public class WorkDoneCard extends JPanel{
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
         table.setRowHeight(30);
         table.setShowGrid(false);
+
+        table.setAutoCreateRowSorter(true);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+        table.setRowSorter(sorter);
+        int fromColumnIndex = table.getColumnModel().getColumnIndex("From");
+        int toColumnIndex = table.getColumnModel().getColumnIndex("To");
+
+        var comparator = new Comparator<String>()
+        {
+            @Override
+            public int compare(String o1, String o2)
+            {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm  dd.MM.yyyy");
+                LocalDateTime ldt1, ldt2;
+                ldt1 = LocalDateTime.parse(o1, formatter);
+                ldt2 = LocalDateTime.parse(o2, formatter);
+                return ldt1.compareTo(ldt2);
+            }
+        };
+
+        sorter.setComparator(fromColumnIndex, comparator);
+        sorter.setComparator(toColumnIndex, comparator);
+
 
         setUpTableRenderers(table);
 
