@@ -26,14 +26,20 @@ final class WorkDaoTest {
 
     @BeforeEach
     void createWorkDao() throws SQLException {
-        workDao = new WorkDao(dataSource, new TestDataGenerator());
+        workDao = new WorkDao(dataSource);
         try (var connection = dataSource.getConnection();
              var st1 = connection.createStatement();
              var st2 = connection.createStatement()) {
-            st1.executeUpdate("DELETE FROM APP.WORK_DONE");
+            st1.executeUpdate("DELETE FROM APP.WORK_DON");
             st2.executeUpdate("DELETE FROM APP.WORK_TYPE");
         }
     }
+
+    @AfterEach
+    void cleanUp() {
+        workDao.dropTable();
+    }
+
 
     @Test
     void createWork() {
