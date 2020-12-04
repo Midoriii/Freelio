@@ -1,6 +1,5 @@
 package pv168.freelancer.ui;
 
-import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -26,7 +25,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Properties;
 
@@ -111,7 +109,7 @@ public class WorkDoneDetail extends JDialog {
         JButton btnOK = new JButton("Confirm");
         btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
-        btnOK.addActionListener(new CreateWorkDone());
+        btnOK.addActionListener(new CreateWorkDoneAction());
         btnOK.addActionListener(e -> dispose());
 
         contentPanel.add(btnOK);
@@ -292,7 +290,7 @@ public class WorkDoneDetail extends JDialog {
         cm.registerComponent(this);
     }
 
-    private class CreateWorkDone extends AbstractAction {
+    private class CreateWorkDoneAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
