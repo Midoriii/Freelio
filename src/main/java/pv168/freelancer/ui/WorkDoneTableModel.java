@@ -24,7 +24,7 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
     private final List<WorkDone> worksDone;
     private final WorkDao workDao;
 
-    public WorkDoneTableModel(List<WorkDone> workDoneList, WorkDao workDao) {
+    public WorkDoneTableModel(WorkDao workDao) {
         super(COLUMNS);
         this.workDao = workDao;
         this.worksDone = workDao.findAllWorksDone();

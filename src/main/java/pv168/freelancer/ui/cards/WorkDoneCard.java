@@ -1,9 +1,6 @@
 package pv168.freelancer.ui.cards;
 
-import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.data.WorkDao;
-import pv168.freelancer.model.WorkDone;
-import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.*;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.utils.Icons;
@@ -16,7 +13,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class WorkDoneCard extends Card {
 
@@ -41,7 +39,7 @@ public class WorkDoneCard extends Card {
         this.workDao = workDao;
 
         // This will be replaced with setting up the actual Table
-        setUpTable();
+        createWorkDoneTable();
 
         createContentPanel();
 
@@ -52,21 +50,18 @@ public class WorkDoneCard extends Card {
         updateActions(workDoneTable.getSelectedRowCount());
     }
 
-    private void setUpTable() {
-        TestDataGenerator testDataGenerator = new TestDataGenerator();
-        workDoneTable = createWorkDoneTable(testDataGenerator.createTestData(100));
+    private void createWorkDoneTable() {
+        workDoneTable = setUpTable();
         workDoneTable.setComponentPopupMenu(createWorkDoneTablePopupMenu());
     }
 
-    private JTable createWorkDoneTable(List<WorkDone> worksDone) {
-        var model = new WorkDoneTableModel(worksDone, workDao);
+    private JTable setUpTable() {
+        var model = new WorkDoneTableModel(workDao);
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
         table.setRowHeight(30);
         table.setShowGrid(false);
-        // Could possibly be removed ?
-        table.setBorder(new MatteBorder(0,1,0,0, Color.BLACK));
 
         // This will be built upon to style the table, so far only tests text centering
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -155,7 +150,7 @@ public class WorkDoneCard extends Card {
 
         btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
-        btnDelete.addActionListener(deleteAction);
+        btnDelete.addActionListener(this::deleteWorkDone);
     }
 
     private void setUpGroupLayout() {
@@ -176,7 +171,7 @@ public class WorkDoneCard extends Card {
 
     void updatePanel() {
         remove(contentPanel);
-        setUpTable();
+        createWorkDoneTable();
         createContentPanel();
         setUpGroupLayout();
         add(contentPanel);
@@ -204,5 +199,14 @@ public class WorkDoneCard extends Card {
     private void addWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workDao, false);
         updatePanel();
+    }
+
+    private void deleteWorkDone(ActionEvent e) {
+        var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
+        Arrays.stream(workDoneTable.getSelectedRows())
+                .map(workDoneTable::convertRowIndexToModel)
+                .boxed()
+                .sorted(Comparator.reverseOrder())
+                .forEach(workDoneTableModel::deleteRow);
     }
 }
