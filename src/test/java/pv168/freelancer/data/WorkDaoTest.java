@@ -35,17 +35,13 @@ final class WorkDaoTest {
         }
     }
 
-    @AfterEach
-    void cleanUp() {
-        workDao.dropTable();
-    }
-
     @Test
     void createWork() {
         WorkType workType = new WorkType("Moderating Discord", 30, "Tough job");
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, "String note");
 
+        workDao.createWorkType(workType);
         workDao.createWorkDone(workDone);
 
         assertThat(workDone.getId())
@@ -66,6 +62,7 @@ final class WorkDaoTest {
     @Test
     void createWorkWithExistingId() {
         WorkType workType = new WorkType("Moderating Discord", 30, "Tough job");
+        workDao.createWorkType(workType);
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, "String note");
         workDone.setId(123L);
@@ -92,6 +89,9 @@ final class WorkDaoTest {
                 LocalDateTime.of(2019, 6, 5, 4, 3, 2), type2, "another note");
 
 
+        workDao.createWorkType(type1);
+        workDao.createWorkType(type2);
+
         workDao.createWorkDone(mod1);
         workDao.createWorkDone(mod2);
         workDao.createWorkDone(feeding);
@@ -111,6 +111,9 @@ final class WorkDaoTest {
         WorkDone feeding = new WorkDone(LocalDateTime.of(2019, 5, 4, 3, 2, 1),
                 LocalDateTime.of(2019, 6, 5, 4, 3, 2), type2, "another note");
 
+
+        workDao.createWorkType(type1);
+        workDao.createWorkType(type2);
 
         workDao.createWorkDone(mod1);
         workDao.createWorkDone(feeding);
@@ -140,6 +143,7 @@ final class WorkDaoTest {
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, originalDescription);
 
+        workDao.createWorkType(workType);
         workDao.createWorkDone(workDone);
 
         workDone.setDescription(newDescription);
