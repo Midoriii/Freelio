@@ -1,4 +1,4 @@
-package pv168.freelancer.ui;
+package pv168.freelancer.ui.actions;
 
 import pv168.freelancer.ui.utils.Icons;
 
