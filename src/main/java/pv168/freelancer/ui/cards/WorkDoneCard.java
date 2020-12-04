@@ -224,8 +224,8 @@ public class WorkDoneCard extends JPanel{
 
     private void editWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workDao, true);
-        workDoneTable.setModel(new WorkDoneTableModel(workDao));
-        setUpTableRenderers(workDoneTable);
+        //workDoneTable.setModel(new WorkDoneTableModel(workDao));
+        //setUpTableRenderers(workDoneTable);
     }
 
     private void addWorkDone(ActionEvent e) {
