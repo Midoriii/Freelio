@@ -2,6 +2,12 @@ package pv168.freelancer.model;
 
 import java.util.Objects;
 
+
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public class WorkType {
     private Long id;
     private String name;

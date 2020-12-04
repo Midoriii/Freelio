@@ -16,6 +16,11 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 
+/**
+ * The main window of the application.
+ *
+ * @author xbenes2
+ */
 public class MainWindow {
     private JFrame frame;
     private JPanel navBar;

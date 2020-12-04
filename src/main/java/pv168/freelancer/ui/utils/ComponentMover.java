@@ -19,6 +19,11 @@ import javax.swing.SwingUtilities;
  *
  *  Components can be registered when the class is created. Additional
  *  components can be added at any time using the registerComponent() method.
+ *
+ *  Courtesy of https://tips4java.wordpress.com/2009/06/14/moving-windows/
+ *  The Author himself states that the code is free to use and modify, and no
+ *  mention of the author is needed.
+ *
  */
 public class ComponentMover extends MouseAdapter
 {

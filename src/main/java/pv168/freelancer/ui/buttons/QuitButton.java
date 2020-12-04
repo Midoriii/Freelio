@@ -4,6 +4,11 @@ import pv168.freelancer.ui.utils.Icons;
 
 import java.awt.event.ActionListener;
 
+/**
+ * Simple quit button consisting of 3 icons.
+ *
+ * @author xbenes2
+ */
 public class QuitButton extends QuitPanelButton {
 
     public QuitButton(ActionListener listener){

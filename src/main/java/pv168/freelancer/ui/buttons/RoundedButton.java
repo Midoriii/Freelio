@@ -9,7 +9,11 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 
-
+/**
+ * A custom rounded-corners buttonUI.
+ *
+ * @author xbenes2
+ */
 public class RoundedButton extends BasicButtonUI {
     private static final float arcwidth  = 15.0f;
     private static final float archeight = 15.0f;

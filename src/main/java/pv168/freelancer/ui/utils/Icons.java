@@ -1,7 +1,10 @@
 package pv168.freelancer.ui.utils;
 
-
-
+/**
+ * Utility class containing instances of all the used icons.
+ *
+ * @author xbenes2
+ */
 public final class Icons {
 
     public static final CustomIcon MINIMIZE_ICON = createIcon("/minus.png", 24, 24);

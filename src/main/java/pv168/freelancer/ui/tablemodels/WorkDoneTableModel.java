@@ -1,13 +1,16 @@
-package pv168.freelancer.ui;
+package pv168.freelancer.ui.tablemodels;
 
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
-import pv168.freelancer.ui.utils.AbstractEntityTableModel;
-import pv168.freelancer.ui.utils.Column;
 
 import java.util.List;
 
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
 
     private static final List<Column<?, WorkDone>> COLUMNS = List.of(
@@ -19,12 +22,10 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
             Column.build("Description", String.class, WorkDone::getDescription)
             );
 
-    //Column.build("Expected Pay", Long.class, WorkDone::calculatePay),
-
     private final List<WorkDone> worksDone;
     private final WorkDao workDao;
 
-    public WorkDoneTableModel(List<WorkDone> workDoneList, WorkDao workDao) {
+    public WorkDoneTableModel(WorkDao workDao) {
         super(COLUMNS);
         this.workDao = workDao;
         this.worksDone = workDao.findAllWorksDone();
@@ -36,7 +37,7 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
     }
 
     @Override
-    protected WorkDone getEntity(int rowIndex) {
+    public WorkDone getEntity(int rowIndex) {
         return worksDone.get(rowIndex);
     }
 

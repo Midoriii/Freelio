@@ -1,11 +1,12 @@
 package pv168.freelancer.ui.cards;
 
-import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.data.WorkDao;
-import pv168.freelancer.model.WorkDone;
-import pv168.freelancer.model.WorkType;
-import pv168.freelancer.ui.*;
+import pv168.freelancer.ui.actions.DeleteFromTableAction;
+import pv168.freelancer.ui.actions.PopUpDeleteAction;
+import pv168.freelancer.ui.actions.PopUpEditAction;
 import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.details.WorkDoneDetail;
+import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
@@ -16,9 +17,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.List;
 
-public class WorkDoneCard extends Card {
+/**
+ * A card for cardLayout in MainWindow class, contains a basic overview of works done.
+ *
+ * @author xbenes2
+ */
+public class WorkDoneCard extends JPanel{
 
     private final JFrame owner;
 
@@ -35,13 +40,16 @@ public class WorkDoneCard extends Card {
 
     private final WorkDao workDao;
 
+    public final String name;
+
     public WorkDoneCard(String name, JFrame owner, WorkDao workDao){
-        super(name);
+        this.name = name;
         this.owner = owner;
         this.workDao = workDao;
 
-        // This will be replaced with setting up the actual Table
-        setUpTable();
+        setPreferredSize(new Dimension(890, 635));
+
+        createWorkDoneTable();
 
         createContentPanel();
 
@@ -52,22 +60,25 @@ public class WorkDoneCard extends Card {
         updateActions(workDoneTable.getSelectedRowCount());
     }
 
-    private void setUpTable() {
-        TestDataGenerator testDataGenerator = new TestDataGenerator();
-        workDoneTable = createWorkDoneTable(testDataGenerator.createTestData(100));
+    private void createWorkDoneTable() {
+        workDoneTable = setUpTable();
         workDoneTable.setComponentPopupMenu(createWorkDoneTablePopupMenu());
     }
 
-    private JTable createWorkDoneTable(List<WorkDone> worksDone) {
-        var model = new WorkDoneTableModel(worksDone, workDao);
+    private JTable setUpTable() {
+        var model = new WorkDoneTableModel(workDao);
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
         table.setRowHeight(30);
         table.setShowGrid(false);
-        // Could possibly be removed ?
-        table.setBorder(new MatteBorder(0,1,0,0, Color.BLACK));
 
+        setUpTableRenderers(table);
+
+        return table;
+    }
+
+    private void setUpTableRenderers(JTable table) {
         // This will be built upon to style the table, so far only tests text centering
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -79,8 +90,6 @@ public class WorkDoneCard extends Card {
 
         JTableHeader header = table.getTableHeader();
         header.setPreferredSize(new Dimension(680, 40));
-
-        return table;
     }
 
     private JPopupMenu createWorkDoneTablePopupMenu() {
@@ -147,15 +156,15 @@ public class WorkDoneCard extends Card {
     private void createButtons() {
         btnCreate = new JButton("Create");
         btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
-        btnCreate.addActionListener(this::editWorkDone);
+        btnCreate.addActionListener(this::addWorkDone);
 
         btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
-        btnEdit.addActionListener(this::addWorkDone);
+        btnEdit.addActionListener(this::editWorkDone);
 
         btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
-        btnDelete.addActionListener(deleteAction);
+        btnDelete.addActionListener(new DeleteFromTableAction(workDoneTable));
     }
 
     private void setUpGroupLayout() {
@@ -174,16 +183,6 @@ public class WorkDoneCard extends Card {
         );
     }
 
-    void updatePanel() {
-        remove(contentPanel);
-        setUpTable();
-        createContentPanel();
-        setUpGroupLayout();
-        add(contentPanel);
-        revalidate();
-        repaint();
-    }
-
     private void updateActions(int selectedRowsCount) {
         btnEdit.setEnabled(selectedRowsCount == 1);
         editAction.setEnabled(selectedRowsCount == 1);
@@ -198,11 +197,11 @@ public class WorkDoneCard extends Card {
 
     private void editWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workDao, true);
-        updatePanel();
+        workDoneTable.setModel(new WorkDoneTableModel(workDao));
+        setUpTableRenderers(workDoneTable);
     }
 
     private void addWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workDao, false);
-        updatePanel();
     }
 }

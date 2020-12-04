@@ -4,6 +4,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * --Description here--
+ *
+ * @author xbenes2
+ */
 public class WorkDone {
     private Long id;
     private LocalDateTime workStart;

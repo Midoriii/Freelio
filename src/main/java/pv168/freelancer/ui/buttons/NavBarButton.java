@@ -7,6 +7,11 @@ import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
+/**
+ * A custom button class used for navigation bar buttons.
+ *
+ * @author xbenes2
+ */
 public class NavBarButton extends JButton implements MouseListener {
 
     public NavBarButton(String label, Icon icon){

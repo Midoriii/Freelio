@@ -1,16 +1,18 @@
-package pv168.freelancer.ui;
+package pv168.freelancer.ui.details;
 
-import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
+import pv168.freelancer.ui.CustomDocumentFilter;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.buttons.RoundedButtonSmall;
+import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
+import pv168.freelancer.ui.tablemodels.WorkTypeTableModel;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.DateLabelFormatter;
 import pv168.freelancer.ui.utils.Icons;
@@ -26,10 +28,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Properties;
 
+/**
+ * An editable dialog containing information about a single work done.
+ *
+ * @author xbenes2
+ */
 public class WorkDoneDetail extends JDialog {
     private boolean editing;
 
@@ -111,7 +117,7 @@ public class WorkDoneDetail extends JDialog {
         JButton btnOK = new JButton("Confirm");
         btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
-        btnOK.addActionListener(new CreateWorkDone());
+        btnOK.addActionListener(new CreateWorkDoneAction());
         btnOK.addActionListener(e -> dispose());
 
         contentPanel.add(btnOK);
@@ -231,7 +237,6 @@ public class WorkDoneDetail extends JDialog {
         workPanel.setLayout(new FlowLayout());
         workPanel.add(new JLabel("Work:"));
 
-        //workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
         workPanel.add(workComboBox);
 
         JPanel buttonPanel = new JPanel();
@@ -292,7 +297,7 @@ public class WorkDoneDetail extends JDialog {
         cm.registerComponent(this);
     }
 
-    private class CreateWorkDone extends AbstractAction {
+    private class CreateWorkDoneAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
