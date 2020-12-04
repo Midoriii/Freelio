@@ -1,9 +1,9 @@
-package pv168.freelancer.ui;
+package pv168.freelancer.ui.tablemodels;
 
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkType;
-import pv168.freelancer.ui.utils.AbstractEntityTableModel;
-import pv168.freelancer.ui.utils.Column;
+import pv168.freelancer.ui.tablemodels.AbstractEntityTableModel;
+import pv168.freelancer.ui.tablemodels.Column;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
     }
 
     @Override
-    protected WorkType getEntity(int rowIndex) {
+    public WorkType getEntity(int rowIndex) {
         return workTypes.get(rowIndex);
     }
 

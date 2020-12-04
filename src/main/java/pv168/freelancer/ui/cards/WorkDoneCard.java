@@ -1,10 +1,12 @@
 package pv168.freelancer.ui.cards;
 
 import pv168.freelancer.data.WorkDao;
-import pv168.freelancer.ui.*;
+import pv168.freelancer.ui.actions.DeleteFromTableAction;
 import pv168.freelancer.ui.actions.PopUpDeleteAction;
 import pv168.freelancer.ui.actions.PopUpEditAction;
 import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.details.WorkDoneDetail;
+import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
@@ -160,7 +162,7 @@ public class WorkDoneCard extends JPanel{
 
         btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
-        btnDelete.addActionListener(this::deleteWorkDone);
+        btnDelete.addActionListener(new DeleteFromTableAction(workDoneTable));
     }
 
     private void setUpGroupLayout() {
@@ -199,14 +201,5 @@ public class WorkDoneCard extends JPanel{
 
     private void addWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workDao, false);
-    }
-
-    private void deleteWorkDone(ActionEvent e) {
-        var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
-        Arrays.stream(workDoneTable.getSelectedRows())
-                .map(workDoneTable::convertRowIndexToModel)
-                .boxed()
-                .sorted(Comparator.reverseOrder())
-                .forEach(workDoneTableModel::deleteRow);
     }
 }

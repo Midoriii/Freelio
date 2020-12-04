@@ -1,9 +1,11 @@
-package pv168.freelancer.ui;
+package pv168.freelancer.ui.details;
 
 import pv168.freelancer.model.WorkType;
+import pv168.freelancer.ui.CustomDocumentFilter;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.tablemodels.WorkTypeTableModel;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.Icons;
 

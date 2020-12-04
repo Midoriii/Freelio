@@ -1,4 +1,4 @@
-package pv168.freelancer.ui.utils;
+package pv168.freelancer.ui.tablemodels;
 
 import java.util.Objects;
 import java.util.function.Function;

@@ -1,4 +1,4 @@
-package pv168.freelancer.ui;
+package pv168.freelancer.ui.details;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -6,10 +6,13 @@ import org.jdatepicker.impl.UtilDateModel;
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
+import pv168.freelancer.ui.CustomDocumentFilter;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.buttons.RoundedButtonSmall;
+import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
+import pv168.freelancer.ui.tablemodels.WorkTypeTableModel;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.DateLabelFormatter;
 import pv168.freelancer.ui.utils.Icons;
