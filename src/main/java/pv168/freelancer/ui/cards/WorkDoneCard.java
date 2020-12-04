@@ -11,10 +11,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -72,14 +69,7 @@ public class WorkDoneCard extends JPanel{
         workDoneTable.setComponentPopupMenu(createWorkDoneTablePopupMenu());
     }
 
-    private JTable setUpTable() {
-        var model = new WorkDoneTableModel(workDoneDao);
-        var table = new JTable(model);
-        table.setAutoCreateRowSorter(true);
-        table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
-        table.setRowHeight(30);
-        table.setShowGrid(false);
-
+    private void setRowComparator(JTable table) {
         table.setAutoCreateRowSorter(true);
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
         table.setRowSorter(sorter);
@@ -101,8 +91,17 @@ public class WorkDoneCard extends JPanel{
 
         sorter.setComparator(fromColumnIndex, comparator);
         sorter.setComparator(toColumnIndex, comparator);
+    }
 
+    private JTable setUpTable() {
+        var model = new WorkDoneTableModel(workDoneDao);
+        var table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
+        table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
+        table.setRowHeight(30);
+        table.setShowGrid(false);
 
+        setRowComparator(table);
         setUpTableRenderers(table);
 
         return table;
@@ -227,9 +226,11 @@ public class WorkDoneCard extends JPanel{
 
     private void editWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workTypeDao, true);
-        //workDoneTable.setModel(new WorkDoneTableModel(workDao));
-        //setUpTableRenderers(workDoneTable);
-
+        var sortKeys = workDoneTable.getRowSorter().getSortKeys();
+        workDoneTable.setModel(new WorkDoneTableModel(workDoneDao));
+        setRowComparator(workDoneTable);
+        workDoneTable.getRowSorter().setSortKeys(sortKeys);
+        setUpTableRenderers(workDoneTable);
     }
 
     private void addWorkDone(ActionEvent e) {
