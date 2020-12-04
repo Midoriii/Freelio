@@ -1,6 +1,6 @@
 package pv168.freelancer.ui.tablemodels;
 
-import pv168.freelancer.data.WorkDao;
+import pv168.freelancer.data.WorkDoneDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 
@@ -23,9 +23,9 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
             );
 
     private final List<WorkDone> worksDone;
-    private final WorkDao workDao;
+    private final WorkDoneDao workDao;
 
-    public WorkDoneTableModel(WorkDao workDao) {
+    public WorkDoneTableModel(WorkDoneDao workDao) {
         super(COLUMNS);
         this.workDao = workDao;
         this.worksDone = workDao.findAllWorksDone();

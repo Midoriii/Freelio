@@ -3,7 +3,8 @@ package pv168.freelancer.ui.details;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import pv168.freelancer.data.WorkDao;
+import pv168.freelancer.data.WorkDoneDao;
+import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.CustomDocumentFilter;
@@ -57,23 +58,23 @@ public class WorkDoneDetail extends JDialog {
     private JTextArea description;
 
     private WorkTypeTableModel workTypeTable;
-    private final WorkDao workDao;
+    private final WorkTypeDao workTypeDao;
 
     private final ComponentMover cm = new ComponentMover();
 
-    public WorkDoneDetail(JFrame owner, Boolean modality, JTable workDoneTable, WorkDao workDao, boolean editing) {
+    public WorkDoneDetail(JFrame owner, Boolean modality, JTable workDoneTable, WorkTypeDao worktypeDao, boolean editing) {
         super(owner, modality);
         setUpDialog();
 
-        this.workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
+        this.workTypeDao = worktypeDao;
+        this.workComboBox = new JComboBox<>(workTypeDao.findAllWorkTypes().toArray(new WorkType[0]));
         this.timePickerStart = createTimePicker();
         this.timePickerEnd = createTimePicker();
         this.datePickerStart = createDatePicker();
         this.datePickerEnd = createDatePicker();
         this.editing = editing;
-        this.workDao = workDao;
         this.workDoneTable = workDoneTable;
-        this.workTypeTable = new WorkTypeTableModel(workDao.findAllWorkTypes(), workDao);
+        this.workTypeTable = new WorkTypeTableModel(workTypeDao.findAllWorkTypes(), workTypeDao);
 
         setUpQuitPanel(owner);
 
@@ -314,7 +315,7 @@ public class WorkDoneDetail extends JDialog {
 
     void updatePanel(JFrame owner) {
         remove(contentPanel);
-        this.workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
+        this.workComboBox = new JComboBox<>(workTypeDao.findAllWorkTypes().toArray(new WorkType[0]));
         setUpContentPanel(owner);
         add(contentPanel);
         if (editing) loadWorkDone(true);
