@@ -1,6 +1,6 @@
 package pv168.freelancer.ui.tablemodels;
 
-import pv168.freelancer.data.WorkDao;
+import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.model.WorkType;
 
 import java.util.List;
@@ -20,11 +20,11 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
     );
 
     private final List<WorkType> workTypes;
-    private final WorkDao workDao;
+    private final WorkTypeDao workTypeDao;
 
-    public WorkTypeTableModel(List<WorkType> workTypeList, WorkDao workDao) {
+    public WorkTypeTableModel(List<WorkType> workTypeList, WorkTypeDao workDao) {
         super(COLUMNS);
-        this.workDao = workDao;
+        this.workTypeDao = workDao;
         this.workTypes = workDao.findAllWorkTypes();
     }
 
@@ -39,14 +39,14 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
     }
 
     public void deleteRow(int rowIndex) {
-        workDao.deleteWorkType(workTypes.get(rowIndex));
+        workTypeDao.deleteWorkType(workTypes.get(rowIndex));
         workTypes.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
     public void addRow(WorkType workType) {
         int newRowIndex = workTypes.size();
-        workDao.createWorkType(workType);
+        workTypeDao.createWorkType(workType);
         workTypes.add(workType);
         fireTableRowsInserted(newRowIndex, newRowIndex);
     }
@@ -54,7 +54,7 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
     public void editRow(int rowIndex, WorkType workType) {
         workTypes.remove(rowIndex);
         workTypes.add(rowIndex, workType);
-        workDao.updateWorkType(workType);
+        workTypeDao.updateWorkType(workType);
         fireTableRowsUpdated(rowIndex, rowIndex);
     }
 

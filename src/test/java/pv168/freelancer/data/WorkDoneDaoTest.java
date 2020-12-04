@@ -12,10 +12,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 
-final class WorkDaoTest {
+final class WorkDoneDaoTest {
 
     private static EmbeddedDataSource dataSource;
-    private WorkDao workDao;
+    private WorkDoneDao workDoneDao;
+    private WorkTypeDao workTypeDao;
 
     @BeforeAll
     static void initTestDataSource() {
@@ -26,19 +27,19 @@ final class WorkDaoTest {
 
     @BeforeEach
     void createWorkDao() throws SQLException {
-        workDao = new WorkDao(dataSource, new TestDataGenerator());
-        try (var connection = dataSource.getConnection();
-             var st1 = connection.createStatement();
-             var st2 = connection.createStatement()) {
-            st1.executeUpdate("DELETE FROM APP.WORK_DONE");
-            st2.executeUpdate("DELETE FROM APP.WORK_TYPE");
+        workTypeDao = new WorkTypeDao(dataSource);
+        workDoneDao = new WorkDoneDao(dataSource);
+        try (var connection = dataSource.getConnection(); var st = connection.createStatement()) {
+            st.executeUpdate("DELETE FROM APP.WORK_DONE");
         }
     }
 
     @AfterEach
     void cleanUp() {
-        workDao.dropTable();
+        workDoneDao.dropTable();
+        workTypeDao.dropTable();
     }
+
 
     @Test
     void createWork() {
@@ -46,11 +47,12 @@ final class WorkDaoTest {
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, "String note");
 
-        workDao.createWorkDone(workDone);
+        workTypeDao.createWorkType(workType);
+        workDoneDao.createWorkDone(workDone);
 
         assertThat(workDone.getId())
                 .isNotNull();
-        assertThat(workDao.findAllWorksDone())
+        assertThat(workDoneDao.findAllWorksDone())
                 .usingElementComparatorIgnoringFields("workType")
                 .containsExactly(workDone);
     }
@@ -60,23 +62,24 @@ final class WorkDaoTest {
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), null, "String note");
         assertThatExceptionOfType(RuntimeException.class)
-                .isThrownBy(() -> workDao.createWorkDone(workDone));
+                .isThrownBy(() -> workDoneDao.createWorkDone(workDone));
     }
 
     @Test
     void createWorkWithExistingId() {
         WorkType workType = new WorkType("Moderating Discord", 30, "Tough job");
+        workTypeDao.createWorkType(workType);
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, "String note");
         workDone.setId(123L);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> workDao.createWorkDone(workDone));
+                .isThrownBy(() -> workDoneDao.createWorkDone(workDone));
     }
 
     @Test
     void findAllEmpty() {
-        assertThat(workDao.findAllWorksDone())
+        assertThat(workDoneDao.findAllWorksDone())
                 .isEmpty();
     }
 
@@ -92,11 +95,14 @@ final class WorkDaoTest {
                 LocalDateTime.of(2019, 6, 5, 4, 3, 2), type2, "another note");
 
 
-        workDao.createWorkDone(mod1);
-        workDao.createWorkDone(mod2);
-        workDao.createWorkDone(feeding);
+        workTypeDao.createWorkType(type1);
+        workTypeDao.createWorkType(type2);
 
-        assertThat(workDao.findAllWorksDone())
+        workDoneDao.createWorkDone(mod1);
+        workDoneDao.createWorkDone(mod2);
+        workDoneDao.createWorkDone(feeding);
+
+        assertThat(workDoneDao.findAllWorksDone())
                 .usingElementComparatorIgnoringFields("workType")
                 .containsExactlyInAnyOrder(mod1, mod2, feeding);
     }
@@ -112,12 +118,15 @@ final class WorkDaoTest {
                 LocalDateTime.of(2019, 6, 5, 4, 3, 2), type2, "another note");
 
 
-        workDao.createWorkDone(mod1);
-        workDao.createWorkDone(feeding);
+        workTypeDao.createWorkType(type1);
+        workTypeDao.createWorkType(type2);
 
-        workDao.deleteWorkDone(mod1);
+        workDoneDao.createWorkDone(mod1);
+        workDoneDao.createWorkDone(feeding);
 
-        assertThat(workDao.findAllWorksDone())
+        workDoneDao.deleteWorkDone(mod1);
+
+        assertThat(workDoneDao.findAllWorksDone())
                 .usingElementComparatorIgnoringFields("workType")
                 .containsExactly(feeding);
     }
@@ -128,7 +137,7 @@ final class WorkDaoTest {
         WorkDone wd = new WorkDone(LocalDateTime.of(2019, 5, 4, 3, 2, 1),
                 LocalDateTime.of(2019, 6, 5, 4, 3, 2), wt, "4 pizzas delivered");
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> workDao.deleteWorkDone(wd));
+                .isThrownBy(() -> workDoneDao.deleteWorkDone(wd));
     }
 
     @Test
@@ -140,68 +149,21 @@ final class WorkDaoTest {
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, originalDescription);
 
-        workDao.createWorkDone(workDone);
+        workTypeDao.createWorkType(workType);
+        workDoneDao.createWorkDone(workDone);
 
         workDone.setDescription(newDescription);
-        workDao.updateWorkDone(workDone);
+        workDoneDao.updateWorkDone(workDone);
 
         assertThat(findWorkDoneById(workDone.getId()).getDescription()).isEqualTo(newDescription);
     }
 
-    @Test
-    void createWorkType() {
-        WorkType workType = new WorkType("Moderating Discord", 30, "Tough job");
-
-        workDao.createWorkType(workType);
-
-        assertThat(workType.getId())
-                .isNotNull();
-    }
-
-    @Test
-    void deleteWorkType() {
-        WorkType type1 = new WorkType("Moderating Discord", 30, "Tough job");
-        WorkType type2 = new WorkType("Feeding pigeons", 0, "Fresh air");
-
-        workDao.createWorkType(type1);
-        workDao.createWorkType(type2);
-
-        assertThat(workDao.findAllWorkTypes().size()).isEqualTo(2);
-
-        workDao.deleteWorkType(type1);
-
-        assertThat(workDao.findAllWorkTypes().size()).isEqualTo(1);
-    }
-
-    @Test
-    void updateWorkType() {
-        String originalDescription = "Tough job";
-        String newDescription = "Fresh air";
-
-        WorkType workType = new WorkType("Feeding pigeons", 0, originalDescription);
-
-        workDao.createWorkType(workType);
-        workType.setDescription(newDescription);
-        workDao.updateWorkType(workType);
-
-        assertThat(findWorkTypeById(workType.getId()).getDescription()).isEqualTo(newDescription);
-    }
 
     private WorkDone findWorkDoneById(long id) {
-        return workDao.findAllWorksDone().stream()
+        return workDoneDao.findAllWorksDone().stream()
                 .filter(w -> w.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("No WorkDone with id " + id + " found"));
     }
-
-    private WorkType findWorkTypeById(long id) {
-        return workDao.findAllWorkTypes().stream()
-                .filter(w -> w.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("No WorkType with id " + id + " found"));
-    }
-
-
-
 
 }

@@ -1,6 +1,7 @@
 package pv168.freelancer.ui.cards;
 
-import pv168.freelancer.data.WorkDao;
+import pv168.freelancer.data.WorkDoneDao;
+import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.details.WorkDoneDetail;
 import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
@@ -42,14 +43,16 @@ public class WorkDoneCard extends JPanel{
     private JButton btnEdit;
     private JButton btnDelete;
 
-    private final WorkDao workDao;
+    private final WorkTypeDao workTypeDao;
+    private final WorkDoneDao workDoneDao;
 
     public final String name;
 
-    public WorkDoneCard(String name, JFrame owner, WorkDao workDao){
+    public WorkDoneCard(String name, JFrame owner, WorkTypeDao workTypeDao, WorkDoneDao workDoneDao){
         this.name = name;
         this.owner = owner;
-        this.workDao = workDao;
+        this.workTypeDao = workTypeDao;
+        this.workDoneDao = workDoneDao;
 
         setPreferredSize(new Dimension(890, 635));
 
@@ -70,7 +73,7 @@ public class WorkDoneCard extends JPanel{
     }
 
     private JTable setUpTable() {
-        var model = new WorkDoneTableModel(workDao);
+        var model = new WorkDoneTableModel(workDoneDao);
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
@@ -223,13 +226,14 @@ public class WorkDoneCard extends JPanel{
     }
 
     private void editWorkDone(ActionEvent e) {
-        new WorkDoneDetail(owner, true, workDoneTable, workDao, true);
+        new WorkDoneDetail(owner, true, workDoneTable, workTypeDao, true);
         //workDoneTable.setModel(new WorkDoneTableModel(workDao));
         //setUpTableRenderers(workDoneTable);
+
     }
 
     private void addWorkDone(ActionEvent e) {
-        new WorkDoneDetail(owner, true, workDoneTable, workDao, false);
+        new WorkDoneDetail(owner, true, workDoneTable, workTypeDao, false);
     }
 
     private void deleteWorkDone(ActionEvent e) {
