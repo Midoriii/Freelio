@@ -117,7 +117,7 @@ public class WorkDoneDetail extends JDialog {
         JButton btnOK = new JButton("Confirm");
         btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
-        btnOK.addActionListener(new CreateWorkDoneAction());
+        btnOK.addActionListener(this::closeWorkDone);
         btnOK.addActionListener(e -> dispose());
 
         contentPanel.add(btnOK);
@@ -311,6 +311,7 @@ public class WorkDoneDetail extends JDialog {
             }
         }
     }
+
     void updatePanel(JFrame owner) {
         remove(contentPanel);
         this.workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
@@ -319,6 +320,14 @@ public class WorkDoneDetail extends JDialog {
         if (editing) loadWorkDone(true);
         revalidate();
         repaint();
+    }
+
+    public void closeWorkDone(ActionEvent actionEvent) {
+        if (getWorkDone().getWorkStart().isBefore(getWorkDone().getWorkEnd())) {
+            new CreateWorkDoneAction();
+        } else {
+        JOptionPane.showMessageDialog(null, "Start time is later than end time");
+        }
     }
 
     public void deleteWorkType(ActionEvent actionEvent, JFrame owner) {

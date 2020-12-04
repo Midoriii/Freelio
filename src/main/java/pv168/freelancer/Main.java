@@ -12,8 +12,7 @@ import org.apache.derby.jdbc.EmbeddedDataSource;
 public class Main {
 
     public static void main(String[] args) {
-        TestDataGenerator testDataGenerator = new TestDataGenerator();
-        WorkDao workDao = new WorkDao(createDataSource(), testDataGenerator);
+        WorkDao workDao = new WorkDao(createDataSource());
         EventQueue.invokeLater(() -> new MainWindow(workDao).show());
     }
 
