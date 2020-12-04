@@ -14,7 +14,11 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-
+/**
+ * An editable dialog containing information about a single work type.
+ *
+ * @author xbenes2
+ */
 public class WorkTypeDetail extends JDialog {
 
     private boolean editingType;
@@ -183,6 +187,4 @@ public class WorkTypeDetail extends JDialog {
             }
         }
     }
-
-
 }

@@ -6,6 +6,11 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public final class PopUpEditAction extends AbstractAction {
 
     private final JTable itemTable;

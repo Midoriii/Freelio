@@ -4,6 +4,11 @@ package pv168.freelancer.ui.cards;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A card for cardLayout in MainWindow class, containing a basic overview of Invoices.
+ *
+ * @author xbenes2
+ */
 public class InvoiceCard extends JPanel {
 
     private Frame owner;

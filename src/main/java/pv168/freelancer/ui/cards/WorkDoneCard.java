@@ -17,9 +17,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
-import java.util.Comparator;
 
+/**
+ * A card for cardLayout in MainWindow class, contains a basic overview of works done.
+ *
+ * @author xbenes2
+ */
 public class WorkDoneCard extends JPanel{
 
     private final JFrame owner;
@@ -46,7 +49,6 @@ public class WorkDoneCard extends JPanel{
 
         setPreferredSize(new Dimension(890, 635));
 
-        // This will be replaced with setting up the actual Table
         createWorkDoneTable();
 
         createContentPanel();

@@ -5,6 +5,11 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
 
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public class CustomDocumentFilter extends DocumentFilter {
 
     private int len;

@@ -8,6 +8,11 @@ import pv168.freelancer.ui.buttons.RoundedButtonSmall;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A custom icon class for increased rendering quality.
+ *
+ * @author xbenes2
+ */
 public class CustomIcon implements Icon {
 
     private final Image image;

@@ -31,6 +31,11 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Properties;
 
+/**
+ * An editable dialog containing information about a single work done.
+ *
+ * @author xbenes2
+ */
 public class WorkDoneDetail extends JDialog {
     private boolean editing;
 
@@ -232,7 +237,6 @@ public class WorkDoneDetail extends JDialog {
         workPanel.setLayout(new FlowLayout());
         workPanel.add(new JLabel("Work:"));
 
-        //workComboBox = new JComboBox<>(workDao.findAllWorkTypes().toArray(new WorkType[0]));
         workPanel.add(workComboBox);
 
         JPanel buttonPanel = new JPanel();

@@ -3,6 +3,11 @@ package pv168.freelancer.ui.tablemodels;
 import java.util.Objects;
 import java.util.function.Function;
 
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public class Column<T, E> {
 
     private final String columnName;

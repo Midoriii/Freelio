@@ -7,6 +7,11 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * An action for deleting an item from any given JTable.
+ *
+ * @author xbenes2
+ */
 public class DeleteFromTableAction extends AbstractAction {
 
     private final JTable table;

@@ -2,12 +2,14 @@ package pv168.freelancer.ui.tablemodels;
 
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkType;
-import pv168.freelancer.ui.tablemodels.AbstractEntityTableModel;
-import pv168.freelancer.ui.tablemodels.Column;
 
 import java.util.List;
 
-
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
 
     private static final List<Column<?, WorkType>> COLUMNS = List.of(
@@ -16,8 +18,6 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
             Column.build("Hourly Rate", double.class, WorkType::getHourlyRate),
             Column.build("Description", String.class, WorkType::getDescription)
     );
-
-    //Column.build("Expected Pay", Long.class, WorkDone::calculatePay),
 
     private final List<WorkType> workTypes;
     private final WorkDao workDao;

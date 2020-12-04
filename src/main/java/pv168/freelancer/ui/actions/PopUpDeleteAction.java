@@ -9,6 +9,11 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public final class PopUpDeleteAction extends AbstractAction {
 
     private final JTable itemTable;

@@ -3,6 +3,11 @@ package pv168.freelancer.ui.tablemodels;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public abstract class AbstractEntityTableModel<E> extends AbstractTableModel {
 
     private final List<Column<?, E>> columns;

@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * A custom button class for rounded minimize and quit buttons.
+ *
+ * @author xbenes2
+ */
 public class QuitPanelButton extends JButton implements MouseMotionListener {
 
     public QuitPanelButton(){
