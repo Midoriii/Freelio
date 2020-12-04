@@ -63,6 +63,12 @@ public class WorkDoneCard extends Card {
         table.setRowHeight(30);
         table.setShowGrid(false);
 
+        setUpTableRenderers(table);
+
+        return table;
+    }
+
+    private void setUpTableRenderers(JTable table) {
         // This will be built upon to style the table, so far only tests text centering
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -74,8 +80,6 @@ public class WorkDoneCard extends Card {
 
         JTableHeader header = table.getTableHeader();
         header.setPreferredSize(new Dimension(680, 40));
-
-        return table;
     }
 
     private JPopupMenu createWorkDoneTablePopupMenu() {
@@ -169,16 +173,6 @@ public class WorkDoneCard extends Card {
         );
     }
 
-    void updatePanel() {
-        remove(contentPanel);
-        createWorkDoneTable();
-        createContentPanel();
-        setUpGroupLayout();
-        add(contentPanel);
-        revalidate();
-        repaint();
-    }
-
     private void updateActions(int selectedRowsCount) {
         btnEdit.setEnabled(selectedRowsCount == 1);
         editAction.setEnabled(selectedRowsCount == 1);
@@ -193,12 +187,12 @@ public class WorkDoneCard extends Card {
 
     private void editWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workDao, true);
-        updatePanel();
+        workDoneTable.setModel(new WorkDoneTableModel(workDao));
+        setUpTableRenderers(workDoneTable);
     }
 
     private void addWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workDao, false);
-        updatePanel();
     }
 
     private void deleteWorkDone(ActionEvent e) {
