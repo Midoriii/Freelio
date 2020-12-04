@@ -118,7 +118,6 @@ public class WorkDoneDetail extends JDialog {
         btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
         btnOK.addActionListener(new CreateWorkDoneAction());
-        btnOK.addActionListener(e -> dispose());
 
         contentPanel.add(btnOK);
         contentPanel.add(Box.createVerticalStrut(50));
@@ -297,6 +296,24 @@ public class WorkDoneDetail extends JDialog {
         cm.registerComponent(this);
     }
 
+    private boolean checkWorkDoneValidity() {
+        WorkDone workDone = getWorkDone();
+        if (workDone.getWorkStart().isAfter(workDone.getWorkEnd())) {
+            JOptionPane.showMessageDialog(null,
+                    "The start time cannot be after end time.",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if (workDone.getWorkType() == null) {
+            JOptionPane.showMessageDialog(null,
+                    "A work type must by chosen.",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
     private class CreateWorkDoneAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -305,9 +322,15 @@ public class WorkDoneDetail extends JDialog {
                 WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
                 WorkDone currentWorkDone = getWorkDone();
                 currentWorkDone.setId(workDone.getId());
-                workDoneTableModel.editRow(workDoneTable.getSelectedRow(), currentWorkDone);
+                if (checkWorkDoneValidity()) {
+                    workDoneTableModel.editRow(workDoneTable.getSelectedRow(), currentWorkDone);
+                    dispose();
+                }
             } else {
-                workDoneTableModel.addRow(getWorkDone());
+                if (checkWorkDoneValidity()) {
+                    workDoneTableModel.addRow(getWorkDone());
+                    dispose();
+                }
             }
         }
     }
