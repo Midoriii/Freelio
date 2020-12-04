@@ -1,5 +1,6 @@
 package pv168.freelancer.ui.details;
 
+import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.CustomDocumentFilter;
 import pv168.freelancer.ui.buttons.MinimizeButton;
@@ -13,6 +14,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.text.NumberFormat;
 
 /**
  * An editable dialog containing information about a single work type.
@@ -143,12 +145,34 @@ public class WorkTypeDetail extends JDialog {
         JButton okBtn = new JButton("Confirm");
         okBtn.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         okBtn.addActionListener(new CreateWorkTypeAction());
-        okBtn.addActionListener(e -> dispose());
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.insets = new Insets(100, 150, 20, 150);
         gbc.gridwidth = 2;
         contentPanel.add(okBtn, gbc);
+    }
+
+    private boolean checkWorkTypeValidity() {
+        if (nameField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                    "The name cannot be empty.",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        try
+        {
+            var hourlyRate = Double.parseDouble(hourlyRateField.getText());
+        }
+        catch(NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(null,
+                    "Hourly rate must be a valid number.",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        return true;
     }
 
     private WorkType getWorkType() {
@@ -177,6 +201,10 @@ public class WorkTypeDetail extends JDialog {
     private class CreateWorkTypeAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
+            if (!checkWorkTypeValidity()) {
+                return;
+            }
+
             if (editingType) {
                 WorkType workType = workTypeTable.getEntity(workComboBox.getSelectedIndex());
                 WorkType currentWorkType = getWorkType();
@@ -185,6 +213,8 @@ public class WorkTypeDetail extends JDialog {
             } else {
                 workTypeTable.addRow(getWorkType());
             }
+
+            dispose();
         }
     }
 }
