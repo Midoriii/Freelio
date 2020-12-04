@@ -2,6 +2,8 @@ package pv168.freelancer.ui.cards;
 
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.ui.*;
+import pv168.freelancer.ui.actions.PopUpDeleteAction;
+import pv168.freelancer.ui.actions.PopUpEditAction;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.utils.Icons;
 
@@ -16,7 +18,7 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class WorkDoneCard extends Card {
+public class WorkDoneCard extends JPanel{
 
     private final JFrame owner;
 
@@ -33,10 +35,14 @@ public class WorkDoneCard extends Card {
 
     private final WorkDao workDao;
 
+    public final String name;
+
     public WorkDoneCard(String name, JFrame owner, WorkDao workDao){
-        super(name);
+        this.name = name;
         this.owner = owner;
         this.workDao = workDao;
+
+        setPreferredSize(new Dimension(890, 635));
 
         // This will be replaced with setting up the actual Table
         createWorkDoneTable();
