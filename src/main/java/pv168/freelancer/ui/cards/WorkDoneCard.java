@@ -1,11 +1,10 @@
 package pv168.freelancer.ui.cards;
 
-import pv168.freelancer.data.TestDataGenerator;
-import pv168.freelancer.data.WorkDao;
-import pv168.freelancer.model.WorkDone;
-import pv168.freelancer.model.WorkType;
-import pv168.freelancer.ui.*;
+import pv168.freelancer.data.WorkDoneDao;
+import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.details.WorkDoneDetail;
+import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
@@ -14,11 +13,22 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.List;
+import java.awt.event.KeyEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Comparator;
 
-public class WorkDoneCard extends Card {
+/**
+ * A card for cardLayout in MainWindow class, contains a basic overview of works done.
+ *
+ * @author xbenes2
+ */
+public class WorkDoneCard extends JPanel{
 
     private final JFrame owner;
 
@@ -33,15 +43,20 @@ public class WorkDoneCard extends Card {
     private JButton btnEdit;
     private JButton btnDelete;
 
-    private final WorkDao workDao;
+    private final WorkTypeDao workTypeDao;
+    private final WorkDoneDao workDoneDao;
 
-    public WorkDoneCard(String name, JFrame owner, WorkDao workDao){
-        super(name);
+    public final String name;
+
+    public WorkDoneCard(String name, JFrame owner, WorkTypeDao workTypeDao, WorkDoneDao workDoneDao){
+        this.name = name;
         this.owner = owner;
-        this.workDao = workDao;
+        this.workTypeDao = workTypeDao;
+        this.workDoneDao = workDoneDao;
 
-        // This will be replaced with setting up the actual Table
-        setUpTable();
+        setPreferredSize(new Dimension(890, 635));
+
+        createWorkDoneTable();
 
         createContentPanel();
 
@@ -52,22 +67,48 @@ public class WorkDoneCard extends Card {
         updateActions(workDoneTable.getSelectedRowCount());
     }
 
-    private void setUpTable() {
-        TestDataGenerator testDataGenerator = new TestDataGenerator();
-        workDoneTable = createWorkDoneTable(testDataGenerator.createTestData(100));
+    private void createWorkDoneTable() {
+        workDoneTable = setUpTable();
         workDoneTable.setComponentPopupMenu(createWorkDoneTablePopupMenu());
     }
 
-    private JTable createWorkDoneTable(List<WorkDone> worksDone) {
-        var model = new WorkDoneTableModel(worksDone, workDao);
+    private JTable setUpTable() {
+        var model = new WorkDoneTableModel(workDoneDao);
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
         table.setRowHeight(30);
         table.setShowGrid(false);
-        // Could possibly be removed ?
-        table.setBorder(new MatteBorder(0,1,0,0, Color.BLACK));
 
+        table.setAutoCreateRowSorter(true);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+        table.setRowSorter(sorter);
+        int fromColumnIndex = table.getColumnModel().getColumnIndex("From");
+        int toColumnIndex = table.getColumnModel().getColumnIndex("To");
+
+        var comparator = new Comparator<String>()
+        {
+            @Override
+            public int compare(String o1, String o2)
+            {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm  dd.MM.yyyy");
+                LocalDateTime ldt1, ldt2;
+                ldt1 = LocalDateTime.parse(o1, formatter);
+                ldt2 = LocalDateTime.parse(o2, formatter);
+                return ldt1.compareTo(ldt2);
+            }
+        };
+
+        sorter.setComparator(fromColumnIndex, comparator);
+        sorter.setComparator(toColumnIndex, comparator);
+
+
+        setUpTableRenderers(table);
+
+        return table;
+    }
+
+    private void setUpTableRenderers(JTable table) {
         // This will be built upon to style the table, so far only tests text centering
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -79,13 +120,11 @@ public class WorkDoneCard extends Card {
 
         JTableHeader header = table.getTableHeader();
         header.setPreferredSize(new Dimension(680, 40));
-
-        return table;
     }
 
     private JPopupMenu createWorkDoneTablePopupMenu() {
-        editAction = new PopUpEditAction(workDoneTable);
-        deleteAction = new PopUpDeleteAction(workDoneTable);
+        editAction = new PopUpEditAction();
+        deleteAction = new PopUpDeleteAction();
         var menu = new JPopupMenu();
         menu.add(editAction);
         menu.add(deleteAction);
@@ -147,15 +186,15 @@ public class WorkDoneCard extends Card {
     private void createButtons() {
         btnCreate = new JButton("Create");
         btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
-        btnCreate.addActionListener(this::editWorkDone);
+        btnCreate.addActionListener(this::addWorkDone);
 
         btnEdit = new JButton("Edit");
         btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
-        btnEdit.addActionListener(this::addWorkDone);
+        btnEdit.addActionListener(this::editWorkDone);
 
         btnDelete = new JButton("Delete");
         btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
-        btnDelete.addActionListener(deleteAction);
+        btnDelete.addActionListener(this::deleteWorkDone);
     }
 
     private void setUpGroupLayout() {
@@ -174,16 +213,6 @@ public class WorkDoneCard extends Card {
         );
     }
 
-    void updatePanel() {
-        remove(contentPanel);
-        setUpTable();
-        createContentPanel();
-        setUpGroupLayout();
-        add(contentPanel);
-        revalidate();
-        repaint();
-    }
-
     private void updateActions(int selectedRowsCount) {
         btnEdit.setEnabled(selectedRowsCount == 1);
         editAction.setEnabled(selectedRowsCount == 1);
@@ -197,12 +226,50 @@ public class WorkDoneCard extends Card {
     }
 
     private void editWorkDone(ActionEvent e) {
-        new WorkDoneDetail(owner, true, workDoneTable, workDao, true);
-        updatePanel();
+        new WorkDoneDetail(owner, true, workDoneTable, workTypeDao, true);
+        workDoneTable.setModel(new WorkDoneTableModel(workDoneDao));
+        setUpTableRenderers(workDoneTable);
     }
 
     private void addWorkDone(ActionEvent e) {
-        new WorkDoneDetail(owner, true, workDoneTable, workDao, false);
-        updatePanel();
+        new WorkDoneDetail(owner, true, workDoneTable, workTypeDao, false);
+    }
+
+    private void deleteWorkDone(ActionEvent e) {
+        var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
+        Arrays.stream(workDoneTable.getSelectedRows())
+                .map(workDoneTable::convertRowIndexToModel)
+                .boxed()
+                .sorted(Comparator.reverseOrder())
+                .forEach(workDoneTableModel::deleteRow);
+    }
+
+
+    private class PopUpDeleteAction extends AbstractAction {
+
+        public PopUpDeleteAction() {
+            super("Delete", Icons.TOOLBAR_DELETE_ICON);
+            putValue(MNEMONIC_KEY, KeyEvent.VK_D);
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            deleteWorkDone(e);
+        }
+    }
+
+    private class PopUpEditAction extends AbstractAction {
+        public PopUpEditAction() {
+            super("Edit", Icons.TOOLBAR_EDIT_ICON);
+            putValue(MNEMONIC_KEY, KeyEvent.VK_E);
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            editWorkDone(e);
+        }
     }
 }
+

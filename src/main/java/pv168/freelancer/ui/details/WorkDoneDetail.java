@@ -3,7 +3,6 @@ package pv168.freelancer.ui.details;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import pv168.freelancer.data.WorkDoneDao;
 import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
@@ -60,14 +59,16 @@ public class WorkDoneDetail extends JDialog {
     private WorkTypeTableModel workTypeTable;
     private final WorkTypeDao workTypeDao;
 
+
     private final ComponentMover cm = new ComponentMover();
 
-    public WorkDoneDetail(JFrame owner, Boolean modality, JTable workDoneTable, WorkTypeDao worktypeDao, boolean editing) {
+    public WorkDoneDetail(JFrame owner, Boolean modality, JTable workDoneTable, WorkTypeDao workTypeDao, boolean editing) {
         super(owner, modality);
         setUpDialog();
 
-        this.workTypeDao = worktypeDao;
+        this.workTypeDao = workTypeDao;
         this.workComboBox = new JComboBox<>(workTypeDao.findAllWorkTypes().toArray(new WorkType[0]));
+
         this.timePickerStart = createTimePicker();
         this.timePickerEnd = createTimePicker();
         this.datePickerStart = createDatePicker();
@@ -75,6 +76,7 @@ public class WorkDoneDetail extends JDialog {
         this.editing = editing;
         this.workDoneTable = workDoneTable;
         this.workTypeTable = new WorkTypeTableModel(workTypeDao.findAllWorkTypes(), workTypeDao);
+
 
         setUpQuitPanel(owner);
 
@@ -118,8 +120,7 @@ public class WorkDoneDetail extends JDialog {
         JButton btnOK = new JButton("Confirm");
         btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
-        btnOK.addActionListener(this::closeWorkDone);
-        btnOK.addActionListener(e -> dispose());
+        btnOK.addActionListener(new CreateWorkDoneAction());
 
         contentPanel.add(btnOK);
         contentPanel.add(Box.createVerticalStrut(50));
@@ -298,6 +299,24 @@ public class WorkDoneDetail extends JDialog {
         cm.registerComponent(this);
     }
 
+    private boolean checkWorkDoneValidity() {
+        WorkDone workDone = getWorkDone();
+        if (workDone.getWorkStart().isAfter(workDone.getWorkEnd())) {
+            JOptionPane.showMessageDialog(null,
+                    "The start time cannot be after end time.",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if (workDone.getWorkType() == null) {
+            JOptionPane.showMessageDialog(null,
+                    "A work type must by chosen.",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
     private class CreateWorkDoneAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -306,29 +325,27 @@ public class WorkDoneDetail extends JDialog {
                 WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
                 WorkDone currentWorkDone = getWorkDone();
                 currentWorkDone.setId(workDone.getId());
-                workDoneTableModel.editRow(workDoneTable.getSelectedRow(), currentWorkDone);
+                if (checkWorkDoneValidity()) {
+                    workDoneTableModel.editRow(workDoneTable.getSelectedRow(), currentWorkDone);
+                    dispose();
+                }
             } else {
-                workDoneTableModel.addRow(getWorkDone());
+                if (checkWorkDoneValidity()) {
+                    workDoneTableModel.addRow(getWorkDone());
+                    dispose();
+                }
             }
         }
     }
-
     void updatePanel(JFrame owner) {
         remove(contentPanel);
         this.workComboBox = new JComboBox<>(workTypeDao.findAllWorkTypes().toArray(new WorkType[0]));
+
         setUpContentPanel(owner);
         add(contentPanel);
         if (editing) loadWorkDone(true);
         revalidate();
         repaint();
-    }
-
-    public void closeWorkDone(ActionEvent actionEvent) {
-        if (getWorkDone().getWorkStart().isBefore(getWorkDone().getWorkEnd())) {
-            new CreateWorkDoneAction();
-        } else {
-        JOptionPane.showMessageDialog(null, "Start time is later than end time");
-        }
     }
 
     public void deleteWorkType(ActionEvent actionEvent, JFrame owner) {

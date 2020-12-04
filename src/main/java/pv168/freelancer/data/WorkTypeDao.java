@@ -1,6 +1,5 @@
 package pv168.freelancer.data;
 
-import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 
 import javax.sql.DataSource;

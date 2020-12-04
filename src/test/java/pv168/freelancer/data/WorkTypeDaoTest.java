@@ -23,6 +23,9 @@ public class WorkTypeDaoTest {
     @BeforeEach
     void createWorkDao() throws SQLException {
         workTypeDao = new WorkTypeDao(dataSource);
+        try (var connection = dataSource.getConnection(); var st = connection.createStatement()) {
+            st.executeUpdate("DELETE FROM APP.WORK_TYPE");
+        }
     }
 
     @AfterEach
