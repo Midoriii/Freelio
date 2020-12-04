@@ -1,5 +1,6 @@
-package pv168.freelancer.ui;
+package pv168.freelancer.ui.actions;
 
+import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
@@ -8,6 +9,11 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public final class PopUpDeleteAction extends AbstractAction {
 
     private final JTable itemTable;

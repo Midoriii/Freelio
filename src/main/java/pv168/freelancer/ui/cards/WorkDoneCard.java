@@ -3,6 +3,7 @@ package pv168.freelancer.ui.cards;
 import pv168.freelancer.data.TestDataGenerator;
 import pv168.freelancer.data.WorkDao;
 import pv168.freelancer.model.WorkDone;
+import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.*;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.utils.Icons;

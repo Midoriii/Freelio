@@ -1,8 +1,13 @@
-package pv168.freelancer.ui.utils;
+package pv168.freelancer.ui.tablemodels;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public abstract class AbstractEntityTableModel<E> extends AbstractTableModel {
 
     private final List<Column<?, E>> columns;
@@ -21,7 +26,7 @@ public abstract class AbstractEntityTableModel<E> extends AbstractTableModel {
         return getColumn(columnIndex).getValue(getEntity(rowIndex));
     }
 
-    protected abstract E getEntity(int rowIndex);
+    public abstract E getEntity(int rowIndex);
 
     @Override
     public String getColumnName(int columnIndex) {

@@ -3,6 +3,11 @@ package pv168.freelancer.ui.buttons;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A smaller variant of custom rounded button UI.
+ *
+ * @author xbenes2
+ */
 public class RoundedButtonSmall extends RoundedButton{
     public RoundedButtonSmall(Color color, Icon icon) {
         super(color, icon);

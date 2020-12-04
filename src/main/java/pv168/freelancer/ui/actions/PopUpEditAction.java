@@ -1,4 +1,4 @@
-package pv168.freelancer.ui;
+package pv168.freelancer.ui.actions;
 
 import pv168.freelancer.ui.utils.Icons;
 
@@ -6,6 +6,11 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * --Description here--
+ *
+ * @author
+ */
 public final class PopUpEditAction extends AbstractAction {
 
     private final JTable itemTable;

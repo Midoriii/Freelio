@@ -8,6 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * A navigation bar for switching cards in the cardLayout of MainWindow class.
+ *
+ * @author xbenes2
+ */
 public class NavBar extends JPanel implements ActionListener {
 
     private Label brand;
