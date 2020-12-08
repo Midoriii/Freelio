@@ -32,7 +32,7 @@ public class WorkTypeDao {
              var rs = connection.getMetaData().getTables(null, schemaName, tableName, null)) {
             return rs.next();
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to detect if the table " + schemaName + "." + tableName + " exists", ex);
+            throw new DataAccessException("Failed to detect if the table " + schemaName + "." + tableName + " exists", ex);
         }
     }
 
@@ -46,7 +46,7 @@ public class WorkTypeDao {
                     "DESCRIPTION varchar(200)" +
                     ")");
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to create WORK_TYPE table", ex);
+            throw new DataAccessException("Failed to create WORK_TYPE table", ex);
         }
     }
 
@@ -64,11 +64,11 @@ public class WorkTypeDao {
                 if (rs.next()) {
                     workType.setId(rs.getLong(1));
                 } else {
-                    throw new RuntimeException("Failed to fetch generated key: no key returned for WorkType: " + workType);
+                    throw new DataAccessException("Failed to fetch generated key: no key returned for WorkType: " + workType);
                 }
             }
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to store WorkType " + workType, ex);
+            throw new DataAccessException("Failed to store WorkType " + workType, ex);
         }
     }
 
@@ -79,10 +79,10 @@ public class WorkTypeDao {
                      "DELETE FROM WORK_TYPE WHERE ID = ?")) {
             st.setLong(1, workType.getId());
             if (st.executeUpdate() == 0){
-                throw new RuntimeException("Failed to delete non-existing WorkType: " + workType);
+                throw new DataAccessException("Failed to delete non-existing WorkType: " + workType);
             }
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to delete employee " + workType, ex);
+            throw new DataAccessException("Failed to delete employee " + workType, ex);
         }
     }
 
@@ -96,10 +96,10 @@ public class WorkTypeDao {
             st.setString(3, workType.getDescription());
             st.setLong(4, workType.getId());
             if (st.executeUpdate() == 0){
-                throw new RuntimeException("Failed to update non-existing WorkType: " + workType);
+                throw new DataAccessException("Failed to update non-existing WorkType: " + workType);
             }
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to update WorkType " + workType, ex);
+            throw new DataAccessException("Failed to update WorkType " + workType, ex);
         }
     }
 
@@ -122,7 +122,7 @@ public class WorkTypeDao {
             }
             return workTypes;
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to load all workTypes", ex);
+            throw new DataAccessException("Failed to load all workTypes", ex);
         }
     }
 
@@ -132,7 +132,7 @@ public class WorkTypeDao {
             st.executeUpdate("DROP TABLE APP.WORK_TYPE");
 
         } catch (SQLException e) {
-            throw new RuntimeException("failed to drop WORK_TYPE table", e);
+            throw new DataAccessException("failed to drop WORK_TYPE table", e);
         }
     }
 }

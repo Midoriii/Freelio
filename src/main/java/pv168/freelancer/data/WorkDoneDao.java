@@ -44,7 +44,7 @@ public class WorkDoneDao {
             rs.next();
             workDone.setId(rs.getLong(1));
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to store Work Done" + workDone, e);
+            throw new DataAccessException("Failed to store Work Done" + workDone, e);
         }
     }
 
@@ -59,7 +59,7 @@ public class WorkDoneDao {
             st.setLong(1, workDone.getId());
             st.executeUpdate();
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to delete work done " + workDone, ex);
+            throw new DataAccessException("Failed to delete work done " + workDone, ex);
         }
     }
 
@@ -73,11 +73,11 @@ public class WorkDoneDao {
             st.setTimestamp(3, Timestamp.valueOf(workDone.getWorkEnd()));
             st.setString(4, workDone.getDescription());
             st.setLong(5, workDone.getId());
-            if (st.executeUpdate() == 0){
-                throw new RuntimeException("Failed to update non-existing WorkDone: " + workDone);
+            if (st.executeUpdate() == 0) {
+                throw new DataAccessException("Failed to update non-existing WorkDone: " + workDone);
             }
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to update WorkDone " + workDone, ex);
+            throw new DataAccessException("Failed to update WorkDone " + workDone, ex);
         }
     }
 
@@ -94,8 +94,8 @@ public class WorkDoneDao {
                         rs.getString("DESCRIPTION")
                 );
             }
-        } catch (Exception e1) {
-            throw new RuntimeException();
+        } catch (Exception ex) {
+            throw new DataAccessException("Failed to load WorkType", ex);
         }
     }
 
@@ -120,7 +120,7 @@ public class WorkDoneDao {
             }
             return worksDone;
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to load all works done", ex);
+            throw new DataAccessException("Failed to load all works done", ex);
         }
     }
 
@@ -135,7 +135,7 @@ public class WorkDoneDao {
              var rs = connection.getMetaData().getTables(null, schemaName, tableName, null)) {
             return rs.next();
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to detect if the table " + schemaName + "." + tableName + " exists", ex);
+            throw new DataAccessException("Failed to detect if the table " + schemaName + "." + tableName + " exists", ex);
         }
     }
 
@@ -150,7 +150,7 @@ public class WorkDoneDao {
                     "DESCRIPTION VARCHAR(200)" +
                     ")");
         } catch (SQLException ex) {
-            throw new RuntimeException("Failed to create WORK_DONE table", ex);
+            throw new DataAccessException("Failed to create WORK_DONE table", ex);
         }
     }
 
@@ -160,7 +160,7 @@ public class WorkDoneDao {
 
              st.executeUpdate("DROP TABLE APP.WORK_DONE");
         } catch (SQLException e) {
-            throw new RuntimeException("failed to drop WORK_DONE table", e);
+            throw new DataAccessException("failed to drop WORK_DONE table", e);
         }
     }
 
