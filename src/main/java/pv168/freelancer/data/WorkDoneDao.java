@@ -81,40 +81,26 @@ public class WorkDoneDao {
         }
     }
 
-    private WorkType getWorkType(Connection connection, Long workTypeID) {
-        try (var st = connection.prepareStatement(
-                "SELECT ID, NAME, HOURLY_RATE, DESCRIPTION FROM WORK_TYPE WHERE ID = ?")) {
-            st.setLong(1, workTypeID);
-            try (var rs = st.executeQuery()) {
-                rs.next();
-                return new WorkType(
-                        workTypeID,
-                        rs.getString("NAME"),
-                        rs.getDouble("HOURLY_RATE"),
-                        rs.getString("DESCRIPTION")
-                );
-            }
-        } catch (Exception ex) {
-            throw new DataAccessException("Failed to load WorkType", ex);
-        }
-    }
-
     public List<WorkDone> findAllWorksDone() {
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
-                     "SELECT ID, WT_ID, WORK_START, WORK_END, DESCRIPTION FROM WORK_DONE")) {
+                     "SELECT WORK_DONE.ID WD_ID, WT_ID, WORK_START, WORK_END, WORK_DONE.DESCRIPTION WD_DESC, " +
+                             "WORK_TYPE.NAME WT_NAME, HOURLY_RATE WT_HOURLY_RATE, WORK_TYPE.DESCRIPTION WT_DESC " +
+                             "FROM WORK_DONE LEFT OUTER JOIN WORK_TYPE ON WORK_DONE.WT_ID = WORK_TYPE.ID")) {
 
             List<WorkDone> worksDone = new ArrayList<>();
 
             try (var rs = st.executeQuery()) {
                 while (rs.next()) {
-                    WorkType workType = getWorkType(connection, rs.getLong("WT_ID"));
                     WorkDone workDone = new WorkDone(
                             rs.getTimestamp("WORK_START").toLocalDateTime(),
                             rs.getTimestamp("WORK_END").toLocalDateTime(),
-                            workType,
-                            rs.getString("DESCRIPTION"));
-                    workDone.setId(rs.getLong("ID"));
+                            new WorkType(rs.getLong("WT_ID"),
+                                    rs.getString("WT_NAME"),
+                                    rs.getDouble("WT_HOURLY_RATE"),
+                                    rs.getString("WT_DESC")),
+                            rs.getString("WD_DESC"));
+                    workDone.setId(rs.getLong("WD_ID"));
                     worksDone.add(workDone);
                 }
             }
