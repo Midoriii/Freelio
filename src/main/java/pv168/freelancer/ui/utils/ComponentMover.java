@@ -294,7 +294,7 @@ public class ComponentMover extends MouseAdapter
         //  is moved. Adjust the location to make sure we are still on a
         //  snap value.
 
-        while (locationX < edgeInsets.left)
+/*        while (locationX < edgeInsets.left)
             locationX += snapSize.width;
 
         while (locationY < edgeInsets.top)
@@ -306,7 +306,7 @@ public class ComponentMover extends MouseAdapter
             locationX -= snapSize.width;
 
         while (locationY + destination.getSize().height + edgeInsets.bottom > d.height)
-            locationY -= snapSize.height;
+            locationY -= snapSize.height;*/
 
         //  Adjustments are finished, move the component
 

@@ -1,6 +1,5 @@
 package pv168.freelancer.ui.details;
 
-import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.CustomDocumentFilter;
 import pv168.freelancer.ui.buttons.MinimizeButton;
@@ -15,7 +14,6 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.text.NumberFormat;
 
 /**
  * An editable dialog containing information about a single work type.
@@ -27,8 +25,6 @@ public class WorkTypeDetail extends JDialog {
     private boolean editingType;
     private JPanel quitPanel;
     private JPanel contentPanel;
-
-    private JTable workDoneTable;
 
     private JTextField nameField;
     private JTextField hourlyRateField;
