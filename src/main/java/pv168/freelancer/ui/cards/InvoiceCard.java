@@ -2,6 +2,7 @@ package pv168.freelancer.ui.cards;
 
 
 import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.details.InvoiceSummaryDetail;
 import pv168.freelancer.ui.utils.I18N;
 import pv168.freelancer.ui.utils.Icons;
 
@@ -17,7 +18,7 @@ import java.awt.*;
  */
 public class InvoiceCard extends JPanel {
 
-    private Frame owner;
+    private JFrame owner;
 
     private JPanel contentPanel;
     private JPanel btnPanel;
@@ -37,7 +38,7 @@ public class InvoiceCard extends JPanel {
 
     public final String name;
 
-    public InvoiceCard(String name, Frame owner){
+    public InvoiceCard(String name, JFrame owner){
         this.name = name;
         this.owner = owner;
         setPreferredSize(new Dimension(890, 635));
@@ -91,6 +92,9 @@ public class InvoiceCard extends JPanel {
         incomeLabelPanel.add(Box.createHorizontalStrut(10));
         incomeLabelPanel.add(annualIncome);
         incomeLabelPanel.add(Box.createHorizontalGlue());
+
+        setAnnualIncome(24);
+
         return incomeLabelPanel;
     }
 
@@ -136,7 +140,7 @@ public class InvoiceCard extends JPanel {
 
         btnDetail = new JButton(I18N.getButtonString("details"));
         btnDetail.setUI(new RoundedButton(new Color(76, 175, 80), Icons.DETAIL_ICON));
-        btnDetail.addActionListener(e -> setAnnualIncome(24));
+        btnDetail.addActionListener(e -> new InvoiceSummaryDetail(owner, true));
     }
 
     private void setUpGroupLayout() {
