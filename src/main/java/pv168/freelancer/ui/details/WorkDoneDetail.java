@@ -15,6 +15,7 @@ import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
 import pv168.freelancer.ui.tablemodels.WorkTypeTableModel;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.DateLabelFormatter;
+import pv168.freelancer.ui.utils.I18N;
 import pv168.freelancer.ui.utils.Icons;
 
 
@@ -61,6 +62,8 @@ public class WorkDoneDetail extends JDialog {
 
 
     private final ComponentMover cm = new ComponentMover();
+
+    private static final I18N I18N = new I18N(WorkDoneDetail.class);
 
     public WorkDoneDetail(JFrame owner, Boolean modality, JTable workDoneTable, WorkTypeDao workTypeDao, boolean editing) {
         super(owner, modality);
@@ -117,7 +120,7 @@ public class WorkDoneDetail extends JDialog {
         contentPanel.add(createNotePanel());
         contentPanel.add(Box.createVerticalGlue());
 
-        JButton btnOK = new JButton("Confirm");
+        JButton btnOK = new JButton(I18N.getButtonString("confirm"));
         btnOK.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         btnOK.setAlignmentX(CENTER_ALIGNMENT);
         btnOK.addActionListener(new CreateWorkDoneAction());
@@ -171,7 +174,7 @@ public class WorkDoneDetail extends JDialog {
         startPanel.setLayout(new FlowLayout());
         startPanel.add(Box.createHorizontalGlue());
         // The white spaces in label have to be there, otherwise Swing causes misalignment bug
-        startPanel.add(new JLabel("Start:   "));
+        startPanel.add(new JLabel(I18N.getString("start") + "   "));
         startPanel.add(timePickerStart);
         startPanel.add(datePickerStart);
         startPanel.add(Box.createHorizontalGlue());
@@ -180,7 +183,7 @@ public class WorkDoneDetail extends JDialog {
         endPanel.setPreferredSize(new Dimension(450, 50));
         endPanel.setLayout(new FlowLayout());
         startPanel.add(Box.createHorizontalGlue());
-        endPanel.add(new JLabel("End:   "));
+        endPanel.add(new JLabel(I18N.getString("end") + "   "));
         endPanel.add(timePickerEnd);
         endPanel.add(datePickerEnd);
         startPanel.add(Box.createHorizontalGlue());
@@ -209,7 +212,7 @@ public class WorkDoneDetail extends JDialog {
         dateModel.setValue(new Date());
 
         Properties p = new Properties();
-        p.put("text.today", "Dnes");
+        p.put("text.today", I18N.getString("today"));
 
         JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
         JDatePickerImpl dateImpl = new JDatePickerImpl(datePanel, new DateLabelFormatter());
@@ -237,7 +240,7 @@ public class WorkDoneDetail extends JDialog {
         JPanel workPanel = new JPanel();
         workPanel.setPreferredSize(new Dimension(450, 20));
         workPanel.setLayout(new FlowLayout());
-        workPanel.add(new JLabel("Work:"));
+        workPanel.add(new JLabel(I18N.getString("work")));
 
         workPanel.add(workComboBox);
 
@@ -245,17 +248,17 @@ public class WorkDoneDetail extends JDialog {
         buttonPanel.setPreferredSize(new Dimension(450, 40));
         buttonPanel.setLayout(new FlowLayout());
 
-        btnAdd = new JButton("Add");
+        btnAdd = new JButton(I18N.getButtonString("add"));
         btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.ADD_ICON_S));
         btnAdd.addActionListener(e -> addWorkType(e, owner));
         buttonPanel.add(btnAdd);
 
-        btnEdit = new JButton("Edit");
+        btnEdit = new JButton(I18N.getButtonString("edit"));
         btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.EDIT_ICON_S));
         btnEdit.addActionListener(e -> editWorkType(e, owner));
         buttonPanel.add(btnEdit);
 
-        btnDelete = new JButton("Delete");
+        btnDelete = new JButton(I18N.getButtonString("delete"));
         btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94), Icons.DELETE_ICON_S));
         btnDelete.addActionListener(e -> deleteWorkType(e, owner));
         buttonPanel.add(btnDelete);
@@ -271,7 +274,7 @@ public class WorkDoneDetail extends JDialog {
         panel.setPreferredSize(new Dimension(450, 150));
         panel.setLayout(new FlowLayout());
 
-        panel.add(new JLabel("Note:"));
+        panel.add(new JLabel(I18N.getString("note")));
 
         description = new JTextArea();
         description.setLineWrap(true);
@@ -304,14 +307,14 @@ public class WorkDoneDetail extends JDialog {
 
         if (workDone.getWorkStart().isAfter(workDone.getWorkEnd())) {
             JOptionPane.showMessageDialog(null,
-                    "The start time cannot be after end time.",
+                    I18N.getDialogString("startEnd"),
                     "Warning", JOptionPane.WARNING_MESSAGE);
             return false;
         }
 
         if (workDone.getWorkType() == null) {
             JOptionPane.showMessageDialog(null,
-                    "A work type must by chosen.",
+                    I18N.getDialogString("workTypeChosen"),
                     "Warning", JOptionPane.WARNING_MESSAGE);
             return false;
         }
@@ -357,7 +360,7 @@ public class WorkDoneDetail extends JDialog {
             workTypeTable.deleteRow(workComboBox.getSelectedIndex());
             updatePanel(owner);
         } else {
-            JOptionPane.showMessageDialog(null, "This work type is in use.");
+            JOptionPane.showMessageDialog(null, I18N.getDialogString("inUse"));
         }
     }
 

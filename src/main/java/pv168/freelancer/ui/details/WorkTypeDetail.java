@@ -8,6 +8,7 @@ import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.tablemodels.WorkTypeTableModel;
 import pv168.freelancer.ui.utils.ComponentMover;
+import pv168.freelancer.ui.utils.I18N;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
@@ -36,6 +37,8 @@ public class WorkTypeDetail extends JDialog {
 
     private WorkTypeTableModel workTypeTable;
     private final ComponentMover cm = new ComponentMover();
+
+    private static final I18N I18N = new I18N(WorkTypeDetail.class);
 
     public WorkTypeDetail(JFrame owner, Boolean modality, JComboBox<WorkType> workComboBox, WorkTypeTableModel workTypeTable, boolean editingType){
         super(owner, modality);
@@ -89,7 +92,7 @@ public class WorkTypeDetail extends JDialog {
     }
 
     private void addNameField(GridBagConstraints gbc) {
-        JLabel name = new JLabel("Name:");
+        JLabel name = new JLabel(I18N.getString("name"));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -105,7 +108,7 @@ public class WorkTypeDetail extends JDialog {
     }
 
     private void addHourlyRateField(GridBagConstraints gbc) {
-        JLabel hourlyRate = new JLabel("Hourly rate:");
+        JLabel hourlyRate = new JLabel(I18N.getString("rate"));
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -119,7 +122,7 @@ public class WorkTypeDetail extends JDialog {
     }
 
     private void addDescriptionArea(GridBagConstraints gbc) {
-        JLabel description = new JLabel("Description:");
+        JLabel description = new JLabel(I18N.getString("description"));
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -142,7 +145,7 @@ public class WorkTypeDetail extends JDialog {
     }
 
     private void addConfirmButton(GridBagConstraints gbc) {
-        JButton okBtn = new JButton("Confirm");
+        JButton okBtn = new JButton(I18N.getButtonString("confirm"));
         okBtn.setUI(new RoundedButton(new Color(76, 175, 80), Icons.CONFIRM_ICON));
         okBtn.addActionListener(new CreateWorkTypeAction());
         gbc.gridx = 0;
@@ -155,7 +158,7 @@ public class WorkTypeDetail extends JDialog {
     private boolean checkWorkTypeValidity() {
         if (nameField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null,
-                    "The name cannot be empty.",
+                    I18N.getDialogString("nameEmpty"),
                     "Warning", JOptionPane.WARNING_MESSAGE);
             return false;
         }
@@ -167,7 +170,7 @@ public class WorkTypeDetail extends JDialog {
         catch(NumberFormatException e)
         {
             JOptionPane.showMessageDialog(null,
-                    "Hourly rate must be a valid number.",
+                    I18N.getDialogString("validHourlyRate"),
                     "Warning", JOptionPane.WARNING_MESSAGE);
             return false;
         }

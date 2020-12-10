@@ -10,6 +10,7 @@ import pv168.freelancer.ui.cards.WorkDoneCard;
 import pv168.freelancer.ui.navbar.NavBar;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.ComponentResizer;
+import pv168.freelancer.ui.utils.I18N;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,7 +19,7 @@ import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 
 /**
- * The main window of the application.
+ * The main window of the application, contains navigation between content cards.
  *
  * @author xbenes2
  */
@@ -32,16 +33,22 @@ public class MainWindow {
     private final ComponentMover cm = new ComponentMover();
     private final ComponentResizer cr = new ComponentResizer();
 
-    private final static String WORK_DONE = "Work Done";
-    private final static String INVOICES = "Invoices";
-    private final static String PROFIT_CALC = "Profit Calculator";
+    private final String workDoneLabel;
+    private final String invoicesLabel;
+    private final String profitCalcLabel;
 
     private final WorkDoneDao workDoneDao;
     private final WorkTypeDao workTypeDao;
 
+    private static final I18N I18N = new I18N(MainWindow.class);
+
     public MainWindow(WorkDoneDao workDoneDao, WorkTypeDao workTypeDao) {
         this.workDoneDao = workDoneDao;
         this.workTypeDao = workTypeDao;
+
+        workDoneLabel = I18N.getString("workDone");
+        invoicesLabel = I18N.getString("invoices");
+        profitCalcLabel = I18N.getString("profit");
 
         setUpUIManager();
 
@@ -58,7 +65,7 @@ public class MainWindow {
     }
 
     private JFrame createFrame() {
-        frame = new JFrame("Work evidence");
+        frame = new JFrame(I18N.getString("title"));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(1100, 675));
         frame.setSize(new Dimension(1100, 675));
@@ -73,13 +80,13 @@ public class MainWindow {
         CardLayout cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
 
-        contentPanel.add(new WorkDoneCard(WORK_DONE, frame, workTypeDao, workDoneDao), WORK_DONE);
-        contentPanel.add(new InvoiceCard(INVOICES, frame), INVOICES);
-        contentPanel.add(new ProfitCard(PROFIT_CALC), PROFIT_CALC);
+        contentPanel.add(new WorkDoneCard(workDoneLabel, frame, workTypeDao, workDoneDao), workDoneLabel);
+        contentPanel.add(new InvoiceCard(invoicesLabel, frame), invoicesLabel);
+        contentPanel.add(new ProfitCard(profitCalcLabel), profitCalcLabel);
     }
 
     private void createNavbar() {
-        navBar = new NavBar(INVOICES, WORK_DONE, PROFIT_CALC, contentPanel);
+        navBar = new NavBar(invoicesLabel, workDoneLabel, profitCalcLabel, contentPanel);
     }
 
     private void createQuitPanel() {

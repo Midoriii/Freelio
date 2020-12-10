@@ -2,6 +2,7 @@ package pv168.freelancer.ui.tablemodels;
 
 import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.model.WorkType;
+import pv168.freelancer.ui.utils.I18N;
 
 import java.util.List;
 
@@ -12,11 +13,13 @@ import java.util.List;
  */
 public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
 
+    private static final pv168.freelancer.ui.utils.I18N I18N = new I18N(WorkTypeTableModel.class);
+
     private static final List<Column<?, WorkType>> COLUMNS = List.of(
-            Column.build("ID", Long.class, WorkType::getId),
-            Column.build("Name", String.class, WorkType::getName),
-            Column.build("Hourly Rate", double.class, WorkType::getHourlyRate),
-            Column.build("Description", String.class, WorkType::getDescription)
+            Column.build(I18N.getString("id"), Long.class, WorkType::getId),
+            Column.build(I18N.getString("name"), String.class, WorkType::getName),
+            Column.build(I18N.getString("rate"), double.class, WorkType::getHourlyRate),
+            Column.build(I18N.getString("description"), String.class, WorkType::getDescription)
     );
 
     private final List<WorkType> workTypes;

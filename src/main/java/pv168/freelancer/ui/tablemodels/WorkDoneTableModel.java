@@ -3,6 +3,7 @@ package pv168.freelancer.ui.tablemodels;
 import pv168.freelancer.data.WorkDoneDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
+import pv168.freelancer.ui.utils.I18N;
 
 import java.util.List;
 
@@ -13,13 +14,15 @@ import java.util.List;
  */
 public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
 
+    private static final I18N I18N = new I18N(WorkDoneTableModel.class);
+
     private static final List<Column<?, WorkDone>> COLUMNS = List.of(
-            Column.build("Work Type", WorkType.class, WorkDone::getWorkType),
-            Column.build("From", String.class, WorkDone::getFormattedWorkStart),
-            Column.build("To", String.class, WorkDone::getFormattedWorkEnd),
-            Column.build("Hours", Long.class, WorkDone::calculateHours),
-            Column.build("Income", Double.class, WorkDone::calculatePay),
-            Column.build("Description", String.class, WorkDone::getDescription)
+            Column.build(I18N.getString("workType"), WorkType.class, WorkDone::getWorkType),
+            Column.build(I18N.getString("from"), String.class, WorkDone::getFormattedWorkStart),
+            Column.build(I18N.getString("to"), String.class, WorkDone::getFormattedWorkEnd),
+            Column.build(I18N.getString("hours"), Long.class, WorkDone::calculateHours),
+            Column.build(I18N.getString("income"), Double.class, WorkDone::calculatePay),
+            Column.build(I18N.getString("description"), String.class, WorkDone::getDescription)
             );
 
     private final List<WorkDone> worksDone;

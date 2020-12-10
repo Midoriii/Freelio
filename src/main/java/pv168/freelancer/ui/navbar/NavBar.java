@@ -1,6 +1,7 @@
 package pv168.freelancer.ui.navbar;
 
 import pv168.freelancer.ui.buttons.NavBarButton;
+import pv168.freelancer.ui.utils.I18N;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
@@ -22,6 +23,8 @@ public class NavBar extends JPanel implements ActionListener {
     private JButton btnProfitCalc;
     private JPanel btnPanel;
     private JPanel contentPanel;
+
+    private static final I18N I18N = new I18N(NavBar.class);
 
     public NavBar(String invoiceName, String workDoneName, String profitCalcName, JPanel panel){
         super();
@@ -46,7 +49,7 @@ public class NavBar extends JPanel implements ActionListener {
     }
 
     private void createBrandLogo() {
-        brand = new Label("Freelio");
+        brand = new Label(I18N.getString("brand"));
         brand.setForeground(Color.WHITE);
 
         brandPanel = new JPanel();

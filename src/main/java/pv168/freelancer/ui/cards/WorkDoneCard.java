@@ -5,6 +5,7 @@ import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.details.WorkDoneDetail;
 import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
+import pv168.freelancer.ui.utils.I18N;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
@@ -43,6 +44,9 @@ public class WorkDoneCard extends JPanel{
     private final WorkTypeDao workTypeDao;
     private final WorkDoneDao workDoneDao;
 
+    // Has the WorkDoneTableModel class so the row comparator can call columns by label
+    private static final I18N I18N = new I18N(WorkDoneTableModel.class);
+
     public final String name;
 
     public WorkDoneCard(String name, JFrame owner, WorkTypeDao workTypeDao, WorkDoneDao workDoneDao){
@@ -73,8 +77,8 @@ public class WorkDoneCard extends JPanel{
         table.setAutoCreateRowSorter(true);
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
         table.setRowSorter(sorter);
-        int fromColumnIndex = table.getColumnModel().getColumnIndex("From");
-        int toColumnIndex = table.getColumnModel().getColumnIndex("To");
+        int fromColumnIndex = table.getColumnModel().getColumnIndex(I18N.getString("from"));
+        int toColumnIndex = table.getColumnModel().getColumnIndex(I18N.getString("to"));
 
         var comparator = new Comparator<String>()
         {
@@ -135,6 +139,7 @@ public class WorkDoneCard extends JPanel{
         tablePane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         tablePane.setBackground(new Color(76, 175, 80));
         tablePane.setBorder(new MatteBorder(0,0,1,0, Color.BLACK));
+        tablePane.getViewport().setBackground(Color.WHITE);
 
         contentPanel = new JPanel();
         contentPanel.setMinimumSize(new Dimension(470, 450));
@@ -183,15 +188,15 @@ public class WorkDoneCard extends JPanel{
     }
 
     private void createButtons() {
-        btnCreate = new JButton("Create");
+        btnCreate = new JButton(I18N.getButtonString("create"));
         btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
         btnCreate.addActionListener(this::addWorkDone);
 
-        btnEdit = new JButton("Edit");
+        btnEdit = new JButton(I18N.getButtonString("edit"));
         btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
         btnEdit.addActionListener(this::editWorkDone);
 
-        btnDelete = new JButton("Delete");
+        btnDelete = new JButton(I18N.getButtonString("delete"));
         btnDelete.setUI(new RoundedButton(new Color(246, 105, 94), Icons.DELETE_ICON));
         btnDelete.addActionListener(this::deleteWorkDone);
     }
@@ -250,7 +255,7 @@ public class WorkDoneCard extends JPanel{
     private class PopUpDeleteAction extends AbstractAction {
 
         public PopUpDeleteAction() {
-            super("Delete", Icons.TOOLBAR_DELETE_ICON);
+            super(I18N.getButtonString("delete"), Icons.TOOLBAR_DELETE_ICON);
             putValue(MNEMONIC_KEY, KeyEvent.VK_D);
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl D"));
         }
@@ -263,7 +268,7 @@ public class WorkDoneCard extends JPanel{
 
     private class PopUpEditAction extends AbstractAction {
         public PopUpEditAction() {
-            super("Edit", Icons.TOOLBAR_EDIT_ICON);
+            super(I18N.getButtonString("edit"), Icons.TOOLBAR_EDIT_ICON);
             putValue(MNEMONIC_KEY, KeyEvent.VK_E);
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl E"));
         }
