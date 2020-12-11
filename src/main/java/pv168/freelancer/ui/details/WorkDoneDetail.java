@@ -13,10 +13,7 @@ import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.buttons.RoundedButtonSmall;
 import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
 import pv168.freelancer.ui.tablemodels.WorkTypeTableModel;
-import pv168.freelancer.ui.utils.ComponentMover;
-import pv168.freelancer.ui.utils.DateLabelFormatter;
-import pv168.freelancer.ui.utils.I18N;
-import pv168.freelancer.ui.utils.Icons;
+import pv168.freelancer.ui.utils.*;
 
 
 import javax.swing.*;
@@ -74,14 +71,14 @@ public class WorkDoneDetail extends JDialog {
 
         this.timePickerStart = createTimePicker();
         this.timePickerEnd = createTimePicker();
-        this.datePickerStart = createDatePicker();
-        this.datePickerEnd = createDatePicker();
+        this.datePickerStart = ComponentFactory.createDatePicker();
+        this.datePickerEnd = ComponentFactory.createDatePicker();
         this.editing = editing;
         this.workDoneTable = workDoneTable;
         this.workTypeTable = new WorkTypeTableModel(workTypeDao.findAllWorkTypes(), workTypeDao);
 
 
-        setUpQuitPanel(owner);
+        quitPanel = ComponentFactory.createQuitPanel(owner, this, 450, 40);
 
         setUpContentPanel(owner);
 
@@ -93,19 +90,6 @@ public class WorkDoneDetail extends JDialog {
         if (editing) loadWorkDone(false);
 
         setVisible(true);
-    }
-
-    private void setUpQuitPanel(JFrame owner) {
-        quitPanel = new JPanel();
-        quitPanel.setPreferredSize(new Dimension(450, 40));
-
-        quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
-        // The Glue and Rigid Areas are a way of composing the components where one wants them
-        quitPanel.add(Box.createHorizontalGlue());
-        quitPanel.add(new MinimizeButton(owner));
-        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
-        quitPanel.add(new QuitButton(e -> dispose()));
-        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
     }
 
     private void setUpContentPanel(JFrame owner) {
@@ -205,31 +189,6 @@ public class WorkDoneDetail extends JDialog {
         timePicker.setEditor(editor);
 
         return timePicker;
-    }
-
-    private JDatePickerImpl createDatePicker() {
-        UtilDateModel dateModel = new UtilDateModel();
-        dateModel.setValue(new Date());
-
-        Properties p = new Properties();
-        p.put("text.today", I18N.getString("today"));
-
-        JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
-        JDatePickerImpl dateImpl = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-
-        // What a fancy way to style the picker ...
-        ((JFormattedTextField)dateImpl.getComponents()[0]).setBorder(new LineBorder(Color.BLACK));
-        ((JButton)dateImpl.getComponents()[1]).setIcon(Icons.CALENDAR_ICON);
-        ((JButton)dateImpl.getComponents()[1]).setText("");
-        ((JButton)dateImpl.getComponents()[1]).setMargin(new Insets(0, 0, 0, 0));
-        ((JButton)dateImpl.getComponents()[1]).setContentAreaFilled(false);
-        ((JButton)dateImpl.getComponents()[1]).setFocusPainted(false);
-        ((JButton)dateImpl.getComponents()[1]).setBorder(new LineBorder(Color.BLACK));
-
-        JFormattedTextField textField = dateImpl.getJFormattedTextField();
-        textField.setBackground(Color.WHITE);
-
-        return dateImpl;
     }
 
     private JPanel createWorkSelectPanel(JFrame owner) {

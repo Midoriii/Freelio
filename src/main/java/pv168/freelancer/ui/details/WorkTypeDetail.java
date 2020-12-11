@@ -6,6 +6,7 @@ import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.tablemodels.WorkTypeTableModel;
+import pv168.freelancer.ui.utils.ComponentFactory;
 import pv168.freelancer.ui.utils.ComponentMover;
 import pv168.freelancer.ui.utils.I18N;
 import pv168.freelancer.ui.utils.Icons;
@@ -45,7 +46,7 @@ public class WorkTypeDetail extends JDialog {
 
         setUpDialog();
 
-        setUpQuitPanel(owner);
+        quitPanel = ComponentFactory.createQuitPanel(owner, this, 450,40);
 
         setUpContentPanel();
 
@@ -57,19 +58,6 @@ public class WorkTypeDetail extends JDialog {
         if (editingType) loadWorkType();
 
         setVisible(true);
-    }
-
-    private void setUpQuitPanel(JFrame owner) {
-        quitPanel = new JPanel();
-        quitPanel.setPreferredSize(new Dimension(450, 40));
-
-        quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
-        // The Glue and Rigid Areas are a way of composing the components where one wants them
-        quitPanel.add(Box.createHorizontalGlue());
-        quitPanel.add(new MinimizeButton(owner));
-        quitPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-        quitPanel.add(new QuitButton(e -> dispose()));
-        quitPanel.add(Box.createRigidArea(new Dimension(5, 0)));
     }
 
     private void setUpContentPanel() {

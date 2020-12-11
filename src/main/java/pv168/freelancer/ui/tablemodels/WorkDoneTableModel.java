@@ -22,7 +22,7 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
             Column.build(I18N.getString("to"), String.class, WorkDone::getFormattedWorkEnd),
             Column.build(I18N.getString("hours"), Long.class, WorkDone::calculateHours),
             Column.build(I18N.getString("income"), Double.class, WorkDone::calculatePay),
-            Column.build(I18N.getString("description"), String.class, WorkDone::getDescription)
+            Column.build(I18N.getString("note"), String.class, WorkDone::getDescription)
             );
 
     private final List<WorkDone> worksDone;

@@ -5,12 +5,12 @@ import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.details.WorkDoneDetail;
 import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
+import pv168.freelancer.ui.utils.ComponentFactory;
 import pv168.freelancer.ui.utils.I18N;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.*;
 import java.awt.*;
@@ -73,6 +73,32 @@ public class WorkDoneCard extends JPanel{
         workDoneTable.setComponentPopupMenu(createWorkDoneTablePopupMenu());
     }
 
+    private JTable setUpTable() {
+        var model = new WorkDoneTableModel(workDoneDao);
+        var table = new JTable(model);
+        table.setAutoCreateRowSorter(true);
+        table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
+        table.setRowHeight(30);
+        table.setShowGrid(false);
+
+        setColumnWidth(table);
+        setRowComparator(table);
+        setUpTableRenderers(table);
+
+        return table;
+    }
+
+    private void setColumnWidth(JTable table){
+        float[] widthPercentages = {0.24f, 0.19f, 0.19f, 0.085f, 0.085f, 0.21f};
+        TableColumnModel columnModel = table.getColumnModel();
+        int totalWidth = columnModel.getTotalColumnWidth();
+        TableColumn column;
+        for(int i = 0; i < columnModel.getColumnCount(); i++){
+            column = columnModel.getColumn(i);
+            column.setPreferredWidth(Math.round(totalWidth * widthPercentages[i]));
+        }
+    }
+
     private void setRowComparator(JTable table) {
         table.setAutoCreateRowSorter(true);
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
@@ -97,20 +123,6 @@ public class WorkDoneCard extends JPanel{
         sorter.setComparator(toColumnIndex, comparator);
     }
 
-    private JTable setUpTable() {
-        var model = new WorkDoneTableModel(workDoneDao);
-        var table = new JTable(model);
-        table.setAutoCreateRowSorter(true);
-        table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
-        table.setRowHeight(30);
-        table.setShowGrid(false);
-
-        setRowComparator(table);
-        setUpTableRenderers(table);
-
-        return table;
-    }
-
     private void setUpTableRenderers(JTable table) {
         // This will be built upon to style the table, so far only tests text centering
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -122,7 +134,7 @@ public class WorkDoneCard extends JPanel{
         table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 
         JTableHeader header = table.getTableHeader();
-        header.setPreferredSize(new Dimension(680, 40));
+        header.setPreferredSize(new Dimension(690, 40));
     }
 
     private JPopupMenu createWorkDoneTablePopupMenu() {
@@ -135,15 +147,11 @@ public class WorkDoneCard extends JPanel{
     }
 
     private void createContentPanel() {
-        JScrollPane tablePane = new JScrollPane(workDoneTable);
-        tablePane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        tablePane.setBackground(new Color(76, 175, 80));
-        tablePane.setBorder(new MatteBorder(0,0,1,0, Color.BLACK));
-        tablePane.getViewport().setBackground(Color.WHITE);
+        JScrollPane tablePane = ComponentFactory.createScrollPaneForTable(workDoneTable);
 
         contentPanel = new JPanel();
         contentPanel.setMinimumSize(new Dimension(470, 450));
-        contentPanel.setPreferredSize(new Dimension(680, 600));
+        contentPanel.setPreferredSize(new Dimension(690, 600));
         contentPanel.setMaximumSize(new Dimension(920, 820));
 
         GroupLayout groupLayout = new GroupLayout(contentPanel);
@@ -164,7 +172,7 @@ public class WorkDoneCard extends JPanel{
     private void createButtonPanel() {
         btnPanel = new JPanel();
         btnPanel.setMinimumSize(new Dimension(180, 450));
-        btnPanel.setPreferredSize(new Dimension(220, 635));
+        btnPanel.setPreferredSize(new Dimension(200, 635));
         btnPanel.setMaximumSize(new Dimension(220, 820));
         btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.PAGE_AXIS));
 
@@ -236,6 +244,8 @@ public class WorkDoneCard extends JPanel{
         setRowComparator(workDoneTable);
         workDoneTable.getRowSorter().setSortKeys(sortKeys);
         setUpTableRenderers(workDoneTable);
+        // This overwrites custom column widths but honestly, preserving those would be far too painful
+        setColumnWidth(workDoneTable);
     }
 
     private void addWorkDone(ActionEvent e) {
