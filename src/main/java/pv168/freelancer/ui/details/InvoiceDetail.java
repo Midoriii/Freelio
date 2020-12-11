@@ -1,19 +1,11 @@
 package pv168.freelancer.ui.details;
 
-import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
-import pv168.freelancer.ui.buttons.MinimizeButton;
-import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.utils.*;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.util.Date;
-import java.util.Properties;
 
 /**
  *
@@ -24,6 +16,8 @@ public class InvoiceDetail extends JDialog {
 
     private JPanel quitPanel;
     private JPanel contentPanel;
+
+    private JTable workDoneTable;
 
     JTextField client;
 
@@ -55,10 +49,7 @@ public class InvoiceDetail extends JDialog {
     }
 
     private void setUpContentPanel(){
-        contentPanel = new JPanel();
-        contentPanel.setMinimumSize(new Dimension(800, 630));
-        contentPanel.setPreferredSize(new Dimension(800, 630));
-        contentPanel.setMaximumSize(new Dimension(800, 630));
+        contentPanel = ComponentFactory.createFixedSizePanel(800, 630);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
         createInfoPanels();
@@ -113,10 +104,7 @@ public class InvoiceDetail extends JDialog {
     }
 
     private JPanel createRowPanel(){
-        JPanel panel = new JPanel();
-        panel.setMinimumSize(new Dimension(780, 30));
-        panel.setPreferredSize(new Dimension(780, 30));
-        panel.setMaximumSize(new Dimension(780, 30));
+        JPanel panel = ComponentFactory.createFixedSizePanel(780, 30);
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         return panel;
     }
@@ -132,10 +120,7 @@ public class InvoiceDetail extends JDialog {
     }
 
     private JPanel createCentralPanel(){
-        JPanel panel = new JPanel();
-        panel.setMinimumSize(new Dimension(800, 400));
-        panel.setPreferredSize(new Dimension(800, 400));
-        panel.setMaximumSize(new Dimension(800, 400));
+        JPanel panel = ComponentFactory.createFixedSizePanel(800, 400);
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
         panel.add(createTablePanel());
@@ -148,22 +133,14 @@ public class InvoiceDetail extends JDialog {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
-        //Insert table HERE
-        JScrollPane tablePane = new JScrollPane();
-        tablePane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        tablePane.setBackground(new Color(76, 175, 80));
-        tablePane.setBorder(new MatteBorder(0,0,1,0, Color.BLACK));
-        tablePane.getViewport().setBackground(Color.WHITE);
+        JScrollPane tablePane = ComponentFactory.createScrollPaneForTable(workDoneTable);
 
         panel.add(tablePane);
         return panel;
     }
 
     private JPanel createButtonPanel(){
-        JPanel panel = new JPanel();
-        panel.setMinimumSize(new Dimension(160, 400));
-        panel.setPreferredSize(new Dimension(160, 400));
-        panel.setMaximumSize(new Dimension(160, 400));
+        JPanel panel = ComponentFactory.createFixedSizePanel(160, 400);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JButton btnAdd = new JButton(I18N.getButtonString("add"));
@@ -181,10 +158,7 @@ public class InvoiceDetail extends JDialog {
     }
 
     private JPanel createBottomPanel(){
-        JPanel panel = new JPanel();
-        panel.setMinimumSize(new Dimension(780, 60));
-        panel.setPreferredSize(new Dimension(780, 60));
-        panel.setMaximumSize(new Dimension(780, 60));
+        JPanel panel = ComponentFactory.createFixedSizePanel(780, 60);
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
         income = new JLabel(I18N.getString("total") + " 285 $");

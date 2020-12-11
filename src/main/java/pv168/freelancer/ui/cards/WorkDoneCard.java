@@ -5,12 +5,12 @@ import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.details.WorkDoneDetail;
 import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
+import pv168.freelancer.ui.utils.ComponentFactory;
 import pv168.freelancer.ui.utils.I18N;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.*;
 import java.awt.*;
@@ -147,11 +147,7 @@ public class WorkDoneCard extends JPanel{
     }
 
     private void createContentPanel() {
-        JScrollPane tablePane = new JScrollPane(workDoneTable);
-        tablePane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        tablePane.setBackground(new Color(76, 175, 80));
-        tablePane.setBorder(new MatteBorder(0,0,1,0, Color.BLACK));
-        tablePane.getViewport().setBackground(Color.WHITE);
+        JScrollPane tablePane = ComponentFactory.createScrollPaneForTable(workDoneTable);
 
         contentPanel = new JPanel();
         contentPanel.setMinimumSize(new Dimension(470, 450));

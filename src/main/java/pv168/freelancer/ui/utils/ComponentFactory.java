@@ -8,6 +8,7 @@ import pv168.freelancer.ui.buttons.QuitButton;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.Date;
 import java.util.Properties;
@@ -22,7 +23,7 @@ public final class ComponentFactory {
     private static final I18N I18N = new I18N(ComponentFactory.class);
 
     /**
-     * Used only for quit panels in Dialogs, as they are fixed size
+     * Used only for quit panels in Dialogs, as they are fixed size.
      */
     public static JPanel createQuitPanel(JFrame owner, JDialog dialog, int width, int height){
         JPanel quitPanel = new JPanel();
@@ -39,7 +40,7 @@ public final class ComponentFactory {
     }
 
     /**
-     * Creates a custom styled date picker
+     * Creates a custom styled date picker.
      */
     public static JDatePickerImpl createDatePicker(){
         UtilDateModel dateModel = new UtilDateModel();
@@ -64,5 +65,28 @@ public final class ComponentFactory {
         textField.setBackground(Color.WHITE);
 
         return dateImpl;
+    }
+
+    /**
+     * This amends the common need of having a Panel with declared Min, Pref and Max sizes.
+     */
+    public static JPanel createFixedSizePanel(int width, int height){
+        JPanel panel = new JPanel();
+        panel.setMinimumSize(new Dimension(width, height));
+        panel.setPreferredSize(new Dimension(width, height));
+        panel.setMaximumSize(new Dimension(width, height));
+        return panel;
+    }
+
+    /**
+     * Creates a custom styled scroll pane to be used with tables.
+     */
+    public static JScrollPane createScrollPaneForTable(JTable table){
+        JScrollPane tablePane = new JScrollPane(table);
+        tablePane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        tablePane.setBackground(new Color(76, 175, 80));
+        tablePane.setBorder(new MatteBorder(0,0,1,0, Color.BLACK));
+        tablePane.getViewport().setBackground(Color.WHITE);
+        return tablePane;
     }
 }

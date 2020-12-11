@@ -4,12 +4,12 @@ package pv168.freelancer.ui.cards;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.details.InvoiceDetail;
 import pv168.freelancer.ui.details.InvoiceSummaryDetail;
+import pv168.freelancer.ui.utils.ComponentFactory;
 import pv168.freelancer.ui.utils.I18N;
 import pv168.freelancer.ui.utils.Icons;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 /**
@@ -52,11 +52,7 @@ public class InvoiceCard extends JPanel {
     }
 
     private void createContentPanel() {
-        JScrollPane tablePane = new JScrollPane(invoiceTable);
-        tablePane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        tablePane.setBackground(new Color(76, 175, 80));
-        tablePane.setBorder(new MatteBorder(0,0,1,0, Color.BLACK));
-        tablePane.getViewport().setBackground(Color.WHITE);
+        JScrollPane tablePane = ComponentFactory.createScrollPaneForTable(invoiceTable);
 
         contentPanel = new JPanel();
         contentPanel.setMinimumSize(new Dimension(470, 450));
