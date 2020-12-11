@@ -122,26 +122,7 @@ public class InvoiceDetail extends JDialog {
     }
 
     private JDatePickerImpl createDatePicker() {
-        UtilDateModel dateModel = new UtilDateModel();
-        dateModel.setValue(new Date());
-
-        Properties p = new Properties();
-        p.put("text.today", I18N.getString("today"));
-
-        JDatePanelImpl datePanel = new JDatePanelImpl(dateModel, p);
-        JDatePickerImpl dateImpl = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-
-        // What a fancy way to style the picker ...
-        ((JFormattedTextField)dateImpl.getComponents()[0]).setBorder(new LineBorder(Color.BLACK));
-        ((JButton)dateImpl.getComponents()[1]).setIcon(Icons.CALENDAR_ICON);
-        ((JButton)dateImpl.getComponents()[1]).setText("");
-        ((JButton)dateImpl.getComponents()[1]).setMargin(new Insets(0, 0, 0, 0));
-        ((JButton)dateImpl.getComponents()[1]).setContentAreaFilled(false);
-        ((JButton)dateImpl.getComponents()[1]).setFocusPainted(false);
-        ((JButton)dateImpl.getComponents()[1]).setBorder(new LineBorder(Color.BLACK));
-
-        JFormattedTextField textField = dateImpl.getJFormattedTextField();
-        textField.setBackground(Color.WHITE);
+        JDatePickerImpl dateImpl = ComponentFactory.createDatePicker();
 
         dateImpl.setMinimumSize(new Dimension(120,26));
         dateImpl.setPreferredSize(new Dimension(120,26));
