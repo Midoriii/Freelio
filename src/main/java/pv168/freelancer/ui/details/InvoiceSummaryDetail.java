@@ -67,9 +67,10 @@ public class InvoiceSummaryDetail extends JDialog {
 
         createInfoPanels();
 
-        createTablePanel();
-
-        createSendPanel();
+        contentPanel.add(Box.createVerticalStrut(20));
+        contentPanel.add(createTablePanel());
+        contentPanel.add(Box.createVerticalStrut(10));
+        contentPanel.add(createSendPanel());
     }
 
     private void createInfoPanels(){
@@ -124,7 +125,7 @@ public class InvoiceSummaryDetail extends JDialog {
         return panel;
     }
 
-    private void createTablePanel(){
+    private JPanel createTablePanel(){
         JPanel panel = new JPanel();
         panel.setMinimumSize(new Dimension(600, 400));
         panel.setPreferredSize(new Dimension(600, 400));
@@ -142,8 +143,7 @@ public class InvoiceSummaryDetail extends JDialog {
         panel.add(Box.createVerticalStrut(15));
         panel.add(createTotalPanel());
 
-        contentPanel.add(Box.createVerticalStrut(20));
-        contentPanel.add(panel);
+        return(panel);
     }
 
     private JPanel createTotalPanel(){
@@ -162,7 +162,7 @@ public class InvoiceSummaryDetail extends JDialog {
         return panel;
     }
 
-    private void createSendPanel(){
+    private JPanel createSendPanel(){
         JPanel panel = new JPanel();
         panel.setMinimumSize(new Dimension(740, 100));
         panel.setPreferredSize(new Dimension(740, 100));
@@ -180,8 +180,7 @@ public class InvoiceSummaryDetail extends JDialog {
         panel.add(Box.createHorizontalGlue());
         panel.add(btnConfirm);
 
-        contentPanel.add(Box.createVerticalStrut(10));
-        contentPanel.add(panel);
+        return(panel);
     }
 
     private void setUpDialog() {
