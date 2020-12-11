@@ -12,7 +12,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 /**
- * An overview of single Invoice, containing comprehensible table of work done
+ * An overview of single Invoice, containing comprehensible table of work done and the total sum
  *
  * @author xbenes2
  */
@@ -33,9 +33,11 @@ public class InvoiceSummaryDetail extends JDialog {
 
         setUpQuitPanel(owner);
 
-        setUpContentPanel(owner);
+        setUpContentPanel();
 
+        add(Box.createVerticalStrut(8));
         add(quitPanel);
+        add(Box.createVerticalStrut(10));
         add(contentPanel);
 
         setUpMover();
@@ -56,7 +58,7 @@ public class InvoiceSummaryDetail extends JDialog {
         quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
     }
 
-    private void setUpContentPanel(JFrame owner) {
+    private void setUpContentPanel() {
         contentPanel = new JPanel();
         contentPanel.setMinimumSize(new Dimension(740, 610));
         contentPanel.setPreferredSize(new Dimension(740, 610));
@@ -78,7 +80,6 @@ public class InvoiceSummaryDetail extends JDialog {
         firstLine.add(idTextLabel);
         firstLine.add(Box.createHorizontalStrut(5));
         firstLine.add(idLabel);
-        contentPanel.add(Box.createVerticalStrut(10));
         contentPanel.add(firstLine);
         contentPanel.add(Box.createVerticalStrut(10));
 
@@ -152,10 +153,11 @@ public class InvoiceSummaryDetail extends JDialog {
         panel.setMaximumSize(new Dimension(600, 30));
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
+        // Insert actual values HERE
         total = new JLabel(I18N.getString("total") + " 15 000 $");
         panel.add(Box.createHorizontalGlue());
         panel.add(total);
-        panel.add(Box.createHorizontalStrut(15));
+        panel.add(Box.createHorizontalStrut(20));
 
         return panel;
     }

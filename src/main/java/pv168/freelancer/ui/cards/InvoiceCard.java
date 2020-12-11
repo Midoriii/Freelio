@@ -2,6 +2,7 @@ package pv168.freelancer.ui.cards;
 
 
 import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.details.InvoiceDetail;
 import pv168.freelancer.ui.details.InvoiceSummaryDetail;
 import pv168.freelancer.ui.utils.I18N;
 import pv168.freelancer.ui.utils.Icons;
@@ -93,6 +94,7 @@ public class InvoiceCard extends JPanel {
         incomeLabelPanel.add(annualIncome);
         incomeLabelPanel.add(Box.createHorizontalGlue());
 
+        // Delete this once an actual function is implemented that calculates the income from works done
         setAnnualIncome(24);
 
         return incomeLabelPanel;
@@ -128,7 +130,7 @@ public class InvoiceCard extends JPanel {
     private void createButtons() {
         btnCreate = new JButton(I18N.getButtonString("create"));
         btnCreate.setUI(new RoundedButton(new Color(76, 175, 80), Icons.ADD_ICON));
-        //btnCreate.addActionListener(this::addWorkDone);
+        btnCreate.addActionListener(e -> new InvoiceDetail(owner, true));
 
         btnEdit = new JButton(I18N.getButtonString("edit"));
         btnEdit.setUI(new RoundedButton(new Color(76, 175, 80), Icons.EDIT_ICON));
