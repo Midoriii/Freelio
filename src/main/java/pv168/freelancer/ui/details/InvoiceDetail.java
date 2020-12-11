@@ -6,10 +6,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import pv168.freelancer.ui.buttons.MinimizeButton;
 import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
-import pv168.freelancer.ui.utils.ComponentMover;
-import pv168.freelancer.ui.utils.DateLabelFormatter;
-import pv168.freelancer.ui.utils.I18N;
-import pv168.freelancer.ui.utils.Icons;
+import pv168.freelancer.ui.utils.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -43,7 +40,7 @@ public class InvoiceDetail extends JDialog {
         super(owner, modality);
         setUpDialog();
 
-        setUpQuitPanel(owner);
+        quitPanel = ComponentFactory.createQuitPanel(owner, this, 840, 40);
 
         setUpContentPanel();
 
@@ -55,19 +52,6 @@ public class InvoiceDetail extends JDialog {
         setUpMover();
 
         setVisible(true);
-    }
-
-    private void setUpQuitPanel(JFrame owner) {
-        quitPanel = new JPanel();
-        quitPanel.setPreferredSize(new Dimension(840, 40));
-
-        quitPanel.setLayout(new BoxLayout(quitPanel, BoxLayout.LINE_AXIS));
-        // The Glue and Rigid Areas are a way of composing the components where one wants them
-        quitPanel.add(Box.createHorizontalGlue());
-        quitPanel.add(new MinimizeButton(owner));
-        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
-        quitPanel.add(new QuitButton(e -> dispose()));
-        quitPanel.add(Box.createRigidArea(new Dimension(5,0)));
     }
 
     private void setUpContentPanel(){
