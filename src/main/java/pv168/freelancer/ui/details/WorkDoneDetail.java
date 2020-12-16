@@ -1,14 +1,10 @@
 package pv168.freelancer.ui.details;
 
-import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
 import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.CustomDocumentFilter;
-import pv168.freelancer.ui.buttons.MinimizeButton;
-import pv168.freelancer.ui.buttons.QuitButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
 import pv168.freelancer.ui.buttons.RoundedButtonSmall;
 import pv168.freelancer.ui.tablemodels.WorkDoneTableModel;
@@ -17,7 +13,6 @@ import pv168.freelancer.ui.utils.*;
 
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DateFormatter;
 import java.awt.*;
@@ -27,7 +22,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.Properties;
 
 /**
  * An editable dialog containing information about a single work done.
