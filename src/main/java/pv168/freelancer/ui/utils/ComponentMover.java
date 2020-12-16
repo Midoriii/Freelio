@@ -55,86 +55,6 @@ public class ComponentMover extends MouseAdapter
     }
 
     /**
-     *  Constructor to specify a Class of Component that will be moved when
-     *  drag events are generated on a registered child component. The events
-     *  will be passed to the first ancestor of this specified class.
-     *
-     *  @param destinationClass  the Class of the ancestor component
-     *  @param components         the Components to be registered for forwarding
-     *                           drag events to the ancestor Component.
-     */
-    public ComponentMover(Class destinationClass, Component... components)
-    {
-        this.destinationClass = destinationClass;
-        registerComponent( components );
-    }
-
-    /**
-     *  Constructor to specify a parent component that will be moved when drag
-     *  events are generated on a registered child component.
-     *
-     *  @param destinationComponent  the component drage events should be forwareded to
-     *  @param components    the Components to be registered for forwarding drag
-     *                       events to the parent component to be moved
-     */
-    public ComponentMover(Component destinationComponent, Component... components)
-    {
-        this.destinationComponent = destinationComponent;
-        registerComponent( components );
-    }
-
-    /**
-     *  Get the auto layout property
-     *
-     *  @return  the auto layout property
-     */
-    public boolean isAutoLayout()
-    {
-        return autoLayout;
-    }
-
-    /**
-     *  Set the auto layout property
-     *
-     *  @param  autoLayout when true layout will be invoked on the parent container
-     */
-    public void setAutoLayout(boolean autoLayout)
-    {
-        this.autoLayout = autoLayout;
-    }
-
-    /**
-     *  Get the change cursor property
-     *
-     *  @return  the change cursor property
-     */
-    public boolean isChangeCursor()
-    {
-        return changeCursor;
-    }
-
-    /**
-     *  Set the change cursor property
-     *
-     *  @param  changeCursor when true the cursor will be changed to the
-     *                       Cursor.MOVE_CURSOR while the mouse is pressed
-     */
-    public void setChangeCursor(boolean changeCursor)
-    {
-        this.changeCursor = changeCursor;
-    }
-
-    /**
-     *  Get the drag insets
-     *
-     *  @return  the drag insets
-     */
-    public Insets getDragInsets()
-    {
-        return dragInsets;
-    }
-
-    /**
      *  Set the drag insets. The insets specify an area where mouseDragged
      *  events should be ignored and therefore the component will not be moved.
      *  This will prevent these events from being confused with a
@@ -145,40 +65,6 @@ public class ComponentMover extends MouseAdapter
     public void setDragInsets(Insets dragInsets)
     {
         this.dragInsets = dragInsets;
-    }
-
-    /**
-     *  Get the bounds insets
-     *
-     *  @return  the bounds insets
-     */
-    public Insets getEdgeInsets()
-    {
-        return edgeInsets;
-    }
-
-    /**
-     *  Set the edge insets. The insets specify how close to each edge of the parent
-     *  component that the child component can be moved. Positive values means the
-     *  component must be contained within the parent. Negative values means the
-     *  component can be moved outside the parent.
-     *
-     *  @param  edgeInsets
-     */
-    public void setEdgeInsets(Insets edgeInsets)
-    {
-        this.edgeInsets = edgeInsets;
-    }
-
-    /**
-     *  Remove listeners from the specified component
-     *
-     *  @param components  the component the listeners are removed from
-     */
-    public void deregisterComponent(Component... components)
-    {
-        for (Component component : components)
-            component.removeMouseListener( this );
     }
 
     /**
@@ -200,20 +86,6 @@ public class ComponentMover extends MouseAdapter
     public Dimension getSnapSize()
     {
         return snapSize;
-    }
-
-    /**
-     *  Set the snap size. Forces the component to be snapped to
-     *  the closest grid position. Snapping will occur when the mouse is
-     *  dragged half way.
-     */
-    public void setSnapSize(Dimension snapSize)
-    {
-        if (snapSize.width < 1
-                ||  snapSize.height < 1)
-            throw new IllegalArgumentException("Snap sizes must be greater than 0");
-
-        this.snapSize = snapSize;
     }
 
     /**
@@ -325,23 +197,6 @@ public class ComponentMover extends MouseAdapter
         drag = (drag / snapSize) * snapSize;
 
         return drag;
-    }
-
-    /*
-     *  Get the bounds of the parent of the dragged component.
-     */
-    private Dimension getBoundingSize(Component source)
-    {
-        if (source instanceof Window)
-        {
-            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            Rectangle bounds = env.getMaximumWindowBounds();
-            return new Dimension(bounds.width, bounds.height);
-        }
-        else
-        {
-            return source.getParent().getSize();
-        }
     }
 
     /**
