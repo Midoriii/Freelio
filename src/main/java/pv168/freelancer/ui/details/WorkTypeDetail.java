@@ -137,33 +137,6 @@ public class WorkTypeDetail extends JDialog {
         contentPanel.add(okBtn, gbc);
     }
 
-    private boolean checkWorkTypeValidity() {
-        if (nameField.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null,
-                    I18N.getDialogString("nameEmpty"),
-                    "Warning", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        try
-        {
-            var hourlyRate = Double.parseDouble(hourlyRateField.getText());
-        }
-        catch(NumberFormatException e)
-        {
-            JOptionPane.showMessageDialog(null,
-                    I18N.getDialogString("validHourlyRate"),
-                    "Warning", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        return true;
-    }
-
-    private WorkType getWorkType() {
-        return new WorkType(nameField.getText(), Double.parseDouble(hourlyRateField.getText()), descriptionArea.getText());
-    }
-
     private void loadWorkType() {
         WorkType workType = (WorkType) workComboBox.getSelectedItem();
         nameField.setText(workType.getName());
@@ -200,6 +173,33 @@ public class WorkTypeDetail extends JDialog {
             }
 
             dispose();
+        }
+
+        private boolean checkWorkTypeValidity() {
+            if (nameField.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        I18N.getDialogString("nameEmpty"),
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+
+            try
+            {
+                var hourlyRate = Double.parseDouble(hourlyRateField.getText());
+            }
+            catch(NumberFormatException e)
+            {
+                JOptionPane.showMessageDialog(null,
+                        I18N.getDialogString("validHourlyRate"),
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+
+            return true;
+        }
+
+        private WorkType getWorkType() {
+            return new WorkType(nameField.getText(), Double.parseDouble(hourlyRateField.getText()), descriptionArea.getText());
         }
     }
 }
