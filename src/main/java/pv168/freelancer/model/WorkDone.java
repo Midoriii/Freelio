@@ -16,7 +16,7 @@ public class WorkDone {
     private WorkType workType;
     private String description;
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm  dd.MM.yyyy");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm  dd.MM.yyyy");
 
     public WorkDone(LocalDateTime workStart, LocalDateTime workEnd, WorkType workType, String description) {
         this.workStart = workStart;
