@@ -3,6 +3,7 @@ package pv168.freelancer.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 /**
  * --Description here--
@@ -75,5 +76,22 @@ public class WorkDone {
 
     public double calculatePay() {
         return Math.round(calculateHours() * workType.getHourlyRate() * 100.0)/100.0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WorkDone)) return false;
+        WorkDone workDone = (WorkDone) o;
+        return getId().equals(workDone.getId()) &&
+                Objects.equals(getWorkStart(), workDone.getWorkStart()) &&
+                Objects.equals(getWorkEnd(), workDone.getWorkEnd()) &&
+                Objects.equals(getWorkType(), workDone.getWorkType()) &&
+                Objects.equals(getDescription(), workDone.getDescription());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getWorkStart(), getWorkEnd(), getWorkType(), getDescription());
     }
 }
