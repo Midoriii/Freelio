@@ -185,7 +185,7 @@ public class WorkTypeDetail extends JDialog {
 
             try
             {
-                var hourlyRate = Double.parseDouble(hourlyRateField.getText());
+                Double.parseDouble(hourlyRateField.getText());
             }
             catch(NumberFormatException e)
             {
