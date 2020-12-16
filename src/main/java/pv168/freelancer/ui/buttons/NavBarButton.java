@@ -38,6 +38,12 @@ public class NavBarButton extends JButton implements MouseListener {
         addMouseListener(this);
     }
 
+    /**
+     * The following three methods are not needed, as the NavBar itself
+     * implements an ActionListener that performs the necessary functionality.
+     * Only the mouseEntered and mouseExited methods are useful for the text
+     * styling upon mouse hover.
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -55,7 +61,6 @@ public class NavBarButton extends JButton implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        //setForeground(Color.GRAY);
         Font font = getFont();
         Map attributes = font.getAttributes();
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
@@ -64,7 +69,6 @@ public class NavBarButton extends JButton implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
-        //setForeground(Color.WHITE);
         Font font = getFont();
         Map attributes = font.getAttributes();
         attributes.put(TextAttribute.UNDERLINE, null);

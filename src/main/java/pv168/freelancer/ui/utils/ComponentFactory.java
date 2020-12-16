@@ -22,6 +22,8 @@ public final class ComponentFactory {
 
     private static final I18N I18N = new I18N(ComponentFactory.class);
 
+    private ComponentFactory(){}
+
     /**
      * Used only for quit panels in Dialogs, as they are fixed size.
      */

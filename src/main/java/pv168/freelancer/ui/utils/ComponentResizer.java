@@ -59,32 +59,6 @@ public class ComponentResizer extends MouseAdapter
     }
 
     /**
-     *  Convenience contructor. All borders are resizable in increments of
-     *  a single pixel. Components can be registered when the class is created
-     *  or they can be registered separately afterwards.
-     *
-     *  @param components components to be automatically registered
-     */
-    public ComponentResizer(Component... components)
-    {
-        this(new Insets(5, 5, 5, 5), new Dimension(1, 1), components);
-    }
-
-    /**
-     *  Convenience contructor. Eligible borders are resisable in increments of
-     *  a single pixel. Components can be registered when the class is created
-     *  or they can be registered separately afterwards.
-     *
-     *  @param dragInsets Insets specifying which borders are eligible to be
-     *                    resized.
-     *  @param components components to be automatically registered
-     */
-    public ComponentResizer(Insets dragInsets, Component... components)
-    {
-        this(dragInsets, new Dimension(1, 1), components);
-    }
-
-    /**
      *  Create a ComponentResizer.
      *
      *  @param dragInsets Insets specifying which borders are eligible to be
@@ -98,16 +72,6 @@ public class ComponentResizer extends MouseAdapter
         setDragInsets( dragInsets );
         setSnapSize( snapSize );
         registerComponent( components );
-    }
-
-    /**
-     *  Get the drag insets
-     *
-     *  @return  the drag insets
-     */
-    public Insets getDragInsets()
-    {
-        return dragInsets;
     }
 
     /**
@@ -127,16 +91,6 @@ public class ComponentResizer extends MouseAdapter
     }
 
     /**
-     *  Get the components maximum size.
-     *
-     *  @return the maximum size
-     */
-    public Dimension getMaximumSize()
-    {
-        return maximumSize;
-    }
-
-    /**
      *  Specify the maximum size for the component. The component will still
      *  be constrained by the size of its parent.
      *
@@ -145,16 +99,6 @@ public class ComponentResizer extends MouseAdapter
     public void setMaximumSize(Dimension maximumSize)
     {
         this.maximumSize = maximumSize;
-    }
-
-    /**
-     *  Get the components minimum size.
-     *
-     *  @return the minimum size
-     */
-    public Dimension getMinimumSize()
-    {
-        return minimumSize;
     }
 
     /**
@@ -168,20 +112,6 @@ public class ComponentResizer extends MouseAdapter
         validateMinimumAndInsets(minimumSize, dragInsets);
 
         this.minimumSize = minimumSize;
-    }
-
-    /**
-     *  Remove listeners from the specified component
-     *
-     *  @param components  the component the listeners are removed from
-     */
-    public void deregisterComponent(Component... components)
-    {
-        for (Component component : components)
-        {
-            component.removeMouseListener( this );
-            component.removeMouseMotionListener( this );
-        }
     }
 
     /**
