@@ -107,24 +107,6 @@ public class WorkDoneDetail extends JDialog {
         contentPanel.add(Box.createVerticalStrut(50));
     }
 
-    private WorkDone getWorkDone() {
-        Date sDate = (Date) datePickerStart.getModel().getValue();
-        LocalDate startDate = sDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        Date eDate = (Date) datePickerEnd.getModel().getValue();
-        LocalDate endDate = eDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        Date sTime = ((SpinnerDateModel)timePickerStart.getModel()).getDate();
-        LocalTime startTime = sTime.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-
-        Date eTime = ((SpinnerDateModel)timePickerEnd.getModel()).getDate();
-        LocalTime endTime = eTime.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-
-        LocalDateTime workStart = startDate.atTime(startTime);
-        LocalDateTime workEnd = endDate.atTime(endTime);
-        return new WorkDone(workStart, workEnd, (WorkType) workComboBox.getSelectedItem(), description.getText());
-    }
-
     private void loadWorkDone(boolean updated) {
         WorkDone workDone = ((WorkDoneTableModel) workDoneTable.getModel()).getEntity(workDoneTable.getSelectedRow());
         description.setText(workDone.getDescription());
@@ -138,8 +120,6 @@ public class WorkDoneDetail extends JDialog {
         if (!updated) {
             workComboBox.setSelectedItem(workDone.getWorkType());}
     }
-
-
 
     private JPanel createTimeSelectPanel() {
 
@@ -255,26 +235,6 @@ public class WorkDoneDetail extends JDialog {
         cm.registerComponent(this);
     }
 
-    private boolean checkWorkDoneValidity() {
-        WorkDone workDone = getWorkDone();
-
-        if (workDone.getWorkStart().isAfter(workDone.getWorkEnd())) {
-            JOptionPane.showMessageDialog(null,
-                    I18N.getDialogString("startEnd"),
-                    "Warning", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        if (workDone.getWorkType() == null) {
-            JOptionPane.showMessageDialog(null,
-                    I18N.getDialogString("workTypeChosen"),
-                    "Warning", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        return true;
-    }
-
     private class CreateWorkDoneAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -295,7 +255,46 @@ public class WorkDoneDetail extends JDialog {
 
             dispose();
         }
+
+        private boolean checkWorkDoneValidity() {
+            WorkDone workDone = getWorkDone();
+
+            if (workDone.getWorkStart().isAfter(workDone.getWorkEnd())) {
+                JOptionPane.showMessageDialog(null,
+                        I18N.getDialogString("startEnd"),
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+
+            if (workDone.getWorkType() == null) {
+                JOptionPane.showMessageDialog(null,
+                        I18N.getDialogString("workTypeChosen"),
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+
+            return true;
+        }
+
+        private WorkDone getWorkDone() {
+            Date sDate = (Date) datePickerStart.getModel().getValue();
+            LocalDate startDate = sDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            Date eDate = (Date) datePickerEnd.getModel().getValue();
+            LocalDate endDate = eDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            Date sTime = ((SpinnerDateModel)timePickerStart.getModel()).getDate();
+            LocalTime startTime = sTime.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+
+            Date eTime = ((SpinnerDateModel)timePickerEnd.getModel()).getDate();
+            LocalTime endTime = eTime.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+
+            LocalDateTime workStart = startDate.atTime(startTime);
+            LocalDateTime workEnd = endDate.atTime(endTime);
+            return new WorkDone(workStart, workEnd, (WorkType) workComboBox.getSelectedItem(), description.getText());
+        }
     }
+
     void updatePanel(JFrame owner) {
         remove(contentPanel);
         this.workComboBox = new JComboBox<>(workTypeDao.findAllWorkTypes().toArray(new WorkType[0]));
