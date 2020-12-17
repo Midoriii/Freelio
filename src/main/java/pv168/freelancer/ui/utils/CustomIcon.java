@@ -3,6 +3,7 @@ package pv168.freelancer.ui.utils;
 import pv168.freelancer.ui.MainWindow;
 import pv168.freelancer.ui.buttons.NavBarButton;
 import pv168.freelancer.ui.buttons.RoundedButton;
+import pv168.freelancer.ui.buttons.RoundedButtonLong;
 import pv168.freelancer.ui.buttons.RoundedButtonSmall;
 
 import javax.swing.*;
@@ -63,6 +64,9 @@ public class CustomIcon implements Icon {
             JButton cast = (JButton) c;
             if(cast.getUI() instanceof RoundedButtonSmall){
                 g2.drawImage(image, 10,8, width, height, null);
+            }
+            else if(cast.getUI() instanceof RoundedButtonLong){
+                g2.drawImage(image, 15,18, width, height, null);
             }
             else if(cast.getUI() instanceof RoundedButton){
                 g2.drawImage(image, 25,18, width, height, null);

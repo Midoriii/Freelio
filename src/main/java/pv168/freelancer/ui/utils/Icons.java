@@ -23,6 +23,7 @@ public final class Icons {
     public static final CustomIcon CONFIRM_ICON = createIcon("/confirm.png",24, 24);
     public static final CustomIcon DETAIL_ICON = createIcon("/detail1.png",24, 24);
     public static final CustomIcon SEND_ICON = createIcon("/envelope.png",24, 24);
+    public static final CustomIcon DOLLAR_ICON = createIcon("/dollar.png",24, 24);
 
     public static final CustomIcon TOOLBAR_ADD_ICON = createIcon("/toolbar_plus.png",16, 16);
     public static final CustomIcon TOOLBAR_EDIT_ICON = createIcon("/toolbar_edit.png",16, 16);
