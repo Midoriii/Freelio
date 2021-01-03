@@ -18,7 +18,6 @@ public class NavBar extends JPanel implements ActionListener {
 
     private Label brand;
     private JPanel brandPanel;
-    private JButton btnInvoices;
     private JButton btnWorkDone;
     private JButton btnProfitCalc;
     private JPanel btnPanel;
@@ -26,7 +25,7 @@ public class NavBar extends JPanel implements ActionListener {
 
     private static final I18N I18N = new I18N(NavBar.class);
 
-    public NavBar(String invoiceName, String workDoneName, String profitCalcName, JPanel panel){
+    public NavBar(String workDoneName, String profitCalcName, JPanel panel){
         super();
         setUp();
 
@@ -35,7 +34,7 @@ public class NavBar extends JPanel implements ActionListener {
         createBrandLogo();
         add(new Box.Filler(new Dimension(0, 40), new Dimension(0, 40),
                 new Dimension(0, 150)));
-        createButtons(invoiceName, workDoneName, profitCalcName);
+        createButtons(workDoneName, profitCalcName);
         add(Box.createVerticalGlue());
     }
 
@@ -67,7 +66,7 @@ public class NavBar extends JPanel implements ActionListener {
         add(brandPanel);
     }
 
-    private void createButtons(String invoiceName, String workDoneName, String profitCalcName) {
+    private void createButtons(String workDoneName, String profitCalcName) {
         btnPanel = new JPanel();
 
         btnPanel.setMinimumSize(new Dimension(100, 210));
@@ -84,17 +83,11 @@ public class NavBar extends JPanel implements ActionListener {
         btnWorkDone = new NavBarButton(workDoneName, Icons.WORK_ICON);
         btnWorkDone.addActionListener(this);
 
-        btnInvoices = new NavBarButton(invoiceName, Icons.INVOICE_ICON);
-        btnInvoices.addActionListener(this);
-
         btnProfitCalc = new NavBarButton(profitCalcName, Icons.PROFIT_ICON);
         btnProfitCalc.addActionListener(this);
 
         // Fillers between buttons
         gluePanel.add(btnWorkDone);
-        gluePanel.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 8),
-                new Dimension(0, 8)));
-        gluePanel.add(btnInvoices);
         gluePanel.add(new Box.Filler(new Dimension(0, 5), new Dimension(0, 8),
                 new Dimension(0, 8)));
         gluePanel.add(btnProfitCalc);
