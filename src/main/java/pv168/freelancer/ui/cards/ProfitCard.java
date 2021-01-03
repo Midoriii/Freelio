@@ -2,6 +2,8 @@ package pv168.freelancer.ui.cards;
 
 
 import org.jdatepicker.impl.JDatePickerImpl;
+import pv168.freelancer.data.WorkDoneDao;
+import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.ui.buttons.RoundedButtonLong;
 import pv168.freelancer.ui.utils.ComponentFactory;
 import pv168.freelancer.ui.utils.I18N;
@@ -10,6 +12,11 @@ import pv168.freelancer.ui.utils.Icons;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.chrono.ChronoLocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 /**
  * A card for cardLayout in MainWindow class, contains profit calculation functionality.
@@ -24,11 +31,13 @@ public class ProfitCard extends JPanel {
     private JDatePickerImpl toDate = createDatePicker();
 
     private JLabel profitLabel;
+    private final WorkDoneDao workDoneDao;
 
     private static final pv168.freelancer.ui.utils.I18N I18N = new I18N(ProfitCard.class);
 
-    public ProfitCard(String name){
+    public ProfitCard(String name, WorkDoneDao workDoneDao){
         this.name = name;
+        this.workDoneDao = workDoneDao;
         setPreferredSize(new Dimension(890, 635));
 
         setUpGroupLayout(createUpperPanel(), createLowerPanel());
@@ -135,8 +144,23 @@ public class ProfitCard extends JPanel {
     }
 
     public void calculateProfit(){
-        //TODO:Replace with calculation based on time period
-        double profit = 24.0;
+        Date sDate = (Date) fromDate.getModel().getValue();
+        LocalDate startDate = sDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        Date eDate = (Date) toDate.getModel().getValue();
+        LocalDate endDate = eDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        List<WorkDone> worksDone = workDoneDao.findAllWorksDone();
+
+        double profit = 0.0;
+
+        for (WorkDone workDone : worksDone) {
+            if (!workDone.getWorkStart().toLocalDate().isBefore(startDate) &&
+                    !workDone.getWorkEnd().toLocalDate().isAfter(endDate)) {
+                profit += workDone.calculatePay();
+            }
+        }
+
         profitLabel.setText(String.format("<html>%s <font color=#4CAF50>%s $</font></html>",
                 I18N.getString("profit"), Math.round(profit)));
         profitLabel.setVisible(true);

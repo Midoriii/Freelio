@@ -82,7 +82,7 @@ public class MainWindow {
 
         contentPanel.add(new WorkDoneCard(workDoneLabel, frame, workTypeDao, workDoneDao), workDoneLabel);
         contentPanel.add(new InvoiceCard(invoicesLabel, frame), invoicesLabel);
-        contentPanel.add(new ProfitCard(profitCalcLabel), profitCalcLabel);
+        contentPanel.add(new ProfitCard(profitCalcLabel, workDoneDao), profitCalcLabel);
     }
 
     private void createNavbar() {
