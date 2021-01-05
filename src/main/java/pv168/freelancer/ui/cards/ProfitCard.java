@@ -12,6 +12,9 @@ import pv168.freelancer.ui.utils.Icons;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -151,17 +154,17 @@ public class ProfitCard extends JPanel {
 
         List<WorkDone> worksDone = workDoneDao.findAllWorksDone();
 
-        double profit = 0.0;
+        BigDecimal profit = new BigDecimal(0);
 
         for (WorkDone workDone : worksDone) {
             if (!workDone.getWorkStart().toLocalDate().isBefore(startDate) &&
                     !workDone.getWorkEnd().toLocalDate().isAfter(endDate)) {
-                profit += workDone.calculatePay();
+                profit = profit.add(workDone.calculatePay());
             }
         }
 
         profitLabel.setText(String.format("<html>%s <font color=#4CAF50>%s $</font></html>",
-                I18N.getString("profit"), Math.round(profit)));
+                I18N.getString("profit"), profit.setScale(2, RoundingMode.HALF_EVEN)));
         profitLabel.setVisible(true);
     }
 }

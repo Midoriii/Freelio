@@ -97,7 +97,7 @@ public class WorkDoneDao {
                             rs.getTimestamp("WORK_END").toLocalDateTime(),
                             new WorkType(rs.getLong("WT_ID"),
                                     rs.getString("WT_NAME"),
-                                    rs.getDouble("WT_HOURLY_RATE"),
+                                    rs.getBigDecimal("WT_HOURLY_RATE"),
                                     rs.getString("WT_DESC")),
                             rs.getString("WD_DESC"));
                     workDone.setId(rs.getLong("WD_ID"));

@@ -1,5 +1,6 @@
 package pv168.freelancer.model;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 
@@ -11,16 +12,16 @@ import java.util.Objects;
 public class WorkType {
     private Long id;
     private String name;
-    private double hourlyRate;
+    private BigDecimal hourlyRate;
     private String description;
 
-    public WorkType(String name, double hourlyRate, String description) {
+    public WorkType(String name, BigDecimal hourlyRate, String description) {
         this.name = name;
         this.hourlyRate = hourlyRate;
         this.description = description;
     }
 
-    public WorkType(Long id, String name, double hourlyRate, String description) {
+    public WorkType(Long id, String name, BigDecimal hourlyRate, String description) {
         this.id = id;
         this.name = name;
         this.hourlyRate = hourlyRate;
@@ -39,9 +40,9 @@ public class WorkType {
 
     public void setName(String name) { this.name = name; }
 
-    public double getHourlyRate() { return hourlyRate; }
+    public BigDecimal getHourlyRate() { return hourlyRate; }
 
-    public void setHourlyRate(double hourlyRate) { this.hourlyRate = hourlyRate; }
+    public void setHourlyRate(BigDecimal hourlyRate) { this.hourlyRate = hourlyRate; }
 
     public String getDescription() { return description; }
 

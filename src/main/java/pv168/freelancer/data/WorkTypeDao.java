@@ -57,7 +57,7 @@ public class WorkTypeDao {
                      "INSERT INTO WORK_TYPE (NAME, HOURLY_RATE, DESCRIPTION) VALUES (?, ?, ?)",
                      Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, workType.getName());
-            st.setDouble(2, workType.getHourlyRate());
+            st.setBigDecimal(2, workType.getHourlyRate());
             st.setString(3, workType.getDescription());
             st.executeUpdate();
             try (var rs = st.getGeneratedKeys()) {
@@ -92,7 +92,7 @@ public class WorkTypeDao {
              var st = connection.prepareStatement(
                      "UPDATE WORK_TYPE SET NAME = ?, HOURLY_RATE = ?, DESCRIPTION = ? WHERE ID = ?")) {
             st.setString(1, workType.getName());
-            st.setDouble(2, workType.getHourlyRate());
+            st.setBigDecimal(2, workType.getHourlyRate());
             st.setString(3, workType.getDescription());
             st.setLong(4, workType.getId());
             if (st.executeUpdate() == 0){
@@ -114,7 +114,7 @@ public class WorkTypeDao {
                     WorkType workType = new WorkType(
                             rs.getLong("ID"),
                             rs.getString("NAME"),
-                            rs.getDouble("HOURLY_RATE"),
+                            rs.getBigDecimal("HOURLY_RATE"),
                             rs.getString("DESCRIPTION"));
 
                     workTypes.add(workType);
