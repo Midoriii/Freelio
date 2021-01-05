@@ -125,7 +125,7 @@ final class WorkDoneDaoTest {
         workDoneDao.createWorkDone(mod1);
         workDoneDao.createWorkDone(feeding);
 
-        workDoneDao.deleteWorkDone(mod1);
+        workDoneDao.deleteWorkDone(mod1.getId());
 
         assertThat(workDoneDao.findAllWorksDone())
                 .usingElementComparatorIgnoringFields("workType")
@@ -138,7 +138,7 @@ final class WorkDoneDaoTest {
         WorkDone wd = new WorkDone(LocalDateTime.of(2019, 5, 4, 3, 2, 1),
                 LocalDateTime.of(2019, 6, 5, 4, 3, 2), wt, "4 pizzas delivered");
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> workDoneDao.deleteWorkDone(wd));
+                .isThrownBy(() -> workDoneDao.deleteWorkDone(wd.getId()));
     }
 
     @Test

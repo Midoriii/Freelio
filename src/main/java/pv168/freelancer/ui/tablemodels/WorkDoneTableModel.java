@@ -46,7 +46,7 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
     }
 
     public void deleteRow(int rowIndex) {
-        workDao.deleteWorkDone(worksDone.get(rowIndex));
+        workDao.deleteWorkDone(worksDone.get(rowIndex).getId());
         worksDone.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
