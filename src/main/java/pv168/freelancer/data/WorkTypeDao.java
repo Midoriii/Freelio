@@ -6,6 +6,7 @@ import javax.sql.DataSource;
         import java.sql.*;
         import java.util.ArrayList;
         import java.util.List;
+import java.util.Objects;
 
 /**
  * --Description here--
@@ -17,7 +18,7 @@ public class WorkTypeDao {
     private final DataSource dataSource;
 
     public WorkTypeDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+        this.dataSource = Objects.requireNonNull(dataSource);
         initWorkTypeTable();
     }
 
@@ -72,17 +73,17 @@ public class WorkTypeDao {
         }
     }
 
-    public void deleteWorkType(WorkType workType) {
-        if (workType.getId() == null) throw new IllegalArgumentException("WorkType has null ID");
+    public void deleteWorkType(Long ID) {
+        if (ID == null) throw new IllegalArgumentException("WorkType has null ID");
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
                      "DELETE FROM WORK_TYPE WHERE ID = ?")) {
-            st.setLong(1, workType.getId());
+            st.setLong(1, ID);
             if (st.executeUpdate() == 0){
-                throw new DataAccessException("Failed to delete non-existing WorkType: " + workType);
+                throw new DataAccessException("Failed to delete non-existing WorkType with ID: " + ID.toString());
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("Failed to delete employee " + workType, ex);
+            throw new DataAccessException("Failed to delete WorkType with ID " + ID.toString(), ex);
         }
     }
 

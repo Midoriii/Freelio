@@ -43,7 +43,7 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
     }
 
     public void deleteRow(int rowIndex) {
-        workTypeDao.deleteWorkType(workTypes.get(rowIndex));
+        workTypeDao.deleteWorkType(workTypes.get(rowIndex).getId());
         workTypes.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }

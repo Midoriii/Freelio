@@ -55,7 +55,7 @@ public class WorkTypeDaoTest {
 
         assertThat(workTypeDao.findAllWorkTypes().size()).isEqualTo(2);
 
-        workTypeDao.deleteWorkType(type1);
+        workTypeDao.deleteWorkType(type1.getId());
 
         assertThat(workTypeDao.findAllWorkTypes().size()).isEqualTo(1);
     }
