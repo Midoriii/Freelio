@@ -3,7 +3,6 @@ package pv168.freelancer.ui.cards;
 
 import org.jdatepicker.impl.JDatePickerImpl;
 import pv168.freelancer.data.WorkDoneDao;
-import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.services.ProfitCalculator;
 import pv168.freelancer.ui.buttons.RoundedButtonLong;
 import pv168.freelancer.ui.utils.ComponentFactory;
@@ -13,12 +12,10 @@ import pv168.freelancer.ui.utils.Icons;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A card for cardLayout in MainWindow class, contains profit calculation functionality.
@@ -152,7 +149,7 @@ public class ProfitCard extends JPanel {
         Date eDate = (Date) toDate.getModel().getValue();
         LocalDate endDate = eDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        ProfitCalculator calculator = new ProfitCalculator(startDate, endDate, workDoneDao);
+        ProfitCalculator calculator = new ProfitCalculator(startDate, endDate, workDoneDao.findAllWorksDone());
 
         profitLabel.setText(String.format("<html>%s <font color=#4CAF50>%s $</font></html>",
                 I18N.getString("profit"), calculator.calculateProfit().setScale(2, RoundingMode.HALF_EVEN)));
