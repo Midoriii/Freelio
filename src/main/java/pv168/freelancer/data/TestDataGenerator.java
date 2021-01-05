@@ -3,6 +3,7 @@ package pv168.freelancer.data;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,13 +23,13 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class TestDataGenerator {
 
     private static final List<WorkType> WORK_TYPES = List.of(
-            new WorkType("UI Design", 5, "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed elit dui, pellentesque a, faucibus vel, interdum nec, diam."),
-            new WorkType("Training Pokemon", 100,  "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."),
-            new WorkType("UX Lecturing", 60, "Sed convallis magna eu sem."),
-            new WorkType("Recording Despacito 2", 42, "Nulla non lectus sed nisl molestie malesuada."),
-            new WorkType("Updating Windows", 666,  "In rutrum."),
-            new WorkType("Making coffee", 420, "Fusce dui leo, imperdiet in, aliquam sit amet, feugiat eu, orci."),
-            new WorkType("Repairing coffee machine", 99, "Morbi imperdiet, mauris ac auctor dictum, nisl ligula egestas nulla, et sollicitudin sem purus in lacus. Maecenas sollicitudin.")
+            new WorkType("UI Design", new BigDecimal(5), "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed elit dui, pellentesque a, faucibus vel, interdum nec, diam."),
+            new WorkType("Training Pokemon", new BigDecimal(100),  "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."),
+            new WorkType("UX Lecturing", new BigDecimal(60), "Sed convallis magna eu sem."),
+            new WorkType("Recording Despacito 2", new BigDecimal(42), "Nulla non lectus sed nisl molestie malesuada."),
+            new WorkType("Updating Windows", new BigDecimal(666),  "In rutrum."),
+            new WorkType("Making coffee", new BigDecimal(420), "Fusce dui leo, imperdiet in, aliquam sit amet, feugiat eu, orci."),
+            new WorkType("Repairing coffee machine", new BigDecimal(99), "Morbi imperdiet, mauris ac auctor dictum, nisl ligula egestas nulla, et sollicitudin sem purus in lacus. Maecenas sollicitudin.")
     );
 
     private static final List<String> DESCRIPTIONS = List.of(

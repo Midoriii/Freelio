@@ -4,6 +4,7 @@ import pv168.freelancer.data.WorkTypeDao;
 import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.utils.I18N;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
     private static final List<Column<?, WorkType>> COLUMNS = List.of(
             Column.build(I18N.getString("id"), Long.class, WorkType::getId),
             Column.build(I18N.getString("name"), String.class, WorkType::getName),
-            Column.build(I18N.getString("rate"), double.class, WorkType::getHourlyRate),
+            Column.build(I18N.getString("rate"), BigDecimal.class, WorkType::getHourlyRate),
             Column.build(I18N.getString("description"), String.class, WorkType::getDescription)
     );
 
@@ -42,7 +43,7 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
     }
 
     public void deleteRow(int rowIndex) {
-        workTypeDao.deleteWorkType(workTypes.get(rowIndex));
+        workTypeDao.deleteWorkType(workTypes.get(rowIndex).getId());
         workTypes.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }

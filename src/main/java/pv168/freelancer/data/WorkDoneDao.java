@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * --Description here--
@@ -18,7 +19,7 @@ public class WorkDoneDao {
     private final DataSource dataSource;
 
     public WorkDoneDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+        this.dataSource = Objects.requireNonNull(dataSource);
         initWorkDoneTable();
     }
 
@@ -48,18 +49,18 @@ public class WorkDoneDao {
         }
     }
 
-    public void deleteWorkDone(WorkDone workDone) {
-        if (workDone.getId() == null) {
+    public void deleteWorkDone(Long ID) {
+        if (ID == null) {
             throw new IllegalArgumentException("Work done has null ID");
         }
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
                      "DELETE FROM WORK_DONE " +
                              "WHERE ID = ?")) {
-            st.setLong(1, workDone.getId());
+            st.setLong(1, ID);
             st.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("Failed to delete work done " + workDone, ex);
+            throw new DataAccessException("Failed to delete work done with ID" + ID.toString(), ex);
         }
     }
 
@@ -97,7 +98,7 @@ public class WorkDoneDao {
                             rs.getTimestamp("WORK_END").toLocalDateTime(),
                             new WorkType(rs.getLong("WT_ID"),
                                     rs.getString("WT_NAME"),
-                                    rs.getDouble("WT_HOURLY_RATE"),
+                                    rs.getBigDecimal("WT_HOURLY_RATE"),
                                     rs.getString("WT_DESC")),
                             rs.getString("WD_DESC"));
                     workDone.setId(rs.getLong("WD_ID"));

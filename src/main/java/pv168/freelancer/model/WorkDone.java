@@ -1,5 +1,8 @@
 package pv168.freelancer.model;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -74,8 +77,12 @@ public class WorkDone {
         return LocalDateTime.from(workStart).until(workEnd, ChronoUnit.HOURS);
     }
 
-    public double calculatePay() {
-        return Math.round(calculateHours() * workType.getHourlyRate() * 100.0)/100.0;
+    public BigDecimal calculatePay() {
+        return workType.getHourlyRate().multiply(new BigDecimal(calculateHours()));
+    }
+
+    public  BigDecimal calculatePayRounded() {
+        return calculatePay().setScale(2, RoundingMode.HALF_EVEN);
     }
 
     @Override

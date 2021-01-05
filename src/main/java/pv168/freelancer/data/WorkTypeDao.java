@@ -6,6 +6,7 @@ import javax.sql.DataSource;
         import java.sql.*;
         import java.util.ArrayList;
         import java.util.List;
+import java.util.Objects;
 
 /**
  * --Description here--
@@ -17,7 +18,7 @@ public class WorkTypeDao {
     private final DataSource dataSource;
 
     public WorkTypeDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+        this.dataSource = Objects.requireNonNull(dataSource);
         initWorkTypeTable();
     }
 
@@ -57,7 +58,7 @@ public class WorkTypeDao {
                      "INSERT INTO WORK_TYPE (NAME, HOURLY_RATE, DESCRIPTION) VALUES (?, ?, ?)",
                      Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, workType.getName());
-            st.setDouble(2, workType.getHourlyRate());
+            st.setBigDecimal(2, workType.getHourlyRate());
             st.setString(3, workType.getDescription());
             st.executeUpdate();
             try (var rs = st.getGeneratedKeys()) {
@@ -72,17 +73,17 @@ public class WorkTypeDao {
         }
     }
 
-    public void deleteWorkType(WorkType workType) {
-        if (workType.getId() == null) throw new IllegalArgumentException("WorkType has null ID");
+    public void deleteWorkType(Long ID) {
+        if (ID == null) throw new IllegalArgumentException("WorkType has null ID");
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
                      "DELETE FROM WORK_TYPE WHERE ID = ?")) {
-            st.setLong(1, workType.getId());
+            st.setLong(1, ID);
             if (st.executeUpdate() == 0){
-                throw new DataAccessException("Failed to delete non-existing WorkType: " + workType);
+                throw new DataAccessException("Failed to delete non-existing WorkType with ID: " + ID.toString());
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("Failed to delete employee " + workType, ex);
+            throw new DataAccessException("Failed to delete WorkType with ID " + ID.toString(), ex);
         }
     }
 
@@ -92,7 +93,7 @@ public class WorkTypeDao {
              var st = connection.prepareStatement(
                      "UPDATE WORK_TYPE SET NAME = ?, HOURLY_RATE = ?, DESCRIPTION = ? WHERE ID = ?")) {
             st.setString(1, workType.getName());
-            st.setDouble(2, workType.getHourlyRate());
+            st.setBigDecimal(2, workType.getHourlyRate());
             st.setString(3, workType.getDescription());
             st.setLong(4, workType.getId());
             if (st.executeUpdate() == 0){
@@ -114,7 +115,7 @@ public class WorkTypeDao {
                     WorkType workType = new WorkType(
                             rs.getLong("ID"),
                             rs.getString("NAME"),
-                            rs.getDouble("HOURLY_RATE"),
+                            rs.getBigDecimal("HOURLY_RATE"),
                             rs.getString("DESCRIPTION"));
 
                     workTypes.add(workType);

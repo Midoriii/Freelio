@@ -4,6 +4,7 @@ import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.junit.jupiter.api.*;
 import pv168.freelancer.model.WorkType;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,7 +37,7 @@ public class WorkTypeDaoTest {
 
     @Test
     void createWorkType() {
-        WorkType workType = new WorkType("Moderating Discord", 30, "Tough job");
+        WorkType workType = new WorkType("Moderating Discord", new BigDecimal(30), "Tough job");
 
         workTypeDao.createWorkType(workType);
 
@@ -46,15 +47,15 @@ public class WorkTypeDaoTest {
 
     @Test
     void deleteWorkType() {
-        WorkType type1 = new WorkType("Moderating Discord", 30, "Tough job");
-        WorkType type2 = new WorkType("Feeding pigeons", 0, "Fresh air");
+        WorkType type1 = new WorkType("Moderating Discord", new BigDecimal(30), "Tough job");
+        WorkType type2 = new WorkType("Feeding pigeons", new BigDecimal(0), "Fresh air");
 
         workTypeDao.createWorkType(type1);
         workTypeDao.createWorkType(type2);
 
         assertThat(workTypeDao.findAllWorkTypes().size()).isEqualTo(2);
 
-        workTypeDao.deleteWorkType(type1);
+        workTypeDao.deleteWorkType(type1.getId());
 
         assertThat(workTypeDao.findAllWorkTypes().size()).isEqualTo(1);
     }
@@ -64,7 +65,7 @@ public class WorkTypeDaoTest {
         String originalDescription = "Tough job";
         String newDescription = "Fresh air";
 
-        WorkType workType = new WorkType("Feeding pigeons", 0, originalDescription);
+        WorkType workType = new WorkType("Feeding pigeons", new BigDecimal(0), originalDescription);
 
         workTypeDao.createWorkType(workType);
         workType.setDescription(newDescription);

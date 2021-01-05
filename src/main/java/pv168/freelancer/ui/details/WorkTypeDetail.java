@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.math.BigDecimal;
 
 /**
  * An editable dialog containing information about a single work type.
@@ -140,7 +141,7 @@ public class WorkTypeDetail extends JDialog {
     private void loadWorkType() {
         WorkType workType = (WorkType) workComboBox.getSelectedItem();
         nameField.setText(workType.getName());
-        hourlyRateField.setText(Double.toString(workType.getHourlyRate()));
+        hourlyRateField.setText(workType.getHourlyRate().toString());
         descriptionArea.setText(workType.getDescription());
     }
 
@@ -199,7 +200,7 @@ public class WorkTypeDetail extends JDialog {
         }
 
         private WorkType getWorkType() {
-            return new WorkType(nameField.getText(), Double.parseDouble(hourlyRateField.getText()), descriptionArea.getText());
+            return new WorkType(nameField.getText(), new BigDecimal(hourlyRateField.getText()), descriptionArea.getText());
         }
     }
 }

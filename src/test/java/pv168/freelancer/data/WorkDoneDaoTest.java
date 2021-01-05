@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
@@ -43,7 +44,7 @@ final class WorkDoneDaoTest {
 
     @Test
     void createWork() {
-        WorkType workType = new WorkType("Moderating Discord", 30, "Tough job");
+        WorkType workType = new WorkType("Moderating Discord", new BigDecimal(30), "Tough job");
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, "String note");
 
@@ -67,7 +68,7 @@ final class WorkDoneDaoTest {
 
     @Test
     void createWorkWithExistingId() {
-        WorkType workType = new WorkType("Moderating Discord", 30, "Tough job");
+        WorkType workType = new WorkType("Moderating Discord", new BigDecimal(30), "Tough job");
         workTypeDao.createWorkType(workType);
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, "String note");
@@ -85,8 +86,8 @@ final class WorkDoneDaoTest {
 
     @Test
     void findAll() {
-        WorkType type1 = new WorkType("Moderating Discord", 30, "Tough job");
-        WorkType type2 = new WorkType("Feeding pigeons", 0, "Fresh air");
+        WorkType type1 = new WorkType("Moderating Discord", new BigDecimal(30), "Tough job");
+        WorkType type2 = new WorkType("Feeding pigeons", new BigDecimal(0), "Fresh air");
         WorkDone mod1 = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), type1, "String note");
         WorkDone mod2 = new WorkDone(LocalDateTime.of(2018, 1, 3, 2, 1, 4),
@@ -109,8 +110,8 @@ final class WorkDoneDaoTest {
 
     @Test
     void delete() {
-        WorkType type1 = new WorkType("Moderating Discord", 30, "Tough job");
-        WorkType type2 = new WorkType("Feeding pigeons", 0, "Fresh air");
+        WorkType type1 = new WorkType("Moderating Discord", new BigDecimal(30), "Tough job");
+        WorkType type2 = new WorkType("Feeding pigeons", new BigDecimal(0), "Fresh air");
         WorkDone mod1 = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), type1, "String note");
 
@@ -124,7 +125,7 @@ final class WorkDoneDaoTest {
         workDoneDao.createWorkDone(mod1);
         workDoneDao.createWorkDone(feeding);
 
-        workDoneDao.deleteWorkDone(mod1);
+        workDoneDao.deleteWorkDone(mod1.getId());
 
         assertThat(workDoneDao.findAllWorksDone())
                 .usingElementComparatorIgnoringFields("workType")
@@ -133,11 +134,11 @@ final class WorkDoneDaoTest {
 
     @Test
     void deleteWithNullId() {
-        WorkType wt = new WorkType("Delivering pizza", 25, "By car");
+        WorkType wt = new WorkType("Delivering pizza", new BigDecimal(25), "By car");
         WorkDone wd = new WorkDone(LocalDateTime.of(2019, 5, 4, 3, 2, 1),
                 LocalDateTime.of(2019, 6, 5, 4, 3, 2), wt, "4 pizzas delivered");
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> workDoneDao.deleteWorkDone(wd));
+                .isThrownBy(() -> workDoneDao.deleteWorkDone(wd.getId()));
     }
 
     @Test
@@ -145,7 +146,7 @@ final class WorkDoneDaoTest {
         String originalDescription = "original description";
         String newDescription = "new desription";
 
-        WorkType workType = new WorkType("Moderating Discord", 30, "Tough job");
+        WorkType workType = new WorkType("Moderating Discord", new BigDecimal(30), "Tough job");
         WorkDone workDone = new WorkDone(LocalDateTime.of(2020, 11, 23, 22, 18, 54),
                 LocalDateTime.of(2020, 11, 23, 22, 18, 55), workType, originalDescription);
 
