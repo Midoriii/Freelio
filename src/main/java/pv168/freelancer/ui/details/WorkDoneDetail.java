@@ -64,7 +64,7 @@ public class WorkDoneDetail extends JDialog {
         this.datePickerEnd = ComponentFactory.createDatePicker();
         this.editing = editing;
         this.workDoneTable = workDoneTable;
-        this.workTypeTable = new WorkTypeTableModel(workTypeDao.findAllWorkTypes(), workTypeDao);
+        this.workTypeTable = new WorkTypeTableModel(workTypeDao);
 
 
         JPanel quitPanel = ComponentFactory.createQuitPanel(owner, this, 450, 40);

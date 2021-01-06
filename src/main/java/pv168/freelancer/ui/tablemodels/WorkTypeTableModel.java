@@ -26,7 +26,7 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
     private final List<WorkType> workTypes;
     private final WorkTypeDao workTypeDao;
 
-    public WorkTypeTableModel(List<WorkType> workTypeList, WorkTypeDao workDao) {
+    public WorkTypeTableModel(WorkTypeDao workDao) {
         super(COLUMNS);
         this.workTypeDao = workDao;
         this.workTypes = workDao.findAllWorkTypes();
