@@ -12,7 +12,7 @@ import java.awt.*;
  */
 public class CustomDocumentFilter extends DocumentFilter {
 
-    private int len;
+    private final int len;
 
     public CustomDocumentFilter(int len) {
         this.len = len;
