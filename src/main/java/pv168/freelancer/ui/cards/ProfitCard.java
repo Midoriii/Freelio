@@ -26,8 +26,8 @@ public class ProfitCard extends JPanel {
 
     public final String name;
 
-    private JDatePickerImpl fromDate = createDatePicker();
-    private JDatePickerImpl toDate = createDatePicker();
+    private final JDatePickerImpl fromDate = createDatePicker();
+    private final JDatePickerImpl toDate = createDatePicker();
 
     private JLabel profitLabel;
     private final WorkDoneDao workDoneDao;
