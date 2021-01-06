@@ -29,26 +29,21 @@ import java.util.Date;
  * @author xbenes2
  */
 public class WorkDoneDetail extends JDialog {
-    private boolean editing;
+    private final boolean editing;
 
-    private JPanel quitPanel;
     private JPanel contentPanel;
 
-    private JButton btnAdd;
-    private JButton btnEdit;
-    private JButton btnDelete;
+    private final JTable workDoneTable;
 
-    private JTable workDoneTable;
-
-    private JSpinner timePickerStart;
-    private JSpinner timePickerEnd;
-    private JDatePickerImpl datePickerStart;
-    private JDatePickerImpl datePickerEnd;
+    private final JSpinner timePickerStart;
+    private final JSpinner timePickerEnd;
+    private final JDatePickerImpl datePickerStart;
+    private final JDatePickerImpl datePickerEnd;
 
     private JComboBox<WorkType> workComboBox;
     private JTextArea description;
 
-    private WorkTypeTableModel workTypeTable;
+    private final WorkTypeTableModel workTypeTable;
     private final WorkTypeDao workTypeDao;
 
 
@@ -72,7 +67,7 @@ public class WorkDoneDetail extends JDialog {
         this.workTypeTable = new WorkTypeTableModel(workTypeDao.findAllWorkTypes(), workTypeDao);
 
 
-        quitPanel = ComponentFactory.createQuitPanel(owner, this, 450, 40);
+        JPanel quitPanel = ComponentFactory.createQuitPanel(owner, this, 450, 40);
 
         setUpContentPanel(owner);
 
@@ -181,19 +176,19 @@ public class WorkDoneDetail extends JDialog {
         buttonPanel.setPreferredSize(new Dimension(450, 40));
         buttonPanel.setLayout(new FlowLayout());
 
-        btnAdd = new JButton(I18N.getButtonString("add"));
+        JButton btnAdd = new JButton(I18N.getButtonString("add"));
         btnAdd.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.ADD_ICON_S));
-        btnAdd.addActionListener(e -> addWorkType(e, owner));
+        btnAdd.addActionListener(e -> addWorkType(owner));
         buttonPanel.add(btnAdd);
 
-        btnEdit = new JButton(I18N.getButtonString("edit"));
+        JButton btnEdit = new JButton(I18N.getButtonString("edit"));
         btnEdit.setUI(new RoundedButtonSmall(new Color(76, 175, 80), Icons.EDIT_ICON_S));
-        btnEdit.addActionListener(e -> editWorkType(e, owner));
+        btnEdit.addActionListener(e -> editWorkType(owner));
         buttonPanel.add(btnEdit);
 
-        btnDelete = new JButton(I18N.getButtonString("delete"));
+        JButton btnDelete = new JButton(I18N.getButtonString("delete"));
         btnDelete.setUI(new RoundedButtonSmall(new Color(246, 105, 94), Icons.DELETE_ICON_S));
-        btnDelete.addActionListener(e -> deleteWorkType(e, owner));
+        btnDelete.addActionListener(e -> deleteWorkType(owner));
         buttonPanel.add(btnDelete);
 
         panel.add(workPanel);
@@ -306,7 +301,7 @@ public class WorkDoneDetail extends JDialog {
         repaint();
     }
 
-    public void deleteWorkType(ActionEvent actionEvent, JFrame owner) {
+    public void deleteWorkType(JFrame owner) {
         var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
         if (workDoneTableModel.workTypeCount(((WorkType) workComboBox.getSelectedItem()).getId()) == 0) {
             workTypeTable.deleteRow(workComboBox.getSelectedIndex());
@@ -316,14 +311,14 @@ public class WorkDoneDetail extends JDialog {
         }
     }
 
-    private void editWorkType(ActionEvent e, JFrame owner) {
+    private void editWorkType(JFrame owner) {
         new WorkTypeDetail(owner, true, workComboBox, workTypeTable, true);
         WorkType edited = (WorkType) workComboBox.getSelectedItem();
         updatePanel(owner);
         workComboBox.setSelectedItem(edited);
     }
 
-    private void addWorkType(ActionEvent e, JFrame owner) {
+    private void addWorkType(JFrame owner) {
         new WorkTypeDetail(owner, true, workComboBox, workTypeTable, false);
         updatePanel(owner);
         workComboBox.setSelectedIndex(workComboBox.getItemCount() - 1);
