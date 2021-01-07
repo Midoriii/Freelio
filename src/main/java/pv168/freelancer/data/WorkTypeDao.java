@@ -5,6 +5,7 @@ import pv168.freelancer.model.WorkType;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -114,7 +115,7 @@ public class WorkTypeDao {
                     workTypes.add(workType);
                 }
             }
-            return workTypes;
+            return Collections.unmodifiableList(workTypes);
         } catch (SQLException ex) {
             throw new DataAccessException("Failed to load all workTypes", ex);
         }

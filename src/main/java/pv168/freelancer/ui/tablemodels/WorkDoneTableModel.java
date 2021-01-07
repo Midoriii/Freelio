@@ -6,6 +6,7 @@ import pv168.freelancer.model.WorkType;
 import pv168.freelancer.ui.utils.I18N;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +33,7 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
     public WorkDoneTableModel(WorkDoneDao workDao) {
         super(COLUMNS);
         this.workDao = workDao;
-        this.worksDone = workDao.findAllWorksDone();
+        this.worksDone = new ArrayList<>(workDao.findAllWorksDone());
     }
 
     @Override
