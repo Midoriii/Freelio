@@ -16,12 +16,7 @@ import java.awt.event.ActionListener;
  */
 public class NavBar extends JPanel implements ActionListener {
 
-    private Label brand;
-    private JPanel brandPanel;
-    private JButton btnWorkDone;
-    private JButton btnProfitCalc;
-    private JPanel btnPanel;
-    private JPanel contentPanel;
+    private final JPanel contentPanel;
 
     private static final I18N I18N = new I18N(NavBar.class);
 
@@ -48,10 +43,10 @@ public class NavBar extends JPanel implements ActionListener {
     }
 
     private void createBrandLogo() {
-        brand = new Label(I18N.getString("brand"));
+        Label brand = new Label(I18N.getString("brand"));
         brand.setForeground(Color.WHITE);
 
-        brandPanel = new JPanel();
+        JPanel brandPanel = new JPanel();
 
         brandPanel.setMinimumSize(new Dimension(250, 80));
         brandPanel.setPreferredSize(new Dimension(250, 80));
@@ -67,7 +62,7 @@ public class NavBar extends JPanel implements ActionListener {
     }
 
     private void createButtons(String workDoneName, String profitCalcName) {
-        btnPanel = new JPanel();
+        JPanel btnPanel = new JPanel();
 
         btnPanel.setMinimumSize(new Dimension(100, 210));
         btnPanel.setPreferredSize(new Dimension(150, 395));
@@ -80,10 +75,10 @@ public class NavBar extends JPanel implements ActionListener {
         gluePanel.setBackground(new Color(76, 175, 80));
         gluePanel.setLayout(new BoxLayout(gluePanel, BoxLayout.Y_AXIS));
 
-        btnWorkDone = new NavBarButton(workDoneName, Icons.WORK_ICON);
+        JButton btnWorkDone = new NavBarButton(workDoneName, Icons.WORK_ICON);
         btnWorkDone.addActionListener(this);
 
-        btnProfitCalc = new NavBarButton(profitCalcName, Icons.PROFIT_ICON);
+        JButton btnProfitCalc = new NavBarButton(profitCalcName, Icons.PROFIT_ICON);
         btnProfitCalc.addActionListener(this);
 
         // Fillers between buttons

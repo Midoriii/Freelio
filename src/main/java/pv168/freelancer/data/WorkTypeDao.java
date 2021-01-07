@@ -3,9 +3,10 @@ package pv168.freelancer.data;
 import pv168.freelancer.model.WorkType;
 
 import javax.sql.DataSource;
-        import java.sql.*;
-        import java.util.ArrayList;
-        import java.util.List;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,24 +17,17 @@ import java.util.Objects;
 public class WorkTypeDao {
 
     private final DataSource dataSource;
+    private final TableExistenceChecker existenceChecker;
 
     public WorkTypeDao(DataSource dataSource) {
         this.dataSource = Objects.requireNonNull(dataSource);
+        existenceChecker = new TableExistenceChecker(dataSource);
         initWorkTypeTable();
     }
 
     private void initWorkTypeTable() {
-        if (!workTypeTableExists("APP", "WORK_TYPE")) {
+        if (!existenceChecker.tableExists("APP", "WORK_TYPE")) {
             createWorkTypeTable();
-        }
-    }
-
-    private boolean workTypeTableExists(String schemaName, String tableName) {
-        try (var connection = dataSource.getConnection();
-             var rs = connection.getMetaData().getTables(null, schemaName, tableName, null)) {
-            return rs.next();
-        } catch (SQLException ex) {
-            throw new DataAccessException("Failed to detect if the table " + schemaName + "." + tableName + " exists", ex);
         }
     }
 
@@ -121,7 +115,7 @@ public class WorkTypeDao {
                     workTypes.add(workType);
                 }
             }
-            return workTypes;
+            return Collections.unmodifiableList(workTypes);
         } catch (SQLException ex) {
             throw new DataAccessException("Failed to load all workTypes", ex);
         }

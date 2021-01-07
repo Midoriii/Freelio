@@ -22,8 +22,7 @@ import java.math.BigDecimal;
  */
 public class WorkTypeDetail extends JDialog {
 
-    private boolean editingType;
-    private JPanel quitPanel;
+    private final boolean editingType;
     private JPanel contentPanel;
 
     private JTextField nameField;
@@ -31,7 +30,7 @@ public class WorkTypeDetail extends JDialog {
     private JTextArea descriptionArea;
     JComboBox<WorkType> workComboBox;
 
-    private WorkTypeTableModel workTypeTable;
+    private final WorkTypeTableModel workTypeTable;
     private final ComponentMover cm = new ComponentMover();
 
     private static final I18N I18N = new I18N(WorkTypeDetail.class);
@@ -45,7 +44,7 @@ public class WorkTypeDetail extends JDialog {
 
         setUpDialog();
 
-        quitPanel = ComponentFactory.createQuitPanel(owner, this, 450,40);
+        JPanel quitPanel = ComponentFactory.createQuitPanel(owner, this, 450, 40);
 
         setUpContentPanel();
 

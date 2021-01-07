@@ -28,10 +28,8 @@ import javax.swing.SwingUtilities;
 public class ComponentMover extends MouseAdapter
 {
     private Insets dragInsets = new Insets(0, 0, 0, 0);
-    private Dimension snapSize = new Dimension(1, 1);
-    private Insets edgeInsets = new Insets(0, 0, 0, 0);
-    private boolean changeCursor = true;
-    private boolean autoLayout = false;
+    private final Dimension snapSize = new Dimension(1, 1);
+    private final boolean changeCursor = true;
 
     private Class destinationClass;
     private Component destinationComponent;
@@ -76,16 +74,6 @@ public class ComponentMover extends MouseAdapter
     {
         for (Component component : components)
             component.addMouseListener( this );
-    }
-
-    /**
-     *	Get the snap size
-     *
-     *  @return the snap size
-     */
-    public Dimension getSnapSize()
-    {
-        return snapSize;
     }
 
     /**
@@ -220,16 +208,12 @@ public class ComponentMover extends MouseAdapter
 
         //  Layout the components on the parent container
 
-        if (autoLayout)
+        if (destination instanceof JComponent)
         {
-            if (destination instanceof JComponent)
-            {
-                ((JComponent)destination).revalidate();
-            }
-            else
-            {
-                destination.validate();
-            }
+            (destination).revalidate();
+        }
+        else {
+            destination.validate();
         }
     }
 }

@@ -13,9 +13,9 @@ import java.util.Objects;
  * @author xparoul
  */
 public class ProfitCalculator {
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private List<WorkDone> worksDone;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final List<WorkDone> worksDone;
 
     public ProfitCalculator(LocalDate startDate, LocalDate endDate, List<WorkDone> worksDone) {
         this.startDate = Objects.requireNonNull(startDate);

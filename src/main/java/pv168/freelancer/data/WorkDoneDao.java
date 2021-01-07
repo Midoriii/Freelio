@@ -6,6 +6,7 @@ import pv168.freelancer.model.WorkType;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,9 +18,11 @@ import java.util.Objects;
 public class WorkDoneDao {
 
     private final DataSource dataSource;
+    private final TableExistenceChecker existenceChecker;
 
     public WorkDoneDao(DataSource dataSource) {
         this.dataSource = Objects.requireNonNull(dataSource);
+        existenceChecker = new TableExistenceChecker(dataSource);
         initWorkDoneTable();
     }
 
@@ -105,24 +108,15 @@ public class WorkDoneDao {
                     worksDone.add(workDone);
                 }
             }
-            return worksDone;
+            return Collections.unmodifiableList(worksDone);
         } catch (SQLException ex) {
             throw new DataAccessException("Failed to load all works done", ex);
         }
     }
 
     private void initWorkDoneTable() {
-        if (!workDoneTableExists("APP", "WORK_DONE")) {
+        if (!existenceChecker.tableExists("APP", "WORK_DONE")) {
             createWorkDoneTable();
-        }
-    }
-
-    private boolean workDoneTableExists(String schemaName, String tableName) {
-        try (var connection = dataSource.getConnection();
-             var rs = connection.getMetaData().getTables(null, schemaName, tableName, null)) {
-            return rs.next();
-        } catch (SQLException ex) {
-            throw new DataAccessException("Failed to detect if the table " + schemaName + "." + tableName + " exists", ex);
         }
     }
 
