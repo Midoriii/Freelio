@@ -18,7 +18,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 /**
  * --Description here--
  *
- * @author
+ * xkopeck5
  */
 public class TestDataGenerator {
 

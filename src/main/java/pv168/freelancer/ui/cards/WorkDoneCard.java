@@ -25,7 +25,7 @@ import java.util.Comparator;
 /**
  * A card for cardLayout in MainWindow class, contains a basic overview of works done.
  *
- * @author xbenes2, xparoul
+ * @author xbenes2, xparoul, xkopeck5
  */
 public class WorkDoneCard extends JPanel{
 

@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 /**
  * An editable dialog containing information about a single work type.
  *
- * @author xbenes2, xparoul, xborcin1
+ * @author xbenes2, xparoul, xborcin1, xkopeck5
  */
 public class WorkTypeDetail extends JDialog {
 

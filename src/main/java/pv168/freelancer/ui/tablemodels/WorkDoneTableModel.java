@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * --Description here--
  *
- * @author xparoul
+ * @author xparoul, xkopeck5
  */
 public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
 
