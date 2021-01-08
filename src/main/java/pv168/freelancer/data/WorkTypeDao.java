@@ -1,8 +1,11 @@
 package pv168.freelancer.data;
 
+import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
+import pv168.freelancer.ui.tablemodels.WorkTypeTableModel;
 
 import javax.sql.DataSource;
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +48,7 @@ public class WorkTypeDao {
         }
     }
 
-    public void createWorkType(WorkType workType) {
+    public void createWorkType(WorkType workType) { //new CreateTypeWorker(workType).execute();
         if (workType.getId() != null) throw new IllegalArgumentException("WorkType already has ID: " + workType);
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
@@ -81,6 +84,7 @@ public class WorkTypeDao {
         }
     }
 
+
     public void updateWorkType(WorkType workType) {
         if (workType.getId() == null) throw new IllegalArgumentException("WorkType has null ID");
         try (var connection = dataSource.getConnection();
@@ -96,7 +100,9 @@ public class WorkTypeDao {
         } catch (SQLException ex) {
             throw new DataAccessException("Failed to update WorkType " + workType, ex);
         }
+
     }
+
 
     public List<WorkType> findAllWorkTypes() {
         try (var connection = dataSource.getConnection();
@@ -130,5 +136,9 @@ public class WorkTypeDao {
             throw new DataAccessException("failed to drop WORK_TYPE table", e);
         }
     }
+
+
+
+
 }
 

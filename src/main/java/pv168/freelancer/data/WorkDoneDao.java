@@ -4,11 +4,9 @@ import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 
 import javax.sql.DataSource;
+import javax.swing.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * --Description here--
@@ -51,6 +49,7 @@ public class WorkDoneDao {
             throw new DataAccessException("Failed to store Work Done" + workDone, e);
         }
     }
+
 
     public void deleteWorkDone(Long ID) {
         if (ID == null) {
@@ -144,5 +143,4 @@ public class WorkDoneDao {
             throw new DataAccessException("failed to drop WORK_DONE table", e);
         }
     }
-
 }

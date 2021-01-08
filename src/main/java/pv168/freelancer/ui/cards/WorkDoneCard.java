@@ -12,6 +12,7 @@ import pv168.freelancer.ui.utils.Icons;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -78,6 +79,7 @@ public class WorkDoneCard extends JPanel{
         var table = new JTable(model);
         table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
+        table.getModel().addTableModelListener(this::tableChanged);
         table.setRowHeight(30);
         table.setShowGrid(false);
 
@@ -237,8 +239,8 @@ public class WorkDoneCard extends JPanel{
         updateActions(selectionModel.getSelectedItemsCount());
     }
 
-    private void editWorkDone(ActionEvent e) {
-        new WorkDoneDetail(owner, true, workDoneTable, workTypeDao, true);
+    private void tableChanged(TableModelEvent tableModelEvent) {
+//        //var selectionModel = (TableModelEvent) tableModelEvent.getSource();
         var sortKeys = workDoneTable.getRowSorter().getSortKeys();
         workDoneTable.setModel(new WorkDoneTableModel(workDoneDao));
         setRowComparator(workDoneTable);
@@ -246,6 +248,10 @@ public class WorkDoneCard extends JPanel{
         setUpTableRenderers(workDoneTable);
         // This overwrites custom column widths but honestly, preserving those would be far too painful
         setColumnWidth(workDoneTable);
+    }
+
+    private void editWorkDone(ActionEvent e) {
+        new WorkDoneDetail(owner, true, workDoneTable, workTypeDao, true);
     }
 
     private void addWorkDone(ActionEvent e) {

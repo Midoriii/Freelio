@@ -6,9 +6,9 @@ import javax.swing.text.DocumentFilter;
 import java.awt.*;
 
 /**
- * --Description here--
+ * Class for checking document length
  *
- * @author
+ * @author xkopeck5
  */
 public class CustomDocumentFilter extends DocumentFilter {
 
