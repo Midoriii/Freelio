@@ -252,18 +252,10 @@ public class WorkDoneCard extends JPanel{
 
     private void editWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workTypeDao, true);
-//        var sortKeys = workDoneTable.getRowSorter().getSortKeys();
-//        workDoneTable.setModel(new WorkDoneTableModel(workDoneDao));
-//        setRowComparator(workDoneTable);
-//        workDoneTable.getRowSorter().setSortKeys(sortKeys);
-//        setUpTableRenderers(workDoneTable);
-//        // This overwrites custom column widths but honestly, preserving those would be far too painful
-//        setColumnWidth(workDoneTable);
     }
 
     private void addWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workTypeDao, false);
-        //workDoneTable.setModel(new WorkDoneTableModel(workDoneDao));
     }
 
     private void deleteWorkDone(ActionEvent e) {

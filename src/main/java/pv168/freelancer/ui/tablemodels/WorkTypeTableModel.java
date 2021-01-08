@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * --Description here--
+ * Model representation of the work type database.
  *
- * @author
+ * @author xkopeck5
  */
 public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
 
@@ -85,6 +85,7 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
             this.workType = workType;
             this.rowIndex = rowIndex;
         }
+
         @Override
         protected WorkType doInBackground() {
             workTypeDao.updateWorkType(workType);
@@ -96,30 +97,9 @@ public class WorkTypeTableModel extends AbstractEntityTableModel<WorkType> {
             workTypes.remove(rowIndex);
             workTypes.add(rowIndex, workType);
             fireTableRowsInserted(workTypes.size(), workTypes.size());
-            //fireTableDataChanged();
         }
-
-
-
-//    public void deleteRow(int rowIndex) {
-//        workTypeDao.deleteWorkType(workTypes.get(rowIndex).getId());
-//        workTypes.remove(rowIndex);
-//        fireTableRowsDeleted(rowIndex, rowIndex);
-//    }
-
-//    public void addRow(WorkType workType) {
-//        int newRowIndex = workTypes.size();
-//        workTypeDao.createWorkType(workType);
-//        workTypes.add(workType);
-//        fireTableRowsInserted(newRowIndex, newRowIndex);
-//    }
-//
-//    public void editRow(int rowIndex, WorkType workType) {
-//        workTypes.remove(rowIndex);
-//        workTypes.add(rowIndex, workType);
-//        workTypeDao.updateWorkType(workType);
-//        fireTableRowsUpdated(rowIndex, rowIndex);
     }
+
     private class DeleteWorker extends SwingWorker<Long, Void> {
 
         private Long ID;
