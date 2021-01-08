@@ -6,7 +6,7 @@ import java.util.function.Function;
 /**
  * --Description here--
  *
- * @author
+ * @author xparoul
  */
 public class Column<T, E> {
 

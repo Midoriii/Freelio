@@ -28,7 +28,7 @@ import java.util.Date;
 /**
  * An editable dialog containing information about a single work done.
  *
- * @author xbenes2
+ * @author xbenes2, xparoul
  */
 public class WorkDoneDetail extends JDialog {
     private final boolean editing;

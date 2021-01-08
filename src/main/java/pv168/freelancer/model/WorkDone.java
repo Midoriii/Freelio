@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * --Description here--
  *
- * @author xbenes2
+ * @author xbenes2, xparoul
  */
 public class WorkDone {
     private Long id;
