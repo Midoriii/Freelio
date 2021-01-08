@@ -4,14 +4,13 @@ import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 
 import javax.sql.DataSource;
-import javax.swing.*;
 import java.sql.*;
 import java.util.*;
 
 /**
  * --Description here--
  *
- * @author xparoul
+ * @author xparoul, xborcin1
  */
 public class WorkDoneDao {
 
