@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * --Description here--
  *
- * @author
+ * @author xparoul
  */
 public class WorkType {
     private Long id;

@@ -8,7 +8,7 @@ import java.util.Calendar;
 /**
  * --Description here--
  *
- * @author
+ * @author xparoul
  */
 public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
 

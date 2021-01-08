@@ -20,7 +20,7 @@ import java.util.Date;
 /**
  * A card for cardLayout in MainWindow class, contains profit calculation functionality.
  *
- * @author xbenes2
+ * @author xbenes2, xparoul
  */
 public class ProfitCard extends JPanel {
 
