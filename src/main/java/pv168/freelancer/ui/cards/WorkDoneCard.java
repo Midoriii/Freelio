@@ -250,6 +250,7 @@ public class WorkDoneCard extends JPanel{
 
     private void addWorkDone(ActionEvent e) {
         new WorkDoneDetail(owner, true, workDoneTable, workTypeDao, false);
+        workDoneTable.setModel(new WorkDoneTableModel(workDoneDao));
     }
 
     private void deleteWorkDone(ActionEvent e) {
