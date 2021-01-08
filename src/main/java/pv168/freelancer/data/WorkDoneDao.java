@@ -4,11 +4,9 @@ import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
 
 import javax.sql.DataSource;
+import javax.swing.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * --Description here--
@@ -26,7 +24,9 @@ public class WorkDoneDao {
         initWorkDoneTable();
     }
 
-    public void createWorkDone(WorkDone workDone) {
+    public void createWorkDone(WorkDone workDone) { new CreateWorker(workDone).execute();}
+
+    private void create(WorkDone workDone) {
         if (workDone.getId() != null) {
             throw new IllegalArgumentException("work done id must not be initialized");
         }
@@ -53,6 +53,10 @@ public class WorkDoneDao {
     }
 
     public void deleteWorkDone(Long ID) {
+        new DeleteWorker(ID).execute();
+    }
+
+    private void delete(Long ID) {
         if (ID == null) {
             throw new IllegalArgumentException("Work done has null ID");
         }
@@ -67,7 +71,9 @@ public class WorkDoneDao {
         }
     }
 
-    public void updateWorkDone(WorkDone workDone) {
+    public void updateWorkDone(WorkDone workDone) { new UpdateWorker(workDone).execute();}
+
+    private void update(WorkDone workDone) {
         if (workDone.getId() == null) throw new IllegalArgumentException("WorkDone has null ID");
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
@@ -144,5 +150,60 @@ public class WorkDoneDao {
             throw new DataAccessException("failed to drop WORK_DONE table", e);
         }
     }
+    private class DeleteWorker extends SwingWorker<Long, Void> {
 
+        private Long ID;
+
+        public DeleteWorker(Long ID) {
+            this.ID = ID;
+        }
+
+        @Override
+        protected Long doInBackground() {
+            delete(ID);
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+    }
+
+    private class CreateWorker extends SwingWorker<Long, Void> {
+
+        private WorkDone workDone;
+
+        public CreateWorker(WorkDone workDone) {
+            this.workDone = workDone;
+        }
+
+        @Override
+        protected Long doInBackground() {
+            create(workDone);
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+    }
+
+    private class UpdateWorker extends SwingWorker<Long, Void> {
+
+        private WorkDone workDone;
+
+        public UpdateWorker(WorkDone workDone) {
+            this.workDone = workDone;
+        }
+
+        @Override
+        protected Long doInBackground() {
+            update(workDone);
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+    }
 }
