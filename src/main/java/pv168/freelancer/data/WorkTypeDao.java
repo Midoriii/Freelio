@@ -1,8 +1,11 @@
 package pv168.freelancer.data;
 
+import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
+import pv168.freelancer.ui.tablemodels.WorkTypeTableModel;
 
 import javax.sql.DataSource;
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +48,9 @@ public class WorkTypeDao {
         }
     }
 
-    public void createWorkType(WorkType workType) {
+    public void createWorkType(WorkType workType) { new CreateWorker(workType).execute();}
+
+    public void create(WorkType workType) { //new CreateTypeWorker(workType).execute();
         if (workType.getId() != null) throw new IllegalArgumentException("WorkType already has ID: " + workType);
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
@@ -68,6 +73,9 @@ public class WorkTypeDao {
     }
 
     public void deleteWorkType(Long ID) {
+        new DeleteWorker(ID).execute();
+    }
+    public void delete(Long ID) {
         if (ID == null) throw new IllegalArgumentException("WorkType has null ID");
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
@@ -81,7 +89,9 @@ public class WorkTypeDao {
         }
     }
 
-    public void updateWorkType(WorkType workType) {
+    public void updateWorkType(WorkType workType) { new UpdateWorker(workType).execute();}
+
+    public void update(WorkType workType) {
         if (workType.getId() == null) throw new IllegalArgumentException("WorkType has null ID");
         try (var connection = dataSource.getConnection();
              var st = connection.prepareStatement(
@@ -97,6 +107,7 @@ public class WorkTypeDao {
             throw new DataAccessException("Failed to update WorkType " + workType, ex);
         }
     }
+
 
     public List<WorkType> findAllWorkTypes() {
         try (var connection = dataSource.getConnection();
@@ -130,5 +141,67 @@ public class WorkTypeDao {
             throw new DataAccessException("failed to drop WORK_TYPE table", e);
         }
     }
+
+    private class DeleteWorker extends SwingWorker<Long, Void> {
+
+        private Long ID;
+
+        public DeleteWorker(Long ID) {
+            this.ID = ID;
+        }
+
+        @Override
+        protected Long doInBackground() {
+            delete(ID);
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+    }
+
+    private class CreateWorker extends SwingWorker<Long, Void> {
+
+        private WorkType workType;
+
+        public CreateWorker(WorkType workType) {
+            this.workType = workType;
+        }
+
+        @Override
+        protected Long doInBackground() {
+            create(workType);
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+    }
+
+    private class UpdateWorker extends SwingWorker<Long, Void> {
+
+        private WorkType workType;
+
+        public UpdateWorker(WorkType workType) {
+            this.workType = workType;
+        }
+
+        @Override
+        protected Long doInBackground() {
+            update(workType);
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+    }
+
+
+
+
+
 }
 
