@@ -2,7 +2,7 @@ package pv168.freelancer.data;
 
 /**
  *
- * @author 
+ * @author xborcin1
  */
 
 public class DataAccessException extends RuntimeException {

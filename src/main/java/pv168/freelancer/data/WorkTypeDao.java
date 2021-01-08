@@ -1,11 +1,8 @@
 package pv168.freelancer.data;
 
-import pv168.freelancer.model.WorkDone;
 import pv168.freelancer.model.WorkType;
-import pv168.freelancer.ui.tablemodels.WorkTypeTableModel;
 
 import javax.sql.DataSource;
-import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +12,7 @@ import java.util.Objects;
 /**
  * --Description here--
  *
- * @author
+ * @author xborcin1
  */
 public class WorkTypeDao {
 
