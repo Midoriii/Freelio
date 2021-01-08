@@ -18,8 +18,8 @@ public class RoundedButtonSmall extends RoundedButton{
         super.installDefaults(b);
 
         b.setMinimumSize(new Dimension(70,32));
-        b.setPreferredSize(new Dimension(75,32));
-        b.setMaximumSize(new Dimension(75,32));
+        b.setPreferredSize(new Dimension(85,32));
+        b.setMaximumSize(new Dimension(85,32));
 
         b.setHorizontalAlignment(SwingConstants.LEFT);
 
