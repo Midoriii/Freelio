@@ -47,8 +47,8 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
         return worksDone.get(rowIndex);
     }
 
-    public void deleteRow(int rowIndex) {
-        new DeleteWorker(worksDone.get(rowIndex).getId(), rowIndex).execute();
+    public void deleteRows(int[] rowIndexes) {
+        new DeleteWorker(rowIndexes).execute();
 
     }
 
@@ -110,33 +110,33 @@ public class WorkDoneTableModel extends AbstractEntityTableModel<WorkDone> {
 
         @Override
         protected void done() {
-            worksDone.remove(rowIndex);
-            worksDone.add(rowIndex, workDone);
-            fireTableRowsInserted(worksDone.size() - 1, worksDone.size() - 1);
+            worksDone.set(rowIndex, workDone);
+            fireTableRowsUpdated(rowIndex, rowIndex);
+
         }
     }
 
     private class DeleteWorker extends SwingWorker<Long, Void> {
+        private int[] indexes;
 
-        private Long ID;
-        private int index;
-
-        public DeleteWorker(Long ID, int index) {
-
-            this.ID = ID;
-            this.index = index;
+        public DeleteWorker(int[] indexes) {
+            this.indexes = indexes;
         }
         @Override
         protected Long doInBackground() {
-            workDao.deleteWorkDone(ID);
-            return ID;
+            for (int i = indexes.length - 1; i >= 0; i--) {
+                Long ID = worksDone.get(indexes[i]).getId();
+                workDao.deleteWorkDone(ID);
+            }
+            return 0l;
         }
 
         @Override
         protected void done() {
-            worksDone.remove(index);
-            fireTableRowsDeleted(index, index);
-            fireTableDataChanged();
+            for (int i = indexes.length - 1; i >= 0; i--) {
+                worksDone.remove(indexes[i]);
+                fireTableRowsDeleted(indexes[i], indexes[i]);
+            }
         }
     }
 }

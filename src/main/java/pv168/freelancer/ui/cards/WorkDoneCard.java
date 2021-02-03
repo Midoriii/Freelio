@@ -77,14 +77,12 @@ public class WorkDoneCard extends JPanel{
     private JTable setUpTable() {
         var model = new WorkDoneTableModel(workDoneDao);
         var table = new JTable(model);
-        table.setAutoCreateRowSorter(true);
         table.getSelectionModel().addListSelectionListener(this::rowSelectionChanged);
         table.getModel().addTableModelListener(this::tableChanged);
         table.setRowHeight(30);
         table.setShowGrid(false);
 
         setColumnWidth(table);
-        setRowComparator(table);
         setUpTableRenderers(table);
 
         return table;
@@ -99,30 +97,6 @@ public class WorkDoneCard extends JPanel{
             column = columnModel.getColumn(i);
             column.setPreferredWidth(Math.round(totalWidth * widthPercentages[i]));
         }
-    }
-
-    private void setRowComparator(JTable table) {
-        table.setAutoCreateRowSorter(true);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
-        table.setRowSorter(sorter);
-        int fromColumnIndex = table.getColumnModel().getColumnIndex(I18N.getString("from"));
-        int toColumnIndex = table.getColumnModel().getColumnIndex(I18N.getString("to"));
-
-        var comparator = new Comparator<String>()
-        {
-            @Override
-            public int compare(String o1, String o2)
-            {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm  dd.MM.yyyy");
-                LocalDateTime ldt1, ldt2;
-                ldt1 = LocalDateTime.parse(o1, formatter);
-                ldt2 = LocalDateTime.parse(o2, formatter);
-                return ldt1.compareTo(ldt2);
-            }
-        };
-
-        sorter.setComparator(fromColumnIndex, comparator);
-        sorter.setComparator(toColumnIndex, comparator);
     }
 
     private void setUpTableRenderers(JTable table) {
@@ -240,11 +214,7 @@ public class WorkDoneCard extends JPanel{
     }
 
     private void tableChanged(TableModelEvent tableModelEvent) {
-//        //var selectionModel = (TableModelEvent) tableModelEvent.getSource();
-        var sortKeys = workDoneTable.getRowSorter().getSortKeys();
         workDoneTable.setModel(new WorkDoneTableModel(workDoneDao));
-        setRowComparator(workDoneTable);
-        workDoneTable.getRowSorter().setSortKeys(sortKeys);
         setUpTableRenderers(workDoneTable);
         // This overwrites custom column widths but honestly, preserving those would be far too painful
         setColumnWidth(workDoneTable);
@@ -260,11 +230,7 @@ public class WorkDoneCard extends JPanel{
 
     private void deleteWorkDone(ActionEvent e) {
         var workDoneTableModel = (WorkDoneTableModel) workDoneTable.getModel();
-        Arrays.stream(workDoneTable.getSelectedRows())
-                .map(workDoneTable::convertRowIndexToModel)
-                .boxed()
-                .sorted(Comparator.reverseOrder())
-                .forEach(workDoneTableModel::deleteRow);
+        workDoneTableModel.deleteRows(workDoneTable.getSelectedRows());
     }
 
 
